@@ -13,7 +13,7 @@ const Navbar = () => {
           <a href="/" className="flex items-center space-x-2">
             <div className="h-8 w-8 bg-black rounded flex items-center justify-center">
               <span className="text-white text-lg font-bold">
-                <img src="logo.png" alt="" className="w-7 h-7"/>
+                <img src="./logo.png" alt="" className="w-7 h-7" />
               </span>
             </div>
             <span className="text-lg font-bold text-s">sourceful.space</span>
