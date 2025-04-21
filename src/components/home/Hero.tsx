@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { Zap } from "lucide-react";
+import  { useEffect, useState } from "react";
 import Button from "../ui/Button";
 
 const Hero = () => {
