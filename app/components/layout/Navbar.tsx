@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { ChevronDown, Menu, X } from "lucide-react";
 import Badge from "../ui/Badge";
 import Image from "next/image";
+import Link from "next/link";
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -12,7 +13,7 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Logo */}
         <div className="flex items-center">
-          <a href="/" className="flex items-center space-x-2">
+          <Link href="/" className="flex items-center space-x-2">
             <div className="h-8 w-8 bg-black rounded flex items-center justify-center">
               <span className="text-white text-lg font-bold">
                 <Image
@@ -24,7 +25,7 @@ const Navbar = () => {
               </span>
             </div>
             <span className="text-lg font-bold text-s">sourceful.space</span>
-          </a>
+          </Link>
         </div>
 
         {/* Desktop Navigation */}

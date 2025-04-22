@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { useEffect, useState } from "react";
 import Button from "../ui/Button";
@@ -26,7 +26,7 @@ const Hero = () => {
             <span>⚡ Early Launch!</span>
           </div>
           <div className="h-4 w-px bg-gray-300" />
-          <span className="text-gray-600 text-xs">Apr 20, 2025</span>
+          <span className="text-gray-600 text-xs">in 3 months</span>
           <div className="h-4 w-px bg-gray-300" />
           <a
             href="#"
@@ -57,7 +57,7 @@ const Hero = () => {
         {/* Subheading */}
         <p className="max-w-4xl mx-auto text-lg md:text-[22px] text-gray-500 mb-5 leading-[1.2] font-[300] ">
           Sourceful is your central space to explore the vast world of
-          open-source projects. We're building a community-driven platform to
+          open-source projects. We&apos;re building a community-driven platform to
           make it easier than ever for developers, contributors, and enthusiasts
           to find promising projects, connect with creators, and fuel the future
           of collaborative technology.
