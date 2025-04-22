@@ -1,4 +1,6 @@
-import  { useEffect, useState } from "react";
+'use client'
+
+import { useEffect, useState } from "react";
 import Button from "../ui/Button";
 
 const Hero = () => {
