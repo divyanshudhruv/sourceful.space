@@ -4,7 +4,17 @@ import { ChevronDown, Menu, X } from "lucide-react";
 import Badge from "../ui/Badge";
 import Image from "next/image";
 import Link from "next/link";
+import Button from "../ui/Button";
 
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -37,8 +47,8 @@ const Navbar = () => {
             New launch
           </a>
 
-          <div className="relative group cursor-pointer">
-            <button className="flex items-center  text-xs space-x-1 font-medium text-gray-900 hover:text-gray-600">
+          <div className="relative group ">
+            <button className="flex items-center  text-xs space-x-1 font-medium text-gray-900 hover:text-gray-600 cursor-pointer">
               <span>Categories</span>
               <ChevronDown className="h-4 w-4" />
             </button>
@@ -71,26 +81,46 @@ const Navbar = () => {
           >
             Dashboard
           </a>
-          <a
-            href="#"
-            className="font-medium text-white bg-black px-4 py-2 rounded-md text-xs hover:bg-gray-800 transition-colors"
-          >
-            Early Access
-          </a>
+
+          <Dialog>
+            <DialogTrigger asChild>
+              <a
+                href="#"
+                className="font-medium text-white bg-black px-4 py-2 rounded-md text-xs hover:bg-gray-800 transition-colors"
+              >
+                Early Access
+              </a>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Early Access</DialogTitle>
+                <DialogDescription>
+                  Gain early access to our features here. Click access now when
+                  you're ready.
+                </DialogDescription>
+              </DialogHeader>
+
+              <DialogFooter>
+                <Button variant="primary" className=" text-xs">
+                  Access Now
+                </Button>{" "}
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </div>
 
         {/* Mobile menu button */}
         <div className="md:hidden">
-            <button
+          <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="text-gray-500 hover:text-gray-600 focus:outline-none focus:ring-1 focus:ring-offset-2 focus:ring-gray-300 cursor-pointer rounded-sm p-1"
-            >
+          >
             {mobileMenuOpen ? (
               <X className="h-6 w-6" />
             ) : (
               <Menu className="h-6 w-6" />
             )}
-            </button>
+          </button>
         </div>
       </div>
 
@@ -123,7 +153,6 @@ const Navbar = () => {
               Looking for funds
               <Badge className="ml-2 bg-green-100 text-green-800">New</Badge>
             </a>
-           
           </div>
         </div>
       )}
