@@ -96,7 +96,7 @@ const Navbar = () => {
                 <DialogTitle>Early Access</DialogTitle>
                 <DialogDescription>
                   Gain early access to our features here. Click access now when
-                  you're ready.
+                  you&apos;re ready.
                 </DialogDescription>
               </DialogHeader>
 

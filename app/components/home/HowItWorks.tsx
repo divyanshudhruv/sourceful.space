@@ -30,10 +30,10 @@ const HowItWorks = () => {
                 <span className="text-xl font-semibold text-gray-700"> 1 </span>
               </div>
               <h3 className="mt-6 text-xl font-semibold leading-tight text-black md:mt-10">
-                Create a "Pin"
+                Create a &apos;Pin&apos;
               </h3>
               <p className="mt-4 text-base text-gray-600 max-w-3xs mx-auto">
-                Start by creating a "Pin" to showcase your project or idea. It's
+                Start by creating a &apos;Pin&apos; to showcase your project or idea. It&apos;s
                 quick and easy to get started.
               </p>
             </div>

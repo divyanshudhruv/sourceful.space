@@ -3,7 +3,6 @@
 import React from "react";
 import Navbar from "./components/layout/Navbar";
 import Hero from "./components/home/Hero";
-import { MVP } from "./components/home/mvp";
 import "./index.css";
 
 function Home() {
