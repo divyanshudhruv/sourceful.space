@@ -1,9 +1,9 @@
-'use client'
+"use client";
 
 import React from "react";
 import Navbar from "./components/layout/Navbar";
 import Hero from "./components/home/Hero";
-import './index.css'
+import "./index.css";
 
 function Home() {
   return (
@@ -11,6 +11,8 @@ function Home() {
       <Navbar />
       <main className="flex-grow">
         <Hero />
+        {/* <MVP /> */}
+        {/* Add more components here as needed */}
       </main>
     </div>
   );

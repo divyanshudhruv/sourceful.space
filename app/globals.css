@@ -120,3 +120,22 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Minimal scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #d2d3d7;
+  border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--muted-foreground);
+}
+
+::-webkit-scrollbar-track {
+  background-color: #E5E7EB60;
+}

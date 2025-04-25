@@ -2,6 +2,18 @@
 
 import { useEffect, useState } from "react";
 import Button from "../ui/Button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
+import HowItWorks from "./HowItWorks";
+import { StackedCircularFooter } from "@/components/ui/stacked-circular-footer";
 
 const Hero = () => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -51,16 +63,16 @@ const Hero = () => {
         <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-[#202020] mb-6 leading-tight max-w-[1100px] center mx-auto">
           Redefining <i>open-source</i>
           <br />
-          with Sourceful
+          with ⚡Sourceful
         </h1>
 
         {/* Subheading */}
         <p className="max-w-4xl mx-auto text-lg md:text-[22px] text-gray-500 mb-5 leading-[1.2] font-[300] ">
           Sourceful is your central space to explore the vast world of
-          open-source projects. We&apos;re building a community-driven platform to
-          make it easier than ever for developers, contributors, and enthusiasts
-          to find promising projects, connect with creators, and fuel the future
-          of collaborative technology.
+          open-source projects. We&apos;re building a community-driven platform
+          to make it easier than ever for developers, contributors, and
+          enthusiasts to find promising projects, connect with creators, and
+          fuel the future of collaborative technology.
         </p>
 
         {/* CTA Buttons */}
@@ -68,9 +80,29 @@ const Hero = () => {
           <Button variant="primary" className=" text-xs">
             Login
           </Button>
-          <Button variant="secondary" className=" text-xs">
-            Early Access
-          </Button>
+
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="secondary" className=" text-xs">
+                Early Access
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Early Access</DialogTitle>
+                <DialogDescription>
+                  Gain early access to our features here. Click access now when
+                  you&apos;re ready.
+                </DialogDescription>
+              </DialogHeader>
+
+              <DialogFooter>
+                <Button variant="primary" className=" text-xs">
+                  Access Now
+                </Button>{" "}
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </div>
         <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4 mb-0">
           {/* Avatar Container */}
@@ -96,6 +128,9 @@ const Hero = () => {
           </div>
         </div>
       </div>
+      <HowItWorks />
+      <StackedCircularFooter />
+
     </div>
   );
 };
