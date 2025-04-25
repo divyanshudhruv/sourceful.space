@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dialog";
 
 import HowItWorks from "./HowItWorks";
+import { StackedCircularFooter } from "@/components/ui/stacked-circular-footer";
 
 const Hero = () => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -128,6 +129,8 @@ const Hero = () => {
         </div>
       </div>
       <HowItWorks />
+      <StackedCircularFooter />
+
     </div>
   );
 };
