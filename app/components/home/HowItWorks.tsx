@@ -27,20 +27,26 @@ const HowItWorks = () => {
           <div className="relative grid grid-cols-1 text-center gap-y-10 md:grid-cols-3 gap-x-0">
             <div>
               <div className="flex items-center justify-center w-16 h-16 mx-auto bg-white border-2 border-gray-200 rounded-full shadow">
-                <span className="text-xl font-semibold text-gray-700"> 1 </span>
+                <span className="text-xl font-semibold text-gray-700">
+                  {" "}
+                  📌{" "}
+                </span>
               </div>
               <h3 className="mt-6 text-xl font-semibold leading-tight text-black md:mt-10">
                 Create a &apos;Pin&apos;
               </h3>
               <p className="mt-4 text-base text-gray-600 max-w-3xs mx-auto">
-                Start by creating a &apos;Pin&apos; to showcase your project or idea. It&apos;s
-                quick and easy to get started.
+                Start by creating a &apos;Pin&apos; to showcase your project or
+                idea. It&apos;s quick and easy to get started.
               </p>
             </div>
 
             <div>
               <div className="flex items-center justify-center w-16 h-16 mx-auto bg-white border-2 border-gray-200 rounded-full shadow">
-                <span className="text-xl font-semibold text-gray-700"> 2 </span>
+                <span className="text-xl font-semibold text-gray-700">
+                  {" "}
+                  ✍️{" "}
+                </span>
               </div>
               <h3 className="mt-6 text-xl font-semibold leading-tight text-black md:mt-10">
                 Add Details
@@ -53,7 +59,10 @@ const HowItWorks = () => {
 
             <div>
               <div className="flex items-center justify-center w-16 h-16 mx-auto bg-white border-2 border-gray-200 rounded-full shadow">
-                <span className="text-xl font-semibold text-gray-700"> 3 </span>
+                <span className="text-xl font-semibold text-gray-700">
+                  {" "}
+                  🫂{" "}
+                </span>
               </div>
               <h3 className="mt-6 text-xl font-semibold leading-tight text-black md:mt-10">
                 Wait for People
