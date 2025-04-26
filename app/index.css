@@ -1,14 +1,18 @@
-*{
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+
+* {
 
     box-sizing: border-box;
 }
-body{
+
+body {
     margin: 0;
     padding: 0;
-   
-    overflow-x:hidden;
+
+    overflow-x: hidden;
     overflow-y: auto;
 }
+
 /* Fade-in animation */
 .transition-container {
     opacity: 0;
@@ -75,20 +79,312 @@ body{
     background: radial-gradient(circle, rgba(144, 238, 144, 0.5), transparent);
 }
 
-@keyframes blob-color-change {
-    0% {
-        background: radial-gradient(circle, rgba(255, 182, 193, 0.5), transparent);
+.main {
+    display: flex;
+    overflow-y: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+    width: calc(100vw - 17px);
+    height: calc(100svh - 17px);
+    overflow: hidden;
+    border-radius: 20px;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 1;
+    background-color: #F1EEF0;
+
+
+    .container {
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: fit-content;
+        height: fit-content;
+        padding: 30px;
+        background-color: transparent;
+        gap: 10px;
+
+        .textTop1 {
+            font-size: 2em;
+            font-weight: 550;
+            color: #202020;
+            line-height: 1.2;
+            text-align: center;
+            margin-left: auto;
+            display: flex;
+            margin-right: auto;
+            font-family: 'Ubuntu', sans-serif;
+
+
+
+        }
+
+        .textTop2 {
+            font-size: 2em;
+            font-weight: 550;
+            color: #202020;
+            line-height: 1.2;
+            text-align: center;
+            display: flex;
+            margin-left: auto;
+            margin-right: auto;
+            font-family: 'Ubuntu', sans-serif;
+            flex-direction: row;
+            gap: 15px;
+            align-items: center;
+            /* Ensures vertical alignment */
+
+            .canvas {
+                display: flex;
+                position: relative;
+                width: 70px;
+                height: 70px;
+                background-color: #202020;
+                border-radius: 100%;
+                margin-bottom: 0;
+                /* Removed margin-bottom to align vertically */
+                justify-content: center;
+                align-items: center;
+            }
+        }
+
+        .textBottom {
+            font-weight: 450;
+            color: #444444;
+            font-size: 14px;
+            line-height: 1.44;
+            text-align: center;
+            display: flex;
+            margin-left: auto;
+            margin-right: auto;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            max-width: 400px;
+            flex-wrap: wrap;
+        }
+
+        .inputContainer {
+            margin-top: 30px;
+            scale: 0.95;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            width: fit-content;
+            padding-inline: 15px;
+            gap: 20px;
+            height: fit-content;
+            padding-top: 15px;
+            padding-bottom: 15px;
+            border-radius: 200px;
+            background-color: #fff;
+            margin-bottom: 50px;
+            transition: .3s;
+            border-bottom: 1px solid transparent;
+
+            &:hover {
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+                border-bottom: 1px solid #d9d9d9;
+
+            }
+
+            .input {
+                display: flex;
+                position: relative;
+                width: fit-content;
+                height: fit-content;
+
+                &::before {
+                    content: 'Your email';
+                    position: absolute;
+                    top: -5.7px;
+                    left: 20px;
+                    font-size: 9.2px;
+                    width: fit-content;
+                    height: fit-content;
+                    background-color: #fff;
+                    font-family: 'Poppins', sans-serif;
+                    color: #444444;
+                }
+            }
+
+            input {
+                width: 250px;
+                height: 40px;
+                border: 1px solid #d9d9d9;
+                border-radius: 20px;
+                padding: 0 20px 0 20px;
+                font-size: 11px;
+                font-weight: 580;
+                font-family: 'Poppins', sans-serif;
+                color: #444444;
+                outline: none;
+                transition: border-color 0.3s ease;
+
+
+            }
+
+
+        }
+
+
+
     }
 
-    33% {
-        background: radial-gradient(circle, rgba(173, 216, 230, 0.5), transparent);
+    .socialsContainer {
+        z-index: 999;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        bottom: 60px;
+        gap: 10px;
+        margin-top: 20px;
+
+        .item {
+            display: flex;
+            background-color: #fff;
+            align-items: center;
+            justify-content: center;
+            border-radius: 100%;
+            width: 40px;
+            height: 40px;
+            margin-top: 30px;
+            color: #8d8c8c;
+            transition: .3s;
+
+            &:hover {
+                color: #444444;
+                box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+            }
+
+        }
     }
 
-    66% {
-        background: radial-gradient(circle, rgba(144, 238, 144, 0.5), transparent);
+    .footer {
+        z-index: 999;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        bottom: 20px;
+        font-family: 'Poppins', sans-serif;
+        color: #8d8c8c;
+        font-size: 11px;
+        white-space: pre;
+
+        span {
+            color: #444444;
+
+        }
+
+    }
+}
+
+/* Concentric circles with only borders */
+.concentric-circles {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    /* Outer circle size */
+    height: 600px;
+    border-radius: 50%;
+    border: 1.55px solid #C7C4C649;
+    /* Slightly darker than #F1EEF0 */
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: none;
+    /* Remove background color */
+}
+
+.concentric-circles .inner-circle {
+    width: 375px;
+    /* Inner circle size */
+    height: 375px;
+    border-radius: 50%;
+    border: 1.5px solid #C7C4C649;
+    /* Slightly darker than outer circle */
+    background: none;
+    /* Remove background color */
+}
+
+.button {
+    width: fit-content;
+    padding-inline: 13px;
+    height: 40px;
+    border: none;
+    border-radius: 20px;
+    background-color: #272626;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 500;
+    font-family: 'Ubuntu', sans-serif;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+        background-color: #383838;
     }
 
-    100% {
-        background: radial-gradient(circle, rgba(255, 182, 193, 0.5), transparent);
+
+}
+
+
+@media (max-width: 550px) {
+    .main .inputContainer {
+        flex-direction: column !important;
+        padding-top: 20px !important;
+        border-radius: 25px !important;
+        gap: 10px !important;
+        scale: 1.1 !important;
     }
+
+    .container .textTop2 .canvas {
+        scale: 0.8;
+
+    }
+
+    .container .textTop2 {
+        gap: 0px !important;
+    }
+
+    .concentric-circles {
+
+        transform: translate(-50%, 40%);
+
+    }
+
+    .main .inputContainer {
+        margin-bottom: 175px !important;
+    }
+
+    .main .inputContainer .button {
+        width: 100% !important;
+    }
+}
+
+.concentric-circles {
+    width: 400px;
+    height: 400px;
+
+    .inner-circle {
+        width: 250px;
+        height: 250px;
+    }
+}
+
+.blob {
+    width: 200px;
+    height: 200px;
 }
