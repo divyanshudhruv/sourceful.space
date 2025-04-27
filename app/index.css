@@ -6,24 +6,44 @@
 }
 
 body {
+    position: relative;
+    display: flex;
     margin: 0;
     padding: 0;
-
-    overflow-x: hidden;
-    overflow-y: auto;
 }
+
 
 /* Fade-in animation */
 .transition-container {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(10px);
     transition: opacity 1s ease, transform 1s ease;
+}
+
+.transition-container .fade-in {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .transition-container.fade-in {
     opacity: 1;
-    /* background: radial-gradient(circle, rgba(255, 182, 219, 0.2), transparent); */
     transform: translateY(0);
+}
+
+.transition-container .fade-in:nth-child(1) {
+    transition-delay: 0.2s;
+}
+
+.transition-container .fade-in:nth-child(2) {
+    transition-delay: 0.4s;
+}
+
+.transition-container .fade-in:nth-child(3) {
+    transition-delay: 0.6s;
+}
+
+.transition-container .fade-in:nth-child(4) {
+    transition-delay: 0.8s;
 }
 
 /* Moving grid background */
@@ -112,7 +132,7 @@ body {
         gap: 10px;
 
         .textTop1 {
-            font-size: 2em;
+            font-size: 2.2em;
             font-weight: 550;
             color: #202020;
             line-height: 1.2;
@@ -127,10 +147,10 @@ body {
         }
 
         .textTop2 {
-            font-size: 2em;
+            font-size: 2.2em;
             font-weight: 550;
             color: #202020;
-            line-height: 1.2;
+            line-height: 1.1em;
             text-align: center;
             display: flex;
             margin-left: auto;
@@ -186,11 +206,10 @@ body {
             background-color: #fff;
             margin-bottom: 50px;
             transition: .3s;
-            border-bottom: 1px solid transparent;
+            border: 0px solid #fff;
 
             &:hover {
                 box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-                border-bottom: 1px solid #d9d9d9;
 
             }
 
@@ -226,7 +245,7 @@ body {
                 color: #444444;
                 outline: none;
                 transition: border-color 0.3s ease;
-
+                cursor: none;
 
             }
 
@@ -344,10 +363,13 @@ body {
 @media (max-width: 550px) {
     .main .inputContainer {
         flex-direction: column !important;
-        padding-top: 20px !important;
-        border-radius: 25px !important;
+        padding-top: 22px !important;
+        padding-bottom: 22px !important;
+        border-radius: 32px !important;
         gap: 10px !important;
         scale: 1.1 !important;
+        margin-bottom: 120px !important;
+        padding-inline: 22px !important;
     }
 
     .container .textTop2 .canvas {
@@ -357,6 +379,13 @@ body {
 
     .container .textTop2 {
         gap: 0px !important;
+        font-size: 2em !important;
+    }
+
+    .container .textTop1 {
+        font-size: 2.2em !important;
+        margin-bottom: 0 !important;
+        line-height: .7em !important;
     }
 
     .concentric-circles {
@@ -365,8 +394,10 @@ body {
 
     }
 
-    .main .inputContainer {
-        margin-bottom: 175px !important;
+
+    .socialsContainer .item {
+        width: 50px !important;
+        height: 50px !important;
     }
 
     .main .inputContainer .button {
@@ -387,4 +418,18 @@ body {
 .blob {
     width: 200px;
     height: 200px;
+}
+
+@media (max-width: 440px) {
+    .textTop2 {
+        scale: 1 !important;
+        width: 100vw !important;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .textBottom {
+        max-width: 80% !important;
+    }
+
 }
