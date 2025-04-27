@@ -109,7 +109,7 @@ body {
     right: 0;
     margin: auto;
     width: calc(100vw - 17px);
-    height: calc(100svh - 17px);
+    height: calc(100vh - 17px);
     overflow: hidden;
     border-radius: 20px;
     justify-content: center;
