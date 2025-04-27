@@ -188,7 +188,9 @@ function Home() {
           </div>
         </div>
         <div className="footer">
-          Built by <span>divyanshudhruv</span>
+          <Link href="https://github.com/divyanshudhruv" target="_blank">
+            <span>divyanshudhruv</span>
+          </Link>
         </div>
       </div>
     </div>
