@@ -371,10 +371,11 @@ body {
         margin-bottom: 120px !important;
         padding-inline: 22px !important;
     }
-
+/*
 .main{
 height: calc(100svh - 30px) ;
 }
+*/
 
     .container .textTop2 .canvas {
         scale: 0.8;
