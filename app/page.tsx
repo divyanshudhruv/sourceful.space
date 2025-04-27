@@ -74,6 +74,8 @@ function Home() {
           console.error("Error adding email to early access:", error.message);
         } else {
           setEmail(""); // Clear the input field
+          console.log(data);
+          console.clear();
         }
       } catch (err) {
         console.error("Unexpected error:", err);
