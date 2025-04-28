@@ -72,10 +72,14 @@ function Home() {
 
         if (error) {
           console.error("Error adding email to early access:", error.message);
+          const trigger = document.getElementById("dialog-trigger-error");
+          if (trigger) trigger.click();
         } else {
           setEmail(""); // Clear the input field
           console.log(data);
           console.clear();
+          const trigger = document.getElementById("dialog-trigger");
+          if (trigger) trigger.click();
         }
       } catch (err) {
         console.error("Unexpected error:", err);
@@ -110,14 +114,37 @@ function Home() {
           <MemoizedTopText />
           <div className="textBottom">
             {
-              "A vibrant hub for open-source enthusiasts and investors to\n\nconnect,collaborate, contribute, and shape the future of\n\ninnovative collaborative technology worldwide."
+              "A dynamic platform where open-source innovators and investors\n\nunite to collaborate, contribute, and drive the evolution of\n\ncutting-edge collaborative technologies on a global scale."
             }
           </div>
-          <div className="inputContainer">
-            {/* <ShineBorder shineColor={["#A07CFE", "#FE8FB5", "#FFBE7B"]} /> */}
-
+          <form
+            className="inputContainer"
+            onSubmit={(e) => {
+              e.preventDefault();
+              const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+              if (emailRegex.test(email)) {
+                addEarlyAccess();
+              }
+            }}
+          >
             <div className="input">
-              {" "}
+              <div
+                className="label"
+                id="input_label"
+                style={{
+                  color:
+                    email.length === 0 ||
+                    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+                      ? "inherit"
+                      : "inherit",
+                }}
+              >
+                {email.length === 0
+                  ? "Your email"
+                  : /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+                  ? "Your email is valid"
+                  : "Enter a valid email"}
+              </div>
               <input
                 type="text"
                 id="email"
@@ -127,65 +154,115 @@ function Home() {
                   setEmail(e.target.value);
                 }}
               />
-            </div>
-
-            <Dialog>
-              <DialogTrigger asChild>
-                <button
-                  className="button focus:outline-none focus:ring-1 focus:ring-offset-2 focus:ring-gray-300 cursor-none"
-                  onClick={addEarlyAccess}
-                >
-                  Request early access
-                </button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-[425px]">
-                <DialogHeader>
-                  <DialogTitle>Early Access</DialogTitle>
-                  <DialogDescription>
-                    We have added you to our waitlist. Gain early access to our
-                    features here. Click access now when you&apos;re ready.
-                  </DialogDescription>
-                </DialogHeader>
-
-                <DialogFooter>
+              <Dialog>
+                <DialogTrigger asChild>
                   <button
-                    className="button focus:outline-none focus:ring-1 focus:ring-offset-2 focus:ring-gray-300 cursor-none"
-                    style={{ borderRadius: "0.375rem" }}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      const dialog = e.currentTarget.closest(
-                        "[data-state='open']"
-                      );
-                      if (dialog) {
-                        dialog.dispatchEvent(
-                          new Event("close", { bubbles: true })
+                    style={{ display: "none" }}
+                    id="dialog-trigger"
+                  ></button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[425px]">
+                  <DialogHeader>
+                    <DialogTitle>Early Access</DialogTitle>
+                    <DialogDescription>
+                      We have added you to our waitlist. Gain early access to
+                      our features here. Click access now when you&apos;re
+                      ready.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <DialogFooter>
+                    <button
+                      className="button focus:outline-none focus:ring-1 focus:ring-offset-2 focus:ring-gray-300 cursor-none"
+                      style={{ borderRadius: "0.375rem" }}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        const dialog = e.currentTarget.closest(
+                          "[data-state='open']"
                         );
-                      }
-                    }}
-                  >
-                    Access now
-                  </button>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
-          </div>
+                        if (dialog) {
+                          dialog.dispatchEvent(
+                            new Event("close", { bubbles: true })
+                          );
+                        }
+                      }}
+                    >
+                      Access now
+                    </button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>{" "}
+              <Dialog>
+                <DialogTrigger asChild>
+                  <button
+                    style={{ display: "none" }}
+                    id="dialog-trigger-error"
+                  ></button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[425px]">
+                  <DialogHeader>
+                    <DialogTitle>Early Access</DialogTitle>
+                    <DialogDescription>
+                      An error occurred while adding you to our waitlist. Please
+                      check your email and try again or contact support for
+                      help.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <DialogFooter>
+                    <button
+                      className="button focus:outline-none focus:ring-1 focus:ring-offset-2 focus:ring-gray-300 cursor-none"
+                      style={{ borderRadius: "0.375rem" }}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        const dialog = e.currentTarget.closest(
+                          "[data-state='open']"
+                        );
+                        if (dialog) {
+                          dialog.dispatchEvent(
+                            new Event("close", { bubbles: true })
+                          );
+                        }
+                      }}
+                    >
+                      Got it
+                    </button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>{" "}
+            </div>
+            <button
+              className="button focus:outline-none focus:ring-1 focus:ring-offset-2 focus:ring-gray-300 cursor-none"
+              type="submit"
+            >
+              Request early access
+            </button>
+          </form>
         </div>
         <div className="socialsContainer ">
-          <Link href="https://github.com/divyanshudhruv" target="_blank">
+          <Link
+            href="https://github.com/divyanshudhruv"
+            target="_blank"
+            className="cursor-none"
+          >
             {" "}
             <div className="item cursor-none">
               <Github size={17} />
             </div>
           </Link>
-          <Link href="https://linkedin.com/in/divyanshudhruv" target="_blank">
+          <Link
+            href="https://linkedin.com/in/divyanshudhruv"
+            target="_blank"
+            className="cursor-none"
+          >
             <div className="item cursor-none">
               <Linkedin size={17} />
             </div>
           </Link>
-
-          <div className="item cursor-none">
-            <Twitter size={17} />
-          </div>
+          <Link href={"#"} className="cursor-none">
+            {" "}
+            <div className="item cursor-none">
+              <Twitter size={17} />
+            </div>
+          </Link>
         </div>
         <div className="footer">
           Built by <span>divyanshudhruv</span>

@@ -154,8 +154,7 @@ body {
                 width: fit-content;
                 height: fit-content;
 
-                &::before {
-                    content: 'Your email';
+                .label {
                     position: absolute;
                     top: -5.7px;
                     left: 20px;
@@ -166,7 +165,9 @@ body {
                     font-family: 'Poppins', sans-serif;
                     color: #444444;
                 }
+
             }
+
 
             input {
                 width: 250px;
@@ -185,6 +186,7 @@ body {
             }
 
 
+
         }
 
 
@@ -192,7 +194,7 @@ body {
     }
 
     .socialsContainer {
-        z-index: 999;
+        z-index: 9999;
         display: flex;
         flex-direction: row;
         justify-content: center;
@@ -200,7 +202,8 @@ body {
         position: absolute;
         bottom: 60px;
         gap: 10px;
-        margin-top: 20px;
+        margin-top: 20px;            cursor: none;
+
 
         .item {
             display: flex;
@@ -280,6 +283,7 @@ body {
     justify-content: center;
     align-items: center;
     background: none;
+    z-index: 998;
     /* Remove background color */
 }
 
