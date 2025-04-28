@@ -200,11 +200,10 @@ function Home() {
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-[425px]">
                   <DialogHeader>
-                    <DialogTitle>Early Access</DialogTitle>
+                    <DialogTitle>Error </DialogTitle>
                     <DialogDescription>
-                      An error occurred while adding you to our waitlist. Please
-                      check your email and try again or contact support for
-                      help.
+                      You are already on the waitlist, or an error occurred.
+                      Please wait for the next feature update.
                     </DialogDescription>
                   </DialogHeader>
                   <DialogFooter>
