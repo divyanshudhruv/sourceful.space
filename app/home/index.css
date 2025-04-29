@@ -288,6 +288,30 @@ body {
             background-color: transparent;
             border-radius: 18px;
             background-color: #C7C4C649;
+
+            .invest {
+
+                display: flex;
+                align-items: center;
+                justify-content: start;
+                gap: 5px;
+                padding: 5px 10px;
+                border: 1px solid #28a745;
+                border-radius: 15px;
+                background-color: #e6f4ea;
+                font-size: 12px;
+                font-family: 'Open Sans', sans-serif;
+                color: #28a745;
+                font-weight: 600;
+
+
+                .circle {
+                    width: 10px;
+                    height: 10px;
+                    background-color: #28a745;
+                    border-radius: 50%;
+                }
+            }
         }
 
         h1 {
@@ -336,7 +360,7 @@ body {
                 height: 31px;
                 border-radius: 13px;
 
-
+                cursor: pointer;
                 font-size: 12px;
                 align-items: center;
                 justify-content: center;

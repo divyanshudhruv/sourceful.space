@@ -89,7 +89,9 @@ function Home() {
             <div className="inner-circle"></div>
           </div> */}
           <div className="pin">
-            <div className="og-image"></div>
+            <div className="og-image">
+              <div className="badge"></div>
+            </div>
             <h1>Sourceful</h1>
             <p>
               Sourceful is a platform that empowers creators to share and
@@ -103,7 +105,11 @@ function Home() {
                 <i className="ri-arrow-down-line"></i>
               </div>
               <div className="button visit">
-                Visit &nbsp;<i className="ri-arrow-right-line" style={{fontSize:"12px"}}></i>
+                Visit &nbsp;
+                <i
+                  className="ri-arrow-right-line"
+                  style={{ fontSize: "12px" }}
+                ></i>
               </div>
             </div>
           </div>
