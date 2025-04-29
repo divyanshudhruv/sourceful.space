@@ -49,9 +49,6 @@ function Home() {
       <Image src="/bg.png" alt="Background" layout="fill" objectFit="cover" />
 
       <div className={`main `}>
-        <div className="concentric-circles">
-          <div className="inner-circle"></div>
-        </div>
         <div className="navbar">
           <div className="left">
             <div className="item">
@@ -83,6 +80,20 @@ function Home() {
               />
             </div>
           </div>
+        </div>
+        <div className="pins-container">
+          {/* <div className="concentric-circles">
+            <div className="inner-circle"></div>
+          </div> */}
+          <div className="pin">
+            <div className="og-image"></div>
+          </div>
+          <div className="pin"></div>
+          <div className="pin"></div> <div className="pin"></div>
+          <div className="pin"></div>
+          <div className="pin"></div>
+          <div className="pin"></div>
+          <div className="pin"></div>
         </div>
       </div>
     </div>
