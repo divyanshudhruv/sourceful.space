@@ -5,6 +5,8 @@ import React from "react";
 import "./index.css";
 import Image from "next/image";
 import {
+  ArrowDown,
+  ArrowUp,
   BookmarkMinusIcon,
   Github,
   HomeIcon,
@@ -31,6 +33,7 @@ import { useEffect, useState } from "react";
 import { TextAnimate } from "@/components/magicui/text-animate";
 import supabase from "./../services/supabase";
 import Avvvatars from "avvvatars-react";
+import Button from "../components/ui/Button";
 
 // import { ShineBorder } from "@/components/magicui/shine-border";
 // import { Meteors } from "@/components/magicui/meteors";
@@ -87,6 +90,22 @@ function Home() {
           </div> */}
           <div className="pin">
             <div className="og-image"></div>
+            <h1>Sourceful</h1>
+            <p>
+              Sourceful is a platform that empowers creators to share and
+              discover innovative ideas, fostering collaboration for everyone.
+            </p>
+            <div className="vote">
+              <div className="button upvote">
+                <i className="ri-arrow-up-line"></i>
+              </div>
+              <div className="button downvote">
+                <i className="ri-arrow-down-line"></i>
+              </div>
+              <div className="button visit">
+                Visit &nbsp;<i className="ri-arrow-right-line" style={{fontSize:"12px"}}></i>
+              </div>
+            </div>
           </div>
           <div className="pin"></div>
           <div className="pin"></div> <div className="pin"></div>

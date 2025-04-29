@@ -68,25 +68,6 @@ body {
     /* Remove background color */
 }
 
-.button {
-    width: fit-content;
-    padding-inline: 13px;
-    height: 40px;
-    border: none;
-    border-radius: 20px;
-    background-color: #272626;
-    color: #fff;
-    font-size: 12px;
-    font-weight: 500;
-    font-family: 'Ubuntu', sans-serif;
-    transition: background-color 0.3s ease;
-
-    &:hover {
-        background-color: #383838;
-    }
-
-
-}
 
 .concentric-circles {
     width: 400px;
@@ -291,21 +272,110 @@ body {
         display: flex;
         position: relative;
         width: 210px;
-        height: 230px;
+        height: 270px;
         background-color: #fff;
         border-radius: 27px;
-        align-items: center;
+        align-items: start;
         justify-content: start;
         padding: 10px;
+        gap: 5px;
         flex-direction: column;
 
         .og-image {
             width: 100%;
-            height: 45%;
+            height: 110px;
             display: flex;
             background-color: transparent;
             border-radius: 18px;
             background-color: #C7C4C649;
+        }
+
+        h1 {
+            font-size: 21px;
+            font-weight: bold;
+            margin-left: 2px;
+            color: #444444;
+            line-height: 1.5em;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        p {
+            margin-top: -4px;
+            font-size: 11.3px;
+            font-weight: 450;
+            margin-left: 2px;
+            color: #9a9999;
+            border-radius: 0;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+            line-height: 1.2em;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        .vote {
+            display: flex;
+            width: calc(210px - 25px);
+            left: 0;
+            right: 0;
+            margin: auto;
+            position: absolute;
+            bottom: 10px;
+            background-color: transparent;
+            height: 40px;
+            align-items: center;
+            justify-content: start;
+            flex-direction: row;
+            border-radius: 18px;
+            gap: 5px;
+
+            .button {
+                width: 31px;
+                padding-inline: 11.5px;
+                display: flex;
+                height: 31px;
+                border-radius: 13px;
+
+
+                font-size: 12px;
+                align-items: center;
+                justify-content: center;
+                font-weight: 400;
+                font-family: 'Open Sans', sans-serif;
+
+                &.upvote {
+                    background-color: #f0f0f0 !important;
+                    /* Light gray */
+                    color: #6c757d !important;
+                    /* Medium gray */
+                    border: 1.5px solid #d6d6d6 !important;
+                    /* Gray border */
+                }
+
+                &.downvote {
+                    background-color: #f0f0f0 !important;
+                    /* Light gray */
+                    color: #6c757d !important;
+                    /* Medium gray */
+                    border: 1.5px solid #d6d6d6 !important;
+                    /* Gray border */
+                }
+
+                &.visit {
+                    background-color: #f0f0f0 !important;
+                    /* Light gray */
+                    color: #6c757d !important;
+                    /* Medium gray */
+                    border: 1.5px solid #d6d6d6 !important;
+                    /* Gray border */
+                    width: fit-content;
+                    font-weight: 500;
+                    font-family: 'Open Sans', sans-serif;
+                    font-size: 11px;
+                }
+
+            }
+
         }
     }
 }
