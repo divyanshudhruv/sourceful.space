@@ -62,8 +62,7 @@ function Home() {
             <div className="nav-small">
               <div className="item active">All pins</div>
               <div className="item">Newest</div>
-              <div className="item">Realtime</div>
-              <div className="item">Open to investment</div>
+           
             </div>
             {/* <div className="item"> <Settings2Icon size={19} /></div> */}
           </div>
@@ -90,7 +89,7 @@ function Home() {
           </div> */}
             <div className="pin">
             <div className="og-image">
-              <div className="badge"></div>
+              <div className="invest">invest</div>
             </div>
             <h1>Sourceful</h1>
             <p>
