@@ -81,15 +81,13 @@ body {
 }
 
 /* ===================================================================================== */
-
 .main {
     display: flex;
-    overflow-y: hidden;
+    overflow-y: scroll;
     position: relative;
     margin: auto;
     width: calc(100vw - 17px);
     height: calc(100svh - 17px) !important;
-    overflow: hidden;
     border-radius: 20px;
     padding: 20px;
     justify-content: start;
@@ -97,6 +95,7 @@ body {
     flex-direction: column;
     z-index: 1;
     background-color: #eeeef1;
+    clip-path: inset(0 round 20px); /* Clip content to match border radius */
 }
 
 .main .footer {
@@ -284,7 +283,7 @@ body {
     gap: 30px;
     flex-direction: row;
     flex-wrap: wrap;
-    overflow-y: scroll;
+    /* overflow-y: scroll; */
 
     .pin {
         display: flex;

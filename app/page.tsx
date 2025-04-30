@@ -30,7 +30,7 @@ const TopText = React.memo(() => (
         Develop.
       </TextAnimate>
       <div className="canvas">
-        <Image src={"/logo.png"} alt="logo" width={42} height={42} />
+
       </div>
       <TextAnimate animation="blurInUp" by="character" once delay={0.4}>
         Redefine.

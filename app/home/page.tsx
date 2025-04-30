@@ -61,7 +61,7 @@ function Home() {
             </div>
             <div className="nav-small">
               <div className="item active">All pins</div>
-              <div className="item">Newest</div>
+              {/* <div className="item">Newest</div> */}
             </div>
             {/* <div className="item"> <Settings2Icon size={19} /></div> */}
           </div>
@@ -90,7 +90,7 @@ function Home() {
             <div className="og-image">
               <div className="invest">invest</div>
             </div>
-            <h1>Sourceful 🌟</h1>
+            <h1>🌟 Sourceful</h1>
             <p>
               Sourceful is a platform that empowers creators to share and
               discover innovative ideas, fostering collaboration for everyone.
@@ -115,7 +115,7 @@ function Home() {
             <div className="og-image">
               <div className="badge"></div>
             </div>
-            <h1>InnoSpace 🚀</h1>
+            <h1>🚀 InnoSpace</h1>
             <p>
               InnoSpace is a hub for innovators to connect, share projects, and
               inspire groundbreaking solutions.
@@ -140,7 +140,7 @@ function Home() {
             <div className="og-image">
               <div className="badge"></div>
             </div>
-            <h1>IdeaForge 💡</h1>
+            <h1>💡 IdeaForge</h1>
             <p>
               IdeaForge helps creators turn their concepts into reality by
               providing tools and a supportive community.
@@ -165,7 +165,7 @@ function Home() {
             <div className="og-image">
               <div className="badge"></div>
             </div>
-            <h1>CollabSphere 🤝</h1>
+            <h1>🤝 CollabSphere</h1>
             <p>
               CollabSphere is a platform designed to bring teams together to
               brainstorm and execute innovative projects.
@@ -190,7 +190,7 @@ function Home() {
             <div className="og-image">
               <div className="badge"></div>
             </div>
-            <h1>ThinkTank 🧠</h1>
+            <h1>🧠 ThinkTank</h1>
             <p>
               ThinkTank is a digital space for thinkers and doers to share
               insights and collaborate on impactful ideas.
@@ -215,7 +215,7 @@ function Home() {
             <div className="og-image">
               <div className="badge"></div>
             </div>
-            <h1>Visionary 👀</h1>
+            <h1>👀 Visionary</h1>
             <p>
               Visionary connects dreamers and visionaries to share their
               aspirations and make them a reality.
@@ -240,7 +240,7 @@ function Home() {
             <div className="og-image">
               <div className="badge"></div>
             </div>
-            <h1>BrightIdeas ✨</h1>
+            <h1>✨ BrightIdeas</h1>
             <p>
               BrightIdeas is a community-driven platform for sharing and
               exploring creative solutions to everyday challenges.
