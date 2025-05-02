@@ -248,8 +248,7 @@ function Home() {
             </div>
           </Link>
           <Link
-            href="https://linkedin.com/in/divyanshudhruv"
-            target="_blank"
+            href="#"
             className="cursor-none"
           >
             <div className="item cursor-none">
