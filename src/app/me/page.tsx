@@ -48,6 +48,7 @@ import {
   SmartLink,
   UserMenu,
   Dialog,
+  ToggleButton,
   Feedback,
   SmartImage,
   Dropdown,
@@ -428,10 +429,10 @@ function Hero() {
           <Text
             variant="heading-strong-xl"
             className={lexend.className}
-            style={{ fontSize: "55px", lineHeight: "1em", color: "#222" }}
+            style={{ fontSize: "35px", lineHeight: "1.2em", color: "#333" }}
             align="center"
           >
-            AI powered project briefs <br></br>for developers
+            AI powered project briefs for developers
           </Text>
           <Text
             variant="body-default-s"
@@ -440,47 +441,121 @@ function Hero() {
             className={spaceGrotesk.className}
             style={{ marginTop: "15px" }}
           >
-            Empowering developers and innovators to collaborate, create, and
-            shape the future of <br />
-            technology through AI-driven project briefs and meaningful
-            connections.{" "}
+            Empowering developers with AI-crafted project briefs for seamless
+            innovation and collaboration.
           </Text>
-          <Row fillWidth horizontal="center" marginTop="16" marginBottom="20">
-            {" "}
-            <Button id="trigger" variant="primary" size="m" href="#">
-              <Row>
-                Get started now
-                <Arrow
-                  trigger="#trigger"
-                  color="onSolid"
-                  style={{ scale: "1.2", marginTop: "3px", marginLeft: "3px" }}
-                />
-              </Row>
-            </Button>
+          <Row
+            fillWidth
+            horizontal="center"
+            vertical="center"
+            marginTop="56"
+            marginBottom="20"
+            wrap
+            gap="8"
+            style={{ maxWidth: "800px" }}
+          >
+            <ToggleButtons />
           </Row>
-        </Flex>
-      </Column>
-      <Column
-        fillWidth
-        style={{ height: "fit-content" }}
-        paddingX="xl"
-        horizontal="center"
-      >
-        <Flex
-          style={{
-            height: "fit-content",
-            marginTop: "-40px",
-            width: "fit-content",
-          }}
-          direction="column"
-          paddingY="xs"
-        >
-          <LogoClouds />
+          <Row
+            fillWidth
+            height={24}
+            border="neutral-weak"
+            radius="l"
+            horizontal="start"
+            marginTop="20"
+          >
+            <Row fillHeight style={{ minWidth: "60%" }}>
+              <SmartImage
+                src="https://cdn.dribbble.com/userupload/17124761/file/original-d497b2359d86be010307b1340f18ac4b.png?resize=1024x768&vertical=center"
+                alt="Image description"
+                aspectRatio="5/4"
+                height={3}
+                radius="l"
+                isLoading={false}
+                objectFit="cover"
+                unoptimized={true}
+              />
+            </Row>
+            <Column padding="20" style={{ maxWidth: "40%" }}>
+              <Row vertical="center" textVariant="body-default-xl">
+                HelloLink
+                {true && (
+                  <Tag
+                    variant="neutral"
+                    size="s"
+                    label="Investment"
+                    marginLeft="2"
+                    padding="1"
+                    paddingTop="4"
+                    paddingBottom="4"
+                  />
+                )}
+              </Row>
+            </Column>
+          </Row>
         </Flex>
       </Column>
     </>
   );
 }
+
+function ToggleButtons() {
+  const toggleButtonsData = [
+    { selected: true, theText: "All" },
+    { selected: false, theText: "SaaS" },
+    { selected: false, theText: "Web" },
+    { selected: false, theText: "Mobile" },
+    { selected: false, theText: "Tech" },
+    { selected: false, theText: "Dashboard" },
+    { selected: false, theText: "Dark" },
+    { selected: false, theText: "Minimalist" },
+    { selected: false, theText: "Productivity" },
+    { selected: false, theText: "App" },
+    { selected: false, theText: "Light" },
+    { selected: false, theText: "Minimal" },
+    { selected: false, theText: "Futuristic" },
+    { selected: false, theText: "Concept Art" },
+    { selected: false, theText: "Analytics" },
+
+    { selected: false, theText: "AI" },
+  ];
+
+  const [toggleStates, setToggleStates] = useState(
+    toggleButtonsData.map((data) => ({ ...data }))
+  );
+
+  const handleToggle = (index: number) => {
+    setToggleStates((prevStates) =>
+      prevStates.map((state, i) =>
+        i === index ? { ...state, selected: !state.selected } : state
+      )
+    );
+  };
+
+  return (
+    <>
+      {toggleStates.map((toggleState, index) => (
+        <ToggleButton
+          key={index}
+          onClick={() => handleToggle(index)}
+          selected={toggleState.selected}
+          size="m"
+          fillWidth={false}
+          justifyContent="center"
+          style={{
+            border: "1px solid #EFEEEB",
+            padding: "8px",
+          }}
+        >
+          <Text variant="body-default-xs" style={{ color: "#555" }}>
+            {toggleState.theText}
+          </Text>
+        </ToggleButton>
+      ))}
+    </>
+  );
+}
+
 function NavBar() {
   return (
     <Row
@@ -499,7 +574,12 @@ function NavBar() {
         horizontal="start"
         vertical="center"
       >
-        <Button variant="secondary" size="s" href="#" style={{backgroundColor: "white"}}>
+        <Button
+          variant="secondary"
+          size="s"
+          href="#"
+          style={{ backgroundColor: "white" }}
+        >
           <Text variant="body-default-s" className={lexend.className}>
             sourceful.space
           </Text>
