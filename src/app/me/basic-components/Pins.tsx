@@ -1,6 +1,24 @@
 import React from "react";
-import { Row, Column, Text, Button, Tag, Grid,SmartImage } from "@/once-ui/components";
-function Pins() {
+import {
+  Row,
+  Column,
+  Text,
+  Button,
+  Tag,
+  Grid,
+  SmartImage,
+} from "@/once-ui/components";
+import Cards from "./Cards";
+import { Lexend } from "next/font/google";
+import { Space_Mono } from "next/font/google";
+import { Space_Grotesk } from "next/font/google";
+import { Poppins } from "next/font/google";
+const lexend = Lexend({ subsets: ["latin"], weight: "400" });
+const lexendBold = Lexend({ subsets: ["latin"], weight: "700" });
+const spaceMono = Space_Mono({ subsets: ["latin"], weight: "400" });
+const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], weight: "700" });
+const poppins = Poppins({ subsets: ["latin"], weight: "700" });
+export default function Pins() {
   return (
     <>
       {" "}
@@ -26,7 +44,7 @@ function Pins() {
         </Row>
         <Column padding="40" style={{ maxWidth: "40%" }}>
           <Row vertical="center" textVariant="body-default-xl">
-            <Text style={{ fontSize: "35px", color: "#333" }}>HelloLink</Text>
+            <Text style={{ fontSize: "32px", color: "#333" }}>HelloLink</Text>
             {true && (
               <Tag
                 variant="neutral"
@@ -43,7 +61,7 @@ function Pins() {
             <Text
               variant="body-default-s"
               onBackground="neutral-weak"
-              style={{ fontSize: "15px" }}
+              style={{ fontSize: "14px" }}
             >
               A platform that connects developers with startups looking for
               talent. Developers can create profiles, showcase their skills, and
@@ -64,7 +82,7 @@ function Pins() {
               variant="secondary"
               fillWidth
               radius="none"
-              style={{ borderRadius: "8px" }}
+              style={{ borderRadius: "8px", color: "#333" }}
             >
               Details
             </Button>
@@ -72,7 +90,7 @@ function Pins() {
               variant="secondary"
               fillWidth
               radius="none"
-              style={{ borderRadius: "8px" }}
+              style={{ borderRadius: "8px", color: "#333" }}
             >
               Invest
             </Button>
@@ -102,15 +120,13 @@ function Pins() {
             heading="HelloLink"
             body="A platform that connects developers with startups looking for talent. Developers can create profiles, showcase their skills, and apply for projects that match their expertise."
           ></Cards>
-          <Cards
-            id="card1"
-            investible={true}
-            imageUrl="https://cdn.dribbble.com/userupload/17124761/file/original-d497b2359d86be010307b1340f18ac4b.png?resize=1024x768&vertical=center"
-            heading="HelloLink"
-            body="A platform that connects developers with startups looking for talent. Developers can create profiles, showcase their skills, and apply for projects that match their expertise."
-          ></Cards>
         </Grid>
         <Row />
+        <Row marginTop="40" marginBottom="40">
+          <Button variant="secondary" style={{ borderRadius: "5px" }} size="s">
+            Load more
+          </Button>
+        </Row>
       </Column>
     </>
   );

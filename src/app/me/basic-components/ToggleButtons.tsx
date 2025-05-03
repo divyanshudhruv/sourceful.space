@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { ToggleButton, Text } from "@/once-ui/components";
 
-function ToggleButtons() {
+export default function ToggleButtons() {
     const toggleButtonsData = [
       { selected: true, theText: "All" },
       { selected: false, theText: "SaaS" },
