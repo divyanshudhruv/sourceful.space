@@ -1,13 +1,7 @@
-import { Column, Flex, Row, Text } from "@/once-ui/components";
-import { Lexend } from "next/font/google";
-import { Space_Mono } from "next/font/google";
+import { Row, Text } from "@/once-ui/components";
+
 import { Space_Grotesk } from "next/font/google";
-import { Poppins } from "next/font/google";
-const lexend = Lexend({ subsets: ["latin"], weight: "400" });
-const lexendBold = Lexend({ subsets: ["latin"], weight: "700" });
-const spaceMono = Space_Mono({ subsets: ["latin"], weight: "400" });
 const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], weight: "700" });
-const poppins = Poppins({ subsets: ["latin"], weight: "700" });
 
 export default function Footer() {
   return (

@@ -2,7 +2,6 @@
 "use client";
 
 import type React from "react";
-import { useEffect } from "react";
 import { Lexend } from "next/font/google";
 import { Space_Grotesk } from "next/font/google";
 

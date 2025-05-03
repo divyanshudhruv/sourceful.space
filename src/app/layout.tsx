@@ -3,38 +3,16 @@ import "@/once-ui/tokens/index.scss";
 
 import classNames from "classnames";
 
-import { baseURL, style, meta, font, effects } from "@/app/resources/config";
+import { baseURL, style, meta, font, } from "@/app/resources/config";
 import {
-  Background,
   Column,
   Flex,
   ToastProvider,
   ThemeProvider,
 } from "@/once-ui/components";
 
-import { opacity, SpacingToken } from "@/once-ui/types";
 import { Meta, Schema } from "@/once-ui/modules";
-import { Lexend } from "next/font/google";
-import { Space_Grotesk } from "next/font/google";
-import { Lora } from "next/font/google";
 
-const primary = Lexend({
-  variable: "--font-primary",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const secondary = Space_Grotesk({
-  variable: "--font-secondary",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const tertiary = Lora({
-  variable: "--font-tertiary",
-  subsets: ["latin"],
-  display: "swap",
-});
 
 export async function generateMetadata() {
   return Meta.generate({
