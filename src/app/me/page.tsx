@@ -84,28 +84,6 @@ import { ScrollToTop } from "@/once-ui/components/ScrollToTop";
 import { fit } from "sharp";
 import supabase from "../../../services/supabase";
 
-function MegaNavBar() {
-  return (
-    <MegaMenu
-      style={{ scale: "1" }}
-      menuGroups={[
-        {
-          label: "Home",
-          suffixIcon: "check",
-        },
-        {
-          label: "Pins",
-          suffixIcon: "chevron-down",
-        },
-        {
-          label: "Community",
-          suffixIcon: "chevron-down",
-        },
-      ]}
-    />
-  );
-}
-
 export default function Home() {
   const { addToast } = useToast();
 
@@ -114,445 +92,10 @@ export default function Home() {
       <ScrollToTop>
         <IconButton variant="secondary" icon="chevronUp" />
       </ScrollToTop>
-
       <NavBar />
-
       <Hero />
-      <Column gap="20">
-        <Column horizontal="center">
-          <Grid
-            marginTop="40"
-            columns={3}
-            gap="24"
-            padding="24"
-            fillWidth={false}
-          >
-            <Cards
-              id="card1"
-              investible={true}
-              imageUrl="https://cdn.dribbble.com/userupload/17124761/file/original-d497b2359d86be010307b1340f18ac4b.png?resize=1024x768&vertical=center"
-              heading="HelloLink"
-              body="A platform that connects developers with startups looking for talent. Developers can create profiles, showcase their skills, and apply for projects that match their expertise."
-            ></Cards>
-          </Grid>
-          <Row />
-        </Column>
-      </Column>
+      <TotalPins />
     </Column>
-  );
-}
-
-function Cards({
-  id,
-  imageUrl,
-  heading,
-  body,
-  investible = false,
-}: {
-  id: string;
-  imageUrl: string;
-  heading: string;
-  body: string;
-  investible?: boolean;
-}) {
-  return (
-    <Column
-      key={id}
-      maxWidth={18}
-      radius="l-4"
-      direction="column"
-      border="neutral-medium"
-      style={{
-        transition: "background-color 0.3s ease",
-        cursor: "pointer",
-      }}
-      onMouseEnter={(e) => {
-        (e.currentTarget as HTMLElement).style.backgroundColor = "#f1f1f1";
-      }}
-      onMouseLeave={(e) => {
-        (e.currentTarget as HTMLElement).style.backgroundColor = "transparent";
-      }}
-    >
-      <Column>
-        <SmartImage
-          sizes="640px"
-          fillWidth={true}
-          aspectRatio="4 / 3"
-          radius="l"
-          src={imageUrl}
-          unoptimized={true}
-        ></SmartImage>
-      </Column>
-      <Column fillWidth={true} paddingX="20" paddingY="24" gap="8">
-        <Text variant="body-default-xl">
-          <Row vertical="center">
-            {heading}{" "}
-            {investible && (
-              <Tag
-                variant="neutral"
-                size="s"
-                label="Investment"
-                marginLeft="2"
-                padding="1"
-                paddingTop="4"
-                paddingBottom="4"
-              />
-            )}
-          </Row>
-        </Text>
-        <Text onBackground="neutral-weak" variant="body-default-s">
-          {body}
-        </Text>
-      </Column>
-      <Flex background="neutral-alpha-medium" />
-      <Flex
-        paddingX="20"
-        paddingY="8"
-        gap="8"
-        vertical="center"
-        textVariant="label-default-s"
-        onBackground="neutral-weak"
-        horizontal="space-between"
-      >
-        <Row gap="4">
-          <IconButton
-            size="l"
-            tooltip="Downvote"
-            tooltipPosition="top"
-            variant="secondary"
-            disabled={false}
-            style={{ backgroundColor: "#F9F8F5" }}
-          >
-            <i
-              className="ri-arrow-up-line"
-              style={{ fontSize: "17px", color: "#333" }}
-            ></i>
-          </IconButton>
-          <IconButton
-            size="l"
-            tooltip="Upvote"
-            tooltipPosition="top"
-            variant="secondary"
-            disabled={false}
-            style={{ backgroundColor: "#F9F8F5" }}
-          >
-            <i
-              className="ri-arrow-down-line"
-              style={{ fontSize: "17px", color: "#333" }}
-            ></i>
-          </IconButton>
-        </Row>
-        <Row></Row>
-      </Flex>
-    </Column>
-  );
-}
-function LogoClouds() {
-  return (
-    <Column horizontal="center" gap="20">
-      <LogoCloud
-        limit={3}
-        fillWidth={false}
-        logos={[
-          {
-            href: "https://once-ui.com",
-            icon: true,
-            size: "m",
-          },
-          {
-            href: "https://enroll.dopler.app",
-            icon: false,
-            size: "l",
-            wordmarkSrc:
-              "https://repository-images.githubusercontent.com/177394769/7a8420c4-f55c-4ce5-821b-593dc2b0776c",
-          },
-          {
-            href: "https://club.dopler.io",
-            icon: false,
-            size: "m",
-            wordmarkSrc:
-              "https://images.ctfassets.net/ykljvmtfxwdz/4FoI5GYGR81roJeLMC11aN/39e40f37e7234756f2302c157a12f8f3/home-vercel-logo.png?w=500&h=100&q=100&fm=png",
-          },
-          {
-            href: "https://once-ui.com",
-            icon: true,
-            size: "m",
-          },
-          {
-            href: "https://enroll.dopler.app",
-            icon: false,
-            size: "l",
-            wordmarkSrc:
-              "https://repository-images.githubusercontent.com/177394769/7a8420c4-f55c-4ce5-821b-593dc2b0776c",
-          },
-          {
-            href: "https://club.dopler.io",
-            icon: false,
-            size: "m",
-            wordmarkSrc:
-              "https://images.ctfassets.net/ykljvmtfxwdz/4FoI5GYGR81roJeLMC11aN/39e40f37e7234756f2302c157a12f8f3/home-vercel-logo.png?w=500&h=100&q=100&fm=png",
-          },
-          {
-            href: "https://once-ui.com",
-            icon: true,
-            size: "m",
-          },
-          {
-            href: "https://enroll.dopler.app",
-            icon: false,
-            size: "l",
-            wordmarkSrc:
-              "https://repository-images.githubusercontent.com/177394769/7a8420c4-f55c-4ce5-821b-593dc2b0776c",
-          },
-          {
-            href: "https://club.dopler.io",
-            icon: false,
-            size: "m",
-            wordmarkSrc:
-              "https://images.ctfassets.net/ykljvmtfxwdz/4FoI5GYGR81roJeLMC11aN/39e40f37e7234756f2302c157a12f8f3/home-vercel-logo.png?w=500&h=100&q=100&fm=png",
-          },
-          {
-            href: "https://once-ui.com",
-            icon: true,
-            size: "m",
-          },
-          {
-            href: "https://enroll.dopler.app",
-            icon: false,
-            size: "l",
-            wordmarkSrc:
-              "https://repository-images.githubusercontent.com/177394769/7a8420c4-f55c-4ce5-821b-593dc2b0776c",
-          },
-          {
-            href: "https://club.dopler.io",
-            icon: false,
-            size: "m",
-            wordmarkSrc:
-              "https://images.ctfassets.net/ykljvmtfxwdz/4FoI5GYGR81roJeLMC11aN/39e40f37e7234756f2302c157a12f8f3/home-vercel-logo.png?w=500&h=100&q=100&fm=png",
-          },
-          {
-            href: "https://once-ui.com",
-            icon: true,
-            size: "m",
-          },
-          {
-            href: "https://enroll.dopler.app",
-            icon: false,
-            size: "l",
-            wordmarkSrc:
-              "https://repository-images.githubusercontent.com/177394769/7a8420c4-f55c-4ce5-821b-593dc2b0776c",
-          },
-          {
-            href: "https://club.dopler.io",
-            icon: false,
-            size: "m",
-            wordmarkSrc:
-              "https://images.ctfassets.net/ykljvmtfxwdz/4FoI5GYGR81roJeLMC11aN/39e40f37e7234756f2302c157a12f8f3/home-vercel-logo.png?w=500&h=100&q=100&fm=png",
-          },
-          {
-            href: "https://once-ui.com",
-            icon: true,
-            size: "m",
-          },
-          {
-            href: "https://enroll.dopler.app",
-            icon: false,
-            size: "l",
-            wordmarkSrc:
-              "https://repository-images.githubusercontent.com/177394769/7a8420c4-f55c-4ce5-821b-593dc2b0776c",
-          },
-          {
-            href: "https://club.dopler.io",
-            icon: false,
-            size: "m",
-            wordmarkSrc:
-              "https://images.ctfassets.net/ykljvmtfxwdz/4FoI5GYGR81roJeLMC11aN/39e40f37e7234756f2302c157a12f8f3/home-vercel-logo.png?w=500&h=100&q=100&fm=png",
-          },
-          {
-            href: "https://once-ui.com",
-            icon: true,
-            size: "m",
-          },
-          {
-            href: "https://enroll.dopler.app",
-            icon: false,
-            size: "l",
-            wordmarkSrc:
-              "https://repository-images.githubusercontent.com/177394769/7a8420c4-f55c-4ce5-821b-593dc2b0776c",
-          },
-          {
-            href: "https://club.dopler.io",
-            icon: false,
-            size: "m",
-            wordmarkSrc:
-              "https://images.ctfassets.net/ykljvmtfxwdz/4FoI5GYGR81roJeLMC11aN/39e40f37e7234756f2302c157a12f8f3/home-vercel-logo.png?w=500&h=100&q=100&fm=png",
-          },
-          {
-            href: "https://once-ui.com",
-            icon: true,
-            size: "m",
-          },
-          {
-            href: "https://enroll.dopler.app",
-            icon: false,
-            size: "l",
-            wordmarkSrc:
-              "https://repository-images.githubusercontent.com/177394769/7a8420c4-f55c-4ce5-821b-593dc2b0776c",
-          },
-          {
-            href: "https://club.dopler.io",
-            icon: false,
-            size: "m",
-            wordmarkSrc:
-              "https://images.ctfassets.net/ykljvmtfxwdz/4FoI5GYGR81roJeLMC11aN/39e40f37e7234756f2302c157a12f8f3/home-vercel-logo.png?w=500&h=100&q=100&fm=png",
-          },
-        ]}
-        columns="3"
-        mobileColumns="1"
-      />
-      <Line width={10}></Line>
-    </Column>
-  );
-}
-function Hero() {
-  return (
-    <>
-      {" "}
-      <Column
-        fillWidth
-        style={{ height: "fit-content" }}
-        paddingX="xl"
-        horizontal="center"
-      >
-        <Flex paddingX="xl" direction="column" paddingY="s">
-          <Flex fillWidth style={{ height: "60px" }}></Flex>
-          <Text
-            variant="heading-strong-xl"
-            className={lexend.className}
-            style={{ fontSize: "35px", lineHeight: "1.2em", color: "#333" }}
-            align="center"
-          >
-            AI powered project briefs for developers
-          </Text>
-          <Text
-            variant="body-default-s"
-            onBackground="neutral-medium"
-            align="center"
-            className={spaceGrotesk.className}
-            style={{ marginTop: "15px" }}
-          >
-            Empowering developers with AI-crafted project briefs for seamless
-            innovation and collaboration.
-          </Text>
-          <Row
-            fillWidth
-            horizontal="center"
-            vertical="center"
-            marginTop="56"
-            marginBottom="20"
-            wrap
-            gap="8"
-            style={{ maxWidth: "800px" }}
-          >
-            <ToggleButtons />
-          </Row>
-          <Row
-            fillWidth
-            height={24}
-            border="neutral-weak"
-            radius="l"
-            horizontal="start"
-            marginTop="20"
-          >
-            <Row fillHeight style={{ minWidth: "60%" }}>
-              <SmartImage
-                src="https://cdn.dribbble.com/userupload/17124761/file/original-d497b2359d86be010307b1340f18ac4b.png?resize=1024x768&vertical=center"
-                alt="Image description"
-                aspectRatio="5/4"
-                height={3}
-                radius="l"
-                isLoading={false}
-                objectFit="cover"
-                unoptimized={true}
-              />
-            </Row>
-            <Column padding="20" style={{ maxWidth: "40%" }}>
-              <Row vertical="center" textVariant="body-default-xl">
-                HelloLink
-                {true && (
-                  <Tag
-                    variant="neutral"
-                    size="s"
-                    label="Investment"
-                    marginLeft="2"
-                    padding="1"
-                    paddingTop="4"
-                    paddingBottom="4"
-                  />
-                )}
-              </Row>
-            </Column>
-          </Row>
-        </Flex>
-      </Column>
-    </>
-  );
-}
-
-function ToggleButtons() {
-  const toggleButtonsData = [
-    { selected: true, theText: "All" },
-    { selected: false, theText: "SaaS" },
-    { selected: false, theText: "Web" },
-    { selected: false, theText: "Mobile" },
-    { selected: false, theText: "Tech" },
-    { selected: false, theText: "Dashboard" },
-    { selected: false, theText: "Dark" },
-    { selected: false, theText: "Minimalist" },
-    { selected: false, theText: "Productivity" },
-    { selected: false, theText: "App" },
-    { selected: false, theText: "Light" },
-    { selected: false, theText: "Minimal" },
-    { selected: false, theText: "Futuristic" },
-    { selected: false, theText: "Concept Art" },
-    { selected: false, theText: "Analytics" },
-
-    { selected: false, theText: "AI" },
-  ];
-
-  const [toggleStates, setToggleStates] = useState(
-    toggleButtonsData.map((data) => ({ ...data }))
-  );
-
-  const handleToggle = (index: number) => {
-    setToggleStates((prevStates) =>
-      prevStates.map((state, i) =>
-        i === index ? { ...state, selected: !state.selected } : state
-      )
-    );
-  };
-
-  return (
-    <>
-      {toggleStates.map((toggleState, index) => (
-        <ToggleButton
-          key={index}
-          onClick={() => handleToggle(index)}
-          selected={toggleState.selected}
-          size="m"
-          fillWidth={false}
-          justifyContent="center"
-          style={{
-            border: "1px solid #EFEEEB",
-            padding: "8px",
-          }}
-        >
-          <Text variant="body-default-xs" style={{ color: "#555" }}>
-            {toggleState.theText}
-          </Text>
-        </ToggleButton>
-      ))}
-    </>
   );
 }
 
@@ -617,5 +160,137 @@ function NavBar() {
         />
       </Row>
     </Row>
+  );
+}
+
+function MegaNavBar() {
+  return (
+    <MegaMenu
+      style={{ scale: "1" }}
+      menuGroups={[
+        {
+          label: "Home",
+          suffixIcon: "check",
+        },
+        {
+          label: "Pins",
+          suffixIcon: "chevron-down",
+        },
+        {
+          label: "Community",
+          suffixIcon: "chevron-down",
+        },
+      ]}
+    />
+  );
+}
+
+
+
+function Cards({
+  id,
+  imageUrl,
+  heading,
+  body,
+  investible = false,
+}: {
+  id: string;
+  imageUrl: string;
+  heading: string;
+  body: string;
+  investible?: boolean;
+}) {
+  return (
+    <Column
+      key={id}
+      maxWidth={18}
+      radius="l-4"
+      direction="column"
+      maxHeight={27}
+      border="neutral-strong"
+      style={{
+        transition: "background-color 0.3s ease",
+        cursor: "pointer",
+      }}
+      onMouseEnter={(e) => {
+        (e.currentTarget as HTMLElement).style.backgroundColor = "#f1f1f1";
+      }}
+      onMouseLeave={(e) => {
+        (e.currentTarget as HTMLElement).style.backgroundColor = "transparent";
+      }}
+    >
+      <Column>
+        <SmartImage
+          sizes="640px"
+          fillWidth={true}
+          aspectRatio="4 / 3"
+          radius="l"
+          src={imageUrl}
+          unoptimized={true}
+        ></SmartImage>
+      </Column>
+      <Column fillWidth={true} paddingX="20" paddingY="24" gap="8">
+        <Text variant="body-default-xl">
+          <Row vertical="center">
+            {heading}{" "}
+            {investible && (
+              <Tag
+                variant="neutral"
+                size="s"
+                label="Investment"
+                marginLeft="2"
+                padding="1"
+                paddingTop="4"
+                paddingBottom="4"
+              />
+            )}
+          </Row>
+        </Text>
+        <Text onBackground="neutral-weak" variant="body-default-s">
+          {body}
+        </Text>
+      </Column>
+      <Flex background="neutral-alpha-medium" />
+      <Flex
+        paddingX="20"
+        paddingY="2"
+        style={{ marginTop: "-15px", paddingBottom: "10px" }}
+        gap="8"
+        vertical="center"
+        textVariant="label-default-s"
+        onBackground="neutral-weak"
+        horizontal="space-between"
+      >
+        <Row gap="4">
+          <IconButton
+            size="l"
+            tooltip="Upvote"
+            tooltipPosition="top"
+            variant="secondary"
+            disabled={false}
+            style={{ backgroundColor: "#F9F8F5" }}
+          >
+            <i
+              className="ri-arrow-up-line"
+              style={{ fontSize: "17px", color: "#333" }}
+            ></i>
+          </IconButton>
+          <IconButton
+            size="l"
+            tooltip="Downvote"
+            tooltipPosition="top"
+            variant="secondary"
+            disabled={false}
+            style={{ backgroundColor: "#F9F8F5" }}
+          >
+            <i
+              className="ri-arrow-down-line"
+              style={{ fontSize: "17px", color: "#333" }}
+            ></i>
+          </IconButton>
+        </Row>
+        <Row></Row>
+      </Flex>
+    </Column>
   );
 }

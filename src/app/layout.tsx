@@ -85,10 +85,10 @@ export default function RootLayout({
         path={meta.home.path}
       />
       <head>
-      <link
-    href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
-    rel="stylesheet"
-/>
+        <link
+          href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
+          rel="stylesheet"
+        />
         <script
           // biome-ignore lint/security/noDangerouslySetInnerHtml: <It's not dynamic nor a security issue.>
           dangerouslySetInnerHTML={{
