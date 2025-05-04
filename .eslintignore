@@ -1,0 +1,12 @@
+# Temporary file
+
+# Ignore all files and directories
+**/*
+
+# Or ignore specific directories
+node_modules/
+dist/
+build/
+
+# Ignore specific files
+src/
