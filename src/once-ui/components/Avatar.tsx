@@ -12,7 +12,7 @@ interface AvatarProps extends React.ComponentProps<typeof Flex> {
   loading?: boolean;
   empty?: boolean;
   statusIndicator?: {
-    color: "green" | "yellow" | "red" | "gray";
+    color: "green" | "yellow" | "red" | "gray" | "pink";
   };
   style?: React.CSSProperties;
   className?: string;

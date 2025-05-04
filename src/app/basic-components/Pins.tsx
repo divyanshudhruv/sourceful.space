@@ -33,7 +33,7 @@ export default function Pins() {
         </Grid> */}
         <Row marginTop="40" marginBottom="40">
           <Button variant="secondary" style={{ borderRadius: "5px" }} size="s">
-            <Text variant="body-default-s">View more</Text>
+            <Text variant="body-default-s">Coming soon!</Text>
           </Button>
         </Row>
       </Column>

@@ -9,14 +9,14 @@ import {
 } from "@/once-ui/components";
 import { Lexend } from "next/font/google";
 const lexend = Lexend({ subsets: ["latin"], weight: "400" });
-
+import "./TopPin.css"; // Import the CSS file for styles
 export default function TopPin() {
-  const imageSrc =
-    "https://cdn.dribbble.com/userupload/17124761/file/original-d497b2359d86be010307b1340f18ac4b.png?resize=1024x768&vertical=center";
+  const imageSrc = "/l4.png";
   const imageAlt = "Image description";
   const title = "Sourceful";
   const tags = [{ label: "#1" }, { label: "feat" }];
-  const description = "Sourceful is your community hub for open source. Discover projects, connect with others, invest, and build the future together with collaboration and innovation at its core.";
+  const description =
+    "Sourceful is your community hub for open source. Discover projects, connect with others, invest, and build the future together with collaboration and innovation at its core.";
   const buttons = [
     { label: "Details", href: "#" },
     { label: "Github", href: "https://github.com/divyanshudhruv/hellolink" },
@@ -25,7 +25,6 @@ export default function TopPin() {
   return (
     <>
       <Row
-        height={24}
         border="neutral-strong"
         radius="l"
         horizontal="start"
@@ -34,6 +33,7 @@ export default function TopPin() {
           maxWidth: "800px",
           transition: "background-color 0.3s ease, border-color 0.3s ease",
         }}
+        className="responsive-row"
         cursor="pointer"
         onMouseEnter={(e) => {
           e.currentTarget.style.backgroundColor = "#f8f8f8";
@@ -44,7 +44,11 @@ export default function TopPin() {
           e.currentTarget.style.borderColor = "";
         }}
       >
-        <Row fillHeight style={{ minWidth: "60%" }}>
+        <Row
+          fillHeight
+          style={{ minWidth: "60%" }}
+          className="responsive-image"
+        >
           <SmartImage
             src={imageSrc}
             alt={imageAlt}

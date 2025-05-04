@@ -1,0 +1,13 @@
+@media (max-width: 835px) {
+    .responsive-row {
+        flex-direction: column;
+        max-width: 70% !important;
+        left: 0;
+        right: 0;
+        margin: auto;
+    }
+
+    .responsive-image {
+        aspect-ratio: 16/9 !important;
+    }
+}

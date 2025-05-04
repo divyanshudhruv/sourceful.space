@@ -186,7 +186,8 @@ function MegaNavBar() {
         {
           label: "Community",
           suffixIcon: "chevron-down",
-          href: "https://github.com/divyanshudhruv/sourceful.space",
+          // href: "https://github.com/divyanshudhruv/sourceful.space",
+          href: "#",
         },
       ]}
     />
