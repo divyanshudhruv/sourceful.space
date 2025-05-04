@@ -1,0 +1,194 @@
+import {
+  Button,
+  Flex,
+  Line,
+  MegaMenu,
+  Option,
+  Row,
+  Text,
+  Column,
+  UserMenu,
+  IconButton,
+} from "@/once-ui/components";
+import { Lexend } from "next/font/google";
+import { useEffect, useState } from "react";
+import { createClient } from "@supabase/supabase-js";
+const lexend = Lexend({ subsets: ["latin"], weight: "400" });
+
+import supabase from "services/supabase";
+
+export default function NavBar() {
+  const [username, setUsername] = useState<string | null>(null);
+  const [profilePicture, setProfilePicture] = useState<string | null>(null);
+  const [session, setSession] = useState(false);
+
+  useEffect(() => {
+    const checkSession = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      setSession(!!session);
+      console.log(session);
+    };
+
+    checkSession();
+  }, []);
+
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      const {
+        data: { user },
+        error: userError,
+      } = await supabase.auth.getUser();
+      if (userError) {
+        console.error("Error fetching user:", userError);
+        setUsername("Guest");
+        setProfilePicture(null);
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from("user_info")
+        .select("username, profile_picture")
+        .eq("id", user?.id)
+        .single();
+
+      if (error) {
+        console.error("Error fetching user info:", error);
+        return;
+      }
+
+      setUsername(data?.username || null);
+      setProfilePicture(data?.profile_picture || null);
+    };
+
+    fetchUserInfo();
+  }, []);
+
+  async function logout_supabase() {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.error("Error signing out:", error.message);
+    } else {
+      window.location.href = "/login";
+    }
+  }
+
+  return (
+    <Row
+      borderBottom="neutral-medium"
+      borderWidth={2}
+      fillWidth
+      content="center"
+      vertical="center"
+      horizontal="space-between"
+      paddingX="m"
+      paddingY="4"
+    >
+      <Row
+        style={{ minWidth: "172px", maxWidth: "172px" }}
+        horizontal="start"
+        vertical="center"
+      >
+        <Button
+          variant="secondary"
+          size="s"
+          href="#"
+          style={{ backgroundColor: "white" }}
+        >
+          <Text variant="body-default-s" className={lexend.className}>
+            sourceful.space
+          </Text>
+        </Button>
+        <Row>
+          <Flex width={1}></Flex>
+          <MegaNavBar />
+        </Row>{" "}
+      </Row>
+
+      <Row vertical="center" horizontal="center">
+        <UserMenu
+          style={{ scale: "0.85", minWidth: "200px" }}
+          name={username || "Guest"}
+          subline={username ? "Space User" : "Space Visitor"}
+          avatarProps={{
+            empty: false,
+            statusIndicator: {
+              color: "yellow",
+            },
+            src: profilePicture || "",
+          }}
+          loading={!username}
+          selected={false}
+          minWidth={2}
+          maxWidth={2}
+          dropdown={
+            <Column fillWidth minWidth={11} padding="0">
+              {session ? (
+                <Row paddingX="8" paddingY="4">
+                  <Option
+                    value="Profile"
+                    onClick={logout_supabase}
+                    label={
+                      <Row horizontal="center" vertical="center" gap="8">
+                        <IconButton variant="secondary">
+                          <i
+                            className="ri-user-line"
+                            style={{ fontSize: "14px", color: "#555" }}
+                          ></i>
+                        </IconButton>
+                        <Text>Logout</Text>
+                      </Row>
+                    }
+                  />
+                </Row>
+              ) : (
+                <Row paddingX="8" paddingY="4">
+                  <Option
+                    onClick={() => (window.location.href = "/login")}
+                    value="Login"
+                    label={
+                      <Row horizontal="center" vertical="center" gap="8">
+                        <IconButton variant="secondary">
+                          <i
+                            className="ri-login-box-line"
+                            style={{ fontSize: "14px", color: "#555" }}
+                          ></i>
+                        </IconButton>
+                        <Text>Login</Text>
+                      </Row>
+                    }
+                  />
+                </Row>
+              )}
+            </Column>
+          }
+        />
+      </Row>
+    </Row>
+  );
+}
+
+function MegaNavBar() {
+  return (
+    <MegaMenu
+      style={{ scale: "1" }}
+      menuGroups={[
+        {
+          label: "Home",
+          suffixIcon: "check",
+        },
+        {
+          label: "Pins",
+          suffixIcon: "chevron-down",
+          href: "#pins",
+        },
+        {
+          label: "Community",
+          suffixIcon: "chevron-down",
+          href: "https://github.com/divyanshudhruv/sourceful.space",
+        },
+      ]}
+    />
+  );
+}

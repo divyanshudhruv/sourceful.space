@@ -1,6 +1,6 @@
 // Example page: delete the content or rework the blocks
 "use client";
-
+import { useEffect } from "react";
 import type React from "react";
 import { Lexend } from "next/font/google";
 import { Space_Grotesk } from "next/font/google";
@@ -23,7 +23,7 @@ export const iconLibrary: Record<string, IconType> = {
 };
 const lexend = Lexend({ subsets: ["latin"], weight: "400" });
 
-const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], weight: "700" });
+const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], weight: "400" });
 
 import {
   Text,
@@ -41,49 +41,54 @@ export default function Home() {
   async function google_auth() {
     await supabase.auth.signInWithOAuth({
       provider: "google",
-      options: {
-        redirectTo: `http://example.com/auth/callback`,
-      },
+      options: {},
     });
   }
 
-  // useEffect(() => {
-  //   async function syncUserInfo() {
-  //     const {
-  //       data: { user },
-  //       error,
-  //     } = await supabase.auth.getUser();
-
-  //     if (error || !user) {
-  //       console.error("User fetch error:", error?.message);
-  //       return;
-  //     }
-
-  //     const email = user.email;
-  //     const id = user.id;
-  //     const username = user.user_metadata?.full_name || "";
-  //     const profile_picture = user.user_metadata?.avatar_url || "";
-
-  //     const { error: upsertError } = await supabase.from("user_info").upsert(
-  //       {
-  //         id,
-  //         email,
-  //         username,
-  //         profile_picture,
-  //       },
-  //       { onConflict: "id" }
-  //     );
-
-  //     if (upsertError) {
-  //       console.error("Upsert error:", upsertError.message);
-  //     } else {
-  //       console.log("User info saved.");
-  //       window.location.href = "/me";
-  //     }
-  //   }
-
-  //   syncUserInfo();
-  // }, []);
+  useEffect(() => {
+    async function syncUserInfo() {
+      const {
+        data: { user },
+        error,
+      } = await supabase.auth.getUser();
+      if (error || !user) {
+        console.error("User fetch error:", error?.message);
+        return;
+      }
+      const email = user.email;
+      const id = user.id;
+      const username = user.user_metadata?.full_name || "";
+      const profile_picture = user.user_metadata?.avatar_url || "";
+      const { error: upsertError } = await supabase.from("user_info").upsert(
+        {
+          id,
+          email,
+          username,
+          profile_picture,
+        },
+        { onConflict: "id" }
+      );
+      if (upsertError) {
+        console.error("Upsert error:", upsertError.message);
+      } else {
+        console.log("User info saved.");
+        addToast({
+          variant: "danger",
+          message: "User already logged in",
+          action: (
+            <Button
+              variant="secondary"
+              size="s"
+              onClick={() => (window.location.href = `/profile/${username}`)}
+            >
+              <Text variant="body-default-s">Click to redirect</Text>
+            </Button>
+          ),
+        });
+      }
+    }
+    syncUserInfo();
+  }, []);
   return (
     <Column
       fillWidth
@@ -98,8 +103,9 @@ export default function Home() {
       </ScrollToTop>
       <Column gap="12" horizontal="center">
         <Text
+          marginBottom="4"
           variant="heading-strong-xl"
-          className={spaceGrotesk.className}
+          className={lexend.className}
           style={{
             fontSize: "41px",
             lineHeight: "1em",
@@ -164,8 +170,21 @@ export default function Home() {
         <Button
           variant="tertiary"
           size="s"
-          href="/"
           style={{ borderRadius: "5px " }}
+          onClick={() => {
+            addToast({
+              variant: "success",
+              message: "Returning to home",
+              action: (
+                <Button variant="secondary" size="s">
+                  Okay
+                </Button>
+              ),
+            });
+            setTimeout(() => {
+              window.location.href = "/";
+            }, 800);
+          }}
         >
           <Text
             variant="body-default-s"
