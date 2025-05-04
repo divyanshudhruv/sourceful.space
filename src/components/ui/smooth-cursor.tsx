@@ -96,6 +96,9 @@ export function SmoothCursor({
   const previousAngle = useRef(0);
   const accumulatedRotation = useRef(0);
 
+  useEffect(() => {
+    console.log("isMoving", isMoving);
+  }, [isMoving]);
   const cursorX = useSpring(0, springConfig);
   const cursorY = useSpring(0, springConfig);
   const rotation = useSpring(0, {

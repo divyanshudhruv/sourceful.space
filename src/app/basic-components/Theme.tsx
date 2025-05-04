@@ -1,4 +1,4 @@
-import { ThemeProvider, ThemeSwitcher, Column } from "@/once-ui/components";
+import {  ThemeSwitcher, Column } from "@/once-ui/components";
 
 export default function Theme() {
   return (

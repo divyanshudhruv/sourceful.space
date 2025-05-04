@@ -9,7 +9,8 @@ interface ColorInputProps extends Omit<InputProps, "onChange" | "value"> {
 }
 
 const ColorInput = forwardRef<HTMLInputElement, ColorInputProps>(
-  ({ label, id, value, onChange, ...props }, ref) => {
+  //, ref below
+  ({ label, id, value, onChange, ...props }) => {
     const colorInputRef = useRef<HTMLInputElement>(null);
 
     const handleHexClick = () => {
@@ -37,14 +38,20 @@ const ColorInput = forwardRef<HTMLInputElement, ColorInputProps>(
           <Flex>
             <Flex
               style={{
-                width: value ? "var(--static-space-0)" : "var(--static-space-20)",
+                width: value
+                  ? "var(--static-space-0)"
+                  : "var(--static-space-20)",
                 transform: value ? "scale(0)" : "scale(1)",
                 opacity: value ? "0" : "1",
                 transition: "0.2s ease-in-out all",
               }}
             >
               <Flex padding="2">
-                <Icon size="xs" name="eyeDropper" onBackground="neutral-medium" />
+                <Icon
+                  size="xs"
+                  name="eyeDropper"
+                  onBackground="neutral-medium"
+                />
               </Flex>
             </Flex>
             <Flex
@@ -56,7 +63,9 @@ const ColorInput = forwardRef<HTMLInputElement, ColorInputProps>(
               style={{
                 backgroundColor: value,
                 cursor: "pointer",
-                width: value ? "var(--static-space-20)" : "var(--static-space-0)",
+                width: value
+                  ? "var(--static-space-20)"
+                  : "var(--static-space-0)",
                 transform: value ? "scale(1)" : "scale(0)",
                 opacity: value ? "1" : "0",
                 transition: "0.2s ease-in-out all",
@@ -103,7 +112,7 @@ const ColorInput = forwardRef<HTMLInputElement, ColorInputProps>(
         onChange={onChange}
       />
     );
-  },
+  }
 );
 
 ColorInput.displayName = "ColorInput";

@@ -7,8 +7,6 @@ import {
   Tag,
   SmartImage,
 } from "@/once-ui/components";
-import { Lexend } from "next/font/google";
-const lexend = Lexend({ subsets: ["latin"], weight: "400" });
 import "./TopPin.css"; // Import the CSS file for styles
 export default function TopPin() {
   const imageSrc = "/l4.png";

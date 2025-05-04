@@ -23,7 +23,9 @@ const Card = forwardRef<HTMLDivElement, CardProps>(
           "fill-width",
           (onClick || href) && "focus-ring",
           (onClick || href) && "radius-l",
+          className // Include the passed className
         )}
+        style={style} // Pass the style prop
         href={href}
         onClick={onClick ? onClick : () => {}}
         role="button"
@@ -36,7 +38,8 @@ const Card = forwardRef<HTMLDivElement, CardProps>(
           border="neutral-medium"
           cursor="interactive"
           align="left"
-          className={styles.card}
+          className={classNames(styles.card, className)} // Merge styles.card with className
+          style={style} // Pass the style prop
           onClick={onClick}
           {...rest}
         >
