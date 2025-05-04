@@ -41,6 +41,7 @@ const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
       nextMonth = true,
       minDate,
       maxDate,
+      //@ eslint-disable-line react/no-unused-prop-types 
       defaultDate,
       defaultTime,
       size = "m",

@@ -1,4 +1,4 @@
-# Temporary file
+<!-- # Temporary file
 
 # Ignore all files and directories
 **/*
@@ -9,4 +9,4 @@ dist/
 build/
 
 # Ignore specific files
-src/
+src/ -->

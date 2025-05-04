@@ -1,7 +1,6 @@
 import {
   Button,
   Flex,
-  Line,
   MegaMenu,
   Option,
   Row,
@@ -12,7 +11,6 @@ import {
 } from "@/once-ui/components";
 import { Lexend } from "next/font/google";
 import { useEffect, useState } from "react";
-import { createClient } from "@supabase/supabase-js";
 const lexend = Lexend({ subsets: ["latin"], weight: "400" });
 
 import supabase from "services/supabase";
@@ -108,7 +106,7 @@ export default function NavBar() {
 
       <Row vertical="center" horizontal="center">
         <UserMenu
-          style={{ scale: "0.85", minWidth: "200px" }}
+          style={{ scale: "0.85", minWidth: "190px" }}
           name={username || "Guest"}
           subline={username ? "Space User" : "Space Visitor"}
           avatarProps={{
