@@ -1,0 +1,13 @@
+@media (max-width: 400px) {
+    .responsive-no-mobile {
+        display: none;
+    }
+
+    .mobile-only {
+        display: flex;
+    }
+}
+
+.mobile-only {
+    display: none;
+}

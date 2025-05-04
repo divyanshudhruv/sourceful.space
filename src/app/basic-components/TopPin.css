@@ -1,0 +1,25 @@
+@media (max-width: 835px) {
+    .responsive-row {
+        flex-direction: column;
+        max-width: 70% !important;
+        left: 0;
+        right: 0;
+        margin: auto;
+    }
+
+    .responsive-image {
+        aspect-ratio: 13/9 !important;
+    }
+
+    .responsive-column {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    .responsive-text {
+        min-width: 90vw !important;
+        text-align: center !important;
+        margin: auto !important;
+        justify-content: space-around !important;
+    }
+}
