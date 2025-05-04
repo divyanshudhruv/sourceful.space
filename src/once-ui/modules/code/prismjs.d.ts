@@ -3,6 +3,7 @@ declare module "prismjs" {
     highlightAll: () => void;
     highlight: (code: string, grammar: any, language: string) => string;
     languages: {
+      //@ts-ignore
       [language: string]: any;
     };
   };

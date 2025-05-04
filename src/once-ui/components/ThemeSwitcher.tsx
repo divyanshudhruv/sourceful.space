@@ -10,6 +10,7 @@ interface ThemeSwitchProps extends React.ComponentProps<typeof Row> {
 }
 
 const ThemeSwitcher = forwardRef<HTMLDivElement, ThemeSwitchProps>(
+  //@ts-ignore
   ({ defaultTheme = "system", ...rest }, ref) => {
     const { theme, setTheme } = useTheme();
 

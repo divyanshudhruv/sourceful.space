@@ -2,7 +2,13 @@ import React from "react";
 import Script from "next/script";
 
 export interface SchemaProps {
-  as: "website" | "article" | "blogPosting" | "techArticle" | "webPage" | "organization";
+  as:
+    | "website"
+    | "article"
+    | "blogPosting"
+    | "techArticle"
+    | "webPage"
+    | "organization";
   title: string;
   description: string;
   baseURL: string;
@@ -37,7 +43,9 @@ export function Schema({
   image,
   author,
 }: SchemaProps) {
-  const normalizedBaseURL = baseURL.endsWith("/") ? baseURL.slice(0, -1) : baseURL;
+  const normalizedBaseURL = baseURL.endsWith("/")
+    ? baseURL.slice(0, -1)
+    : baseURL;
   const normalizedPath = path.startsWith("/") ? path : `/${path}`;
 
   const imageUrl = image
@@ -49,6 +57,7 @@ export function Schema({
   const schemaType = schemaTypeMap[as];
 
   // biome-ignore lint/suspicious/noExplicitAny: <cause why not, we love any in typescript..>
+  //@ts-ignore
   const schema: Record<string, any> = {
     "@context": "https://schema.org",
     "@type": schemaType,

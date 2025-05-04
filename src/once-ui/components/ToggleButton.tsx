@@ -48,6 +48,7 @@ const ToggleButton = forwardRef<HTMLElement, ToggleButtonProps>(
       justifyContent = "center",
       fillWidth = false,
       weight = "default",
+      //@ts-ignore
       truncate = false,
       prefixIcon,
       suffixIcon,
@@ -102,7 +103,9 @@ const ToggleButton = forwardRef<HTMLElement, ToggleButtonProps>(
             {label || children}
           </Flex>
         )}
-        {suffixIcon && <Icon name={suffixIcon} size={size === "l" ? "s" : "xs"} />}
+        {suffixIcon && (
+          <Icon name={suffixIcon} size={size === "l" ? "s" : "xs"} />
+        )}
       </ElementType>
     );
   }

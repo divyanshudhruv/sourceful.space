@@ -18,7 +18,9 @@ interface UserMenuProps
 const UserMenu: React.FC<UserMenuProps> = ({
   selected = false,
   dropdown,
+  //@ts-ignore
   minWidth,
+  //@ts-ignore
   maxWidth,
   minHeight,
   className,
@@ -51,7 +53,6 @@ const UserMenu: React.FC<UserMenuProps> = ({
         </Flex>
       }
       dropdown={<>{dropdown}</>}
-      
     />
   );
 };

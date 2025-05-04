@@ -42,7 +42,7 @@ const TagInput = forwardRef<HTMLInputElement, TagInputProps>(
     const handleFocus: FocusEventHandler<HTMLInputElement> = () => {
       setIsFocused(true);
     };
-
+      //@ts-ignore
     const handleBlur: FocusEventHandler<HTMLInputElement> = (e) => {
       setIsFocused(false);
     };

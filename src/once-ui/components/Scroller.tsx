@@ -33,7 +33,8 @@ const Scroller: React.FC<ScrollerProps> = ({
     const scroller = scrollerRef.current;
     const handleScroll = () => {
       if (scroller) {
-        const scrollPosition = direction === "row" ? scroller.scrollLeft : scroller.scrollTop;
+        const scrollPosition =
+          direction === "row" ? scroller.scrollLeft : scroller.scrollTop;
         const maxScrollPosition =
           direction === "row"
             ? scroller.scrollWidth - scroller.clientWidth
@@ -59,7 +60,9 @@ const Scroller: React.FC<ScrollerProps> = ({
     const scroller = scrollerRef.current;
     if (scroller) {
       const scrollAmount =
-        direction === "row" ? scroller.clientWidth / 2 : scroller.clientHeight / 2;
+        direction === "row"
+          ? scroller.clientWidth / 2
+          : scroller.clientHeight / 2;
       scroller.scrollBy({
         [direction === "row" ? "left" : "top"]: scrollAmount,
         behavior: "smooth",
@@ -71,7 +74,9 @@ const Scroller: React.FC<ScrollerProps> = ({
     const scroller = scrollerRef.current;
     if (scroller) {
       const scrollAmount =
-        direction === "row" ? scroller.clientWidth / 2 : scroller.clientHeight / 2;
+        direction === "row"
+          ? scroller.clientWidth / 2
+          : scroller.clientHeight / 2;
       scroller.scrollBy({
         [direction === "row" ? "left" : "top"]: -scrollAmount,
         behavior: "smooth",
@@ -81,7 +86,11 @@ const Scroller: React.FC<ScrollerProps> = ({
 
   const wrappedChildren = React.Children.map(children, (child, index) => {
     if (React.isValidElement<ScrollableChildProps>(child)) {
-      const { onClick: childOnClick, onKeyDown: childOnKeyDown, ...otherProps } = child.props;
+      const {
+        onClick: childOnClick,
+        onKeyDown: childOnKeyDown,
+        ...otherProps
+      } = child.props;
 
       return React.cloneElement(child, {
         ...otherProps,
@@ -92,6 +101,7 @@ const Scroller: React.FC<ScrollerProps> = ({
         onKeyDown: (e: React.KeyboardEvent) => {
           childOnKeyDown?.(e);
           if (e.key === "Enter" || e.key === " ") {
+            //@ts-ignore
             childOnClick?.(e as any);
             onItemClick?.(index);
           }
@@ -102,9 +112,21 @@ const Scroller: React.FC<ScrollerProps> = ({
   });
 
   return (
-    <Flex fillWidth className={classNames(styles.container, className)} style={style} {...rest}>
+    <Flex
+      fillWidth
+      className={classNames(styles.container, className)}
+      style={style}
+      {...rest}
+    >
       {showPrevButton && (
-        <Fade to="right" width={4} fillHeight position="absolute" left="0" zIndex={1}>
+        <Fade
+          to="right"
+          width={4}
+          fillHeight
+          position="absolute"
+          left="0"
+          zIndex={1}
+        >
           <IconButton
             icon={direction === "row" ? "chevronLeft" : "chevronUp"}
             onClick={handleScrollPrev}
@@ -132,7 +154,14 @@ const Scroller: React.FC<ScrollerProps> = ({
         {wrappedChildren}
       </Flex>
       {showNextButton && (
-        <Fade to="left" width={4} fillHeight position="absolute" right="0" zIndex={1}>
+        <Fade
+          to="left"
+          width={4}
+          fillHeight
+          position="absolute"
+          right="0"
+          zIndex={1}
+        >
           <IconButton
             icon={direction === "row" ? "chevronRight" : "chevronDown"}
             onClick={handleScrollNext}

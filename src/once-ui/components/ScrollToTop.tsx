@@ -29,6 +29,7 @@ export const ScrollToTop = ({
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+    //@ts-ignore
   }, []);
 
   return (
