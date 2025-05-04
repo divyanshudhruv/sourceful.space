@@ -19,7 +19,6 @@ export default function NavBar() {
       borderBottom="neutral-medium"
       borderWidth={2}
       fillWidth
-      // background="neutral-strong"
       content="center"
       vertical="center"
       horizontal="space-between"
@@ -137,10 +136,12 @@ function MegaNavBar() {
         {
           label: "Pins",
           suffixIcon: "chevron-down",
+          href: "#pins",
         },
         {
           label: "Community",
           suffixIcon: "chevron-down",
+          href: "https://github.com/divyanshudhruv/sourceful.space",
         },
       ]}
     />

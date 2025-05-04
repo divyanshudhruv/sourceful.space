@@ -1,7 +1,7 @@
 "use client";
 
 import React, { forwardRef } from "react";
-import { Row, useTheme, IconButton } from "@/once-ui/components";
+import { Row, Column, useTheme, IconButton } from "@/once-ui/components";
 
 type ThemeType = "system" | "dark" | "light";
 
@@ -14,7 +14,7 @@ const ThemeSwitcher = forwardRef<HTMLDivElement, ThemeSwitchProps>(
     const { theme, setTheme } = useTheme();
 
     return (
-      <Row
+      <Column
         data-border="rounded"
         ref={ref}
         gap="2"
@@ -37,9 +37,9 @@ const ThemeSwitcher = forwardRef<HTMLDivElement, ThemeSwitchProps>(
           variant={theme === "light" ? "primary" : "tertiary"}
           onClick={() => setTheme("light")}
         />
-      </Row>
+      </Column>
     );
-  },
+  }
 );
 
 ThemeSwitcher.displayName = "ThemeSwitcher";

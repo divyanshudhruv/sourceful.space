@@ -2,7 +2,7 @@ import { Column, Flex, Row, Text } from "@/once-ui/components";
 import { Lexend } from "next/font/google";
 import { Space_Grotesk } from "next/font/google";
 const lexend = Lexend({ subsets: ["latin"], weight: "400" });
-const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], weight: "700" });
+const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], weight: "400" });
 
 import ToggleButtons from "./ToggleButtons";
 export default function Hero() {
@@ -23,18 +23,18 @@ export default function Hero() {
             style={{ fontSize: "35px", lineHeight: "1.2em", color: "#333" }}
             align="center"
           >
-            AI powered project briefs for developers
+            AI powered ⚡ project briefs for 👀 developers 
           </Text>
-          <Text
+            <Text
             variant="body-default-s"
             onBackground="neutral-medium"
             align="center"
             className={spaceGrotesk.className}
             style={{ marginTop: "15px" }}
-          >
-            Empowering developers with AI-crafted project briefs for seamless
-            innovation and collaboration.
-          </Text>
+            >
+            Empowering developers with<b> AI-crafted </b> briefs for seamless open-source
+            <b> innovation </b>, and <b>collaboration</b>.
+            </Text>
           <Row
             horizontal="center"
             vertical="center"

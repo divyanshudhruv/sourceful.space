@@ -24,18 +24,28 @@ import NavBar from "./basic-components/NavBar";
 import Hero from "./basic-components/Hero";
 import Pins from "./basic-components/Pins";
 import Footer from "./basic-components/Footer";
+import Theme from "./basic-components/Theme";
 export default function Home() {
   const { addToast } = useToast();
 
   return (
-    <Column fillWidth paddingY="0" paddingX="0" fillHeight horizontal="center">
-      <ScrollToTop>
-        <IconButton variant="secondary" icon="chevronUp" />
-      </ScrollToTop>
-      <NavBar />
-      <Hero />
-      <Pins />
-      <Footer/>
-    </Column>
+    <>
+      <Column
+        fillWidth
+        paddingY="0"
+        paddingX="0"
+        fillHeight
+        horizontal="center"
+      >
+        <ScrollToTop>
+          <IconButton variant="secondary" icon="chevronUp" />
+        </ScrollToTop>
+        <NavBar />
+        <Hero />
+        <Pins />
+        <Footer />
+      </Column>
+      <Theme />
+    </>
   );
 }
