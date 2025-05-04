@@ -3,6 +3,7 @@ import { Lexend } from "next/font/google";
 import { Space_Grotesk } from "next/font/google";
 const lexend = Lexend({ subsets: ["latin"], weight: "400" });
 const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], weight: "400" });
+import "./TopPin.css"; // Import the CSS file for styles
 
 import ToggleButtons from "./ToggleButtons";
 export default function Hero() {
@@ -19,9 +20,10 @@ export default function Hero() {
           <Flex fillWidth style={{ height: "60px" }}></Flex>
           <Text
             variant="heading-strong-xl"
-            className={lexend.className}
+            className={`${lexend.className} responsive-text`}
             style={{ fontSize: "35px", lineHeight: "1.2em", color: "#333" }}
             align="center"
+            
           >
             AI powered ⚡ project briefs for 👀 developers 
           </Text>

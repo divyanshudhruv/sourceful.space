@@ -60,7 +60,7 @@ export default function TopPin() {
             unoptimized={true}
           />
         </Row>
-        <Column padding="40" style={{ maxWidth: "40%" }}>
+        <Column padding="40" style={{ maxWidth: "40%" }} className="responsive-column">
           <Row vertical="center" textVariant="body-default-xl">
             <Text style={{ fontSize: "32px", color: "#333" }}>{title}</Text>
             {tags.map((tag, index) => (
@@ -73,11 +73,12 @@ export default function TopPin() {
               ></Tag>
             ))}
           </Row>
-          <Row marginTop="20">
+          <Row marginTop="20" > 
             <Text
               variant="body-default-s"
               onBackground="neutral-weak"
               style={{ fontSize: "14px" }}
+              
             >
               {description}
             </Text>
