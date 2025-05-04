@@ -1,26 +1,10 @@
-// Example page: delete the content or rework the blocks
 "use client";
 import { useEffect } from "react";
 import type React from "react";
 import { Lexend } from "next/font/google";
 import { Space_Grotesk } from "next/font/google";
 
-import { IconType } from "react-icons";
-import {
-  HiChevronDown,
-  HiChevronRight,
-  HiChevronLeft,
-  HiOutlineArrowPath,
-  HiCheck,
-} from "react-icons/hi2";
 
-export const iconLibrary: Record<string, IconType> = {
-  chevronDown: HiChevronDown,
-  chevronRight: HiChevronRight,
-  chevronLeft: HiChevronLeft,
-  refresh: HiOutlineArrowPath,
-  check: HiCheck,
-};
 const lexend = Lexend({ subsets: ["latin"], weight: "400" });
 
 const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], weight: "400" });
