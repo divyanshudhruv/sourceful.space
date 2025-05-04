@@ -4,7 +4,6 @@ import type React from "react";
 import { Lexend } from "next/font/google";
 import { Space_Grotesk } from "next/font/google";
 
-
 const lexend = Lexend({ subsets: ["latin"], weight: "400" });
 
 const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], weight: "400" });
@@ -25,7 +24,9 @@ export default function Home() {
   async function google_auth() {
     await supabase.auth.signInWithOAuth({
       provider: "google",
-      options: {},
+      options: {
+        redirectTo: `/`,
+      },
     });
   }
 
