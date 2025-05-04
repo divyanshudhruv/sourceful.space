@@ -20,7 +20,7 @@ export default function Footer() {
           onBackground="neutral-weak"
           className={spaceGrotesk.className}
         >
-          © 2025, sourceful.space / <span style={{color:"#222"}}>MIT License</span>
+          © 2025 sourceful.space / <span style={{color:"#222"}}>MIT License</span>
         </Text>
       </Row>
     </>
