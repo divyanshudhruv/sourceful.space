@@ -21,7 +21,7 @@ export default function Hero() {
           <Text
             variant="heading-strong-xl"
             className={`${lexend.className} responsive-text`}
-            style={{ fontSize: "35px", lineHeight: "1.2em", color: "#333" }}
+            style={{ fontSize: "35px", lineHeight: "1.2em", color: "#333",maxWidth:"100vw" }}
             align="center"
             
           >

@@ -19,6 +19,7 @@ export default function NavBar() {
   const [username, setUsername] = useState<string | null>(null);
   const [profilePicture, setProfilePicture] = useState<string | null>(null);
   const [session, setSession] = useState(false);
+  const [sessionID, setSessionID] = useState<string | null>(null);
 
   useEffect(() => {
     const checkSession = async () => {
@@ -26,6 +27,7 @@ export default function NavBar() {
         data: { session },
       } = await supabase.auth.getSession();
       setSession(!!session);
+      setSessionID(session?.user?.id || null);
     };
 
     checkSession();
@@ -124,7 +126,24 @@ export default function NavBar() {
           dropdown={
             <Column fillWidth minWidth={11} padding="0">
               {session ? (
-                <Row paddingX="8" paddingY="4">
+                <Column paddingX="8" paddingY="4">
+                  <Option
+                    value="Profile"
+                    onClick={() =>
+                      (window.location.href = `/profile/${sessionID}`)
+                    }
+                    label={
+                      <Row horizontal="center" vertical="center" gap="8">
+                        <IconButton variant="secondary">
+                          <i
+                            className="ri-settings-line"
+                            style={{ fontSize: "14px", color: "#555" }}
+                          ></i>
+                        </IconButton>
+                        <Text>Profile</Text>
+                      </Row>
+                    }
+                  />
                   <Option
                     value="Profile"
                     onClick={logout_supabase}
@@ -136,11 +155,11 @@ export default function NavBar() {
                             style={{ fontSize: "14px", color: "#555" }}
                           ></i>
                         </IconButton>
-                        <Text>Logout</Text>
+                        <Text>Logoudt</Text>
                       </Row>
                     }
                   />
-                </Row>
+                </Column>
               ) : (
                 <Row paddingX="8" paddingY="4">
                   <Option
@@ -176,7 +195,7 @@ function MegaNavBar() {
         {
           label: "Home",
           suffixIcon: "check",
-          href:"/"
+          href: "/",
         },
         {
           label: "Pins",
