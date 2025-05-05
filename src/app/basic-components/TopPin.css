@@ -18,7 +18,14 @@
 
     .responsive-text {
         min-width: 90vw !important;
-        text-align: center !important;
+        text-align: left !important;
+        margin: auto !important;
+        justify-content: space-around !important;
+    }
+
+    .responsive-text-2 {
+        min-width: 90vw !important;
+        text-align: left !important;
         margin: auto !important;
         justify-content: space-around !important;
     }

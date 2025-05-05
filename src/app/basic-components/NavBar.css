@@ -1,0 +1,14 @@
+@media (max-width: 600px) {
+    .megamenu {
+        display: none;
+    }
+
+    .usermenu {
+        scale: 0.85;
+        min-width: fit-content;
+    }
+
+    .usermenu-dropdown {
+        max-width: 70% !important;
+    }
+}

@@ -1,0 +1,8 @@
+.hero-togglebuttons-container {
+    flex-wrap: no-wrap;
+    overflow-x: scroll;
+}
+
+body {
+    overflow: hidden !important;
+}

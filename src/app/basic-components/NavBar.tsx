@@ -12,7 +12,7 @@ import {
 import { Lexend } from "next/font/google";
 import { useEffect, useState } from "react";
 const lexend = Lexend({ subsets: ["latin"], weight: "400" });
-
+import "./NavBar.css";
 import supabase from "services/supabase";
 
 export default function NavBar() {
@@ -94,7 +94,7 @@ export default function NavBar() {
         <Button
           variant="secondary"
           size="s"
-          href="#"
+          href="/"
           style={{ backgroundColor: "white" }}
         >
           <Text variant="body-default-s" className={lexend.className}>
@@ -109,7 +109,6 @@ export default function NavBar() {
 
       <Row vertical="center" horizontal="center">
         <UserMenu
-          style={{ scale: "0.85", minWidth: "190px" }}
           name={username || "Guest"}
           subline={username ? "Space User" : "Space Visitor"}
           avatarProps={{
@@ -123,8 +122,9 @@ export default function NavBar() {
           selected={false}
           minWidth={2}
           maxWidth={2}
+          className="usermenu"
           dropdown={
-            <Column fillWidth minWidth={11} padding="0">
+            <Column padding="0" className="usermenu-dropdown">
               {session ? (
                 <Column paddingX="8" paddingY="4">
                   <Option
@@ -190,6 +190,7 @@ export default function NavBar() {
 function MegaNavBar() {
   return (
     <MegaMenu
+      className="megamenu"
       style={{ scale: "1" }}
       menuGroups={[
         {

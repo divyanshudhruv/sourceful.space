@@ -14,132 +14,146 @@ import {
 } from "@/once-ui/components";
 import supabase from "services/supabase";
 import { useEffect, useState } from "react";
-
+import "./ProfileCard.css";
 export default function ProfileCard() {
-const [username, setUsername] = useState<string | null>(null);
-const [profilePicture, setProfilePicture] = useState<string | null>(null);
-const [firstName, setFirstName] = useState<string>("");
-const [lastName, setLastName] = useState<string>("");
-const [intro, setIntro] = useState<string>("");
-const [interests, setInterests] = useState<string[]>(["Design systems", "UI / UX"]);
-const [website, setWebsite] = useState<string>("");
-const [githubUsername, setGithubUsername] = useState<string>("");
-const [onlineStatus, setOnlineStatus] = useState<boolean>(false);
-const [totalPins, setTotalPins] = useState<number>(0);
-const [featuredPin, setFeaturedPin] = useState<string>("");
-const [featuredPinOptions, setFeaturedPinOptions] = useState([
+  const [username, setUsername] = useState<string | null>(null);
+  const [profilePicture, setProfilePicture] = useState<string | null>(null);
+  const [firstName, setFirstName] = useState<string>("");
+  const [lastName, setLastName] = useState<string>("");
+  const [intro, setIntro] = useState<string>("");
+  const [interests, setInterests] = useState<string[]>([
+    "Design systems",
+    "UI / UX",
+  ]);
+  const [website, setWebsite] = useState<string>("");
+  const [githubUsername, setGithubUsername] = useState<string>("");
+  const [onlineStatus, setOnlineStatus] = useState<boolean>(false);
+  const [totalPins, setTotalPins] = useState<number>(0);
+  const [featuredPin, setFeaturedPin] = useState<string>("");
+  const [featuredPinOptions, setFeaturedPinOptions] = useState([
     { description: "A simple web app", label: "Hellolink", value: "option1" },
-]);
-const [slug, setSlug] = useState<string | null>(window.location.pathname.split("/").pop() || null);
-const [originalUser, setOriginalUser] = useState<boolean>(false);
-const [sessionID, setSessionID] = useState<string | null>(null);
+  ]);
+  const [slug, setSlug] = useState<string | null>(
+    window.location.pathname.split("/").pop() || null
+  );
+  const [originalUser, setOriginalUser] = useState<boolean>(false);
+  const [sessionID, setSessionID] = useState<string | null>(null);
 
-const { addToast } = useToast();
+  const { addToast } = useToast();
 
-useEffect(() => {
+  useEffect(() => {
     const fetchSessionID = async () => {
-        try {
-            const { data: { session }, error } = await supabase.auth.getSession();
-            if (error) throw error;
-            setSessionID(session?.user?.id || null);
-        } catch (error) {
-            console.error("Error fetching session:", error);
-        }
+      try {
+        const {
+          data: { session },
+          error,
+        } = await supabase.auth.getSession();
+        if (error) throw error;
+        setSessionID(session?.user?.id || null);
+      } catch (error) {
+        console.error("Error fetching session:", error);
+      }
     };
     fetchSessionID();
-}, []);
+  }, []);
 
-useEffect(() => {
+  useEffect(() => {
     if (slug === sessionID) {
-        setOriginalUser(true);
+      setOriginalUser(true);
     }
-}, [slug, sessionID]);
+  }, [slug, sessionID]);
 
-useEffect(() => {
+  useEffect(() => {
     fetchUserInfo();
     fetchProfileData();
-}, []);
+  }, []);
 
-useEffect(() => {
+  useEffect(() => {
     if (username) {
-        const [first, ...rest] = username.split(" ");
-        setFirstName(first);
-        setLastName(rest.join(" "));
+      const [first, ...rest] = username.split(" ");
+      setFirstName(first);
+      setLastName(rest.join(" "));
     }
-}, [username]);
+  }, [username]);
 
-const fetchUserInfo = async () => {
+  const fetchUserInfo = async () => {
     try {
-        const { data: { user }, error: userError } = await supabase.auth.getUser();
-        if (userError) throw userError;
+      const {
+        data: { user },
+        error: userError,
+      } = await supabase.auth.getUser();
+      if (userError) throw userError;
 
-        const { data, error } = await supabase
-            .from("user_info")
-            .select("username, profile_picture")
-            .eq("id", slug)
-            .single();
-        if (error) throw error;
+      const { data, error } = await supabase
+        .from("user_info")
+        .select("username, profile_picture")
+        .eq("id", slug)
+        .single();
+      if (error) throw error;
 
-        setUsername(data?.username || "null");
-        setProfilePicture(data?.profile_picture || null);
+      setUsername(data?.username || "null");
+      setProfilePicture(data?.profile_picture || null);
     } catch (error) {
-        console.error("Error fetching user info:", error);
-        setUsername("Guest");
-        setProfilePicture(null);
+      console.error("Error fetching user info:", error);
+      setUsername("Guest");
+      setProfilePicture(null);
     }
-};
+  };
 
-const fetchProfileData = async () => {
+  const fetchProfileData = async () => {
     try {
-        const { data, error } = await supabase
-            .from("user_profile")
-            .select(
-                "first_name, last_name, intro, interests, website, github_username, online_status, total_pins, featured_pin, featured_pin_options"
-            )
-            .eq("id", slug)
-            .single();
-        if (error) throw error;
+      const { data, error } = await supabase
+        .from("user_profile")
+        .select(
+          "first_name, last_name, intro, interests, website, github_username, online_status, total_pins, featured_pin, featured_pin_options"
+        )
+        .eq("id", slug)
+        .single();
+      if (error) throw error;
 
-        setFirstName(data?.first_name || "");
-        setLastName(data?.last_name || "");
-        setIntro(data?.intro || "");
-        setInterests(data?.interests || []);
-        setWebsite(data?.website || "");
-        setGithubUsername(data?.github_username || "");
-        setOnlineStatus(data?.online_status || false);
-        setTotalPins(data?.total_pins || 0);
-        setFeaturedPin(data?.featured_pin || "");
+      setFirstName(data?.first_name || "");
+      setLastName(data?.last_name || "");
+      setIntro(data?.intro || "");
+      setInterests(data?.interests || []);
+      setWebsite(data?.website || "");
+      setGithubUsername(data?.github_username || "");
+      setOnlineStatus(data?.online_status || false);
+      setTotalPins(data?.total_pins || 0);
+      setFeaturedPin(data?.featured_pin || "");
     } catch (error) {
-        console.error("Error fetching profile data:", error);
+      console.error("Error fetching profile data:", error);
     }
-};
+  };
 
-const saveProfileToSupabase = async () => {
+  const saveProfileToSupabase = async () => {
     try {
-        const { data: { user }, error: userError } = await supabase.auth.getUser();
-        if (userError || !user) throw userError;
+      const {
+        data: { user },
+        error: userError,
+      } = await supabase.auth.getUser();
+      if (userError || !user) throw userError;
 
-        const { error: updateError } = await supabase
-            .from("user_profile")
-            .update({
-                first_name: firstName,
-                last_name: lastName,
-                intro: intro,
-                interests: interests,
-                website: website,
-                github_username: githubUsername,
-                online_status: onlineStatus,
-                total_pins: totalPins,
-                featured_pin: featuredPin,
-            })
-            .eq("id", user.id);
-        if (updateError) throw updateError;
+      const { error: updateError } = await supabase
+        .from("user_profile")
+        .update({
+          first_name: firstName,
+          last_name: lastName,
+          intro: intro,
+          interests: interests,
+          website: website,
+          github_username: githubUsername,
+          online_status: onlineStatus,
+          total_pins: totalPins,
+          featured_pin: featuredPin,
+        })
+        .eq("id", user.id);
+      if (updateError) throw updateError;
 
-        addToast({ variant: "success", message: "Profile updated successfully" });
+      addToast({ variant: "success", message: "Profile updated successfully" });
     } catch (error) {
-        console.error("Error updating profile:", error);
+      console.error("Error updating profile:", error);
     }
-};
+  };
 
   return (
     <Column
@@ -152,6 +166,7 @@ const saveProfileToSupabase = async () => {
       padding="20"
       horizontal="center"
       gap="12"
+      className="profile-card"
     >
       <Column gap="8" marginBottom="12" horizontal="center" vertical="center">
         <Column
@@ -281,8 +296,8 @@ const saveProfileToSupabase = async () => {
           radius="bottom"
         />
       </Column>
-      <Row fillWidth marginTop="32" horizontal="center" gap="12">
-        {originalUser && (
+      {originalUser && (
+        <Row fillWidth marginTop="32" horizontal="center" gap="12">
           <Button
             variant="primary"
             size="l"
@@ -292,8 +307,8 @@ const saveProfileToSupabase = async () => {
           >
             Save
           </Button>
-        )}
-        {/* <Button
+
+          {/* <Button
                     variant="primary"
                     size="l"
                     fillWidth
@@ -314,7 +329,8 @@ const saveProfileToSupabase = async () => {
                 >
                     Delete account
                 </Button> */}
-      </Row>
+        </Row>
+      )}
     </Column>
   );
 }
