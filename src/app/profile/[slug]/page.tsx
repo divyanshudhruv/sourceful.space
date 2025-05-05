@@ -39,7 +39,6 @@ export default function Home() {
         </ScrollToTop>
         <NavBar />
         <Profile />
-
         <Footer />
       </Column>
       <Theme />

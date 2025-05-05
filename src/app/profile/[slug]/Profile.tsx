@@ -28,11 +28,11 @@ export default function Profile() {
             onBackground="neutral-medium"
             align="center"
             className={spaceGrotesk.className}
-            style={{ marginTop: "15px" }}
+            style={{ marginTop: "15px", maxWidth:"700px" }}
           >
             Update or create your<b> profile </b> to showcase your unique
             identity, preferences, and achievements to
-            <br /> highlight your skills, experiences, contributions and
+             highlight your skills, experiences, contributions and
             expertise.
           </Text>
 
