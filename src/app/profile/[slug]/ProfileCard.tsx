@@ -10,13 +10,14 @@ import {
   NumberInput,
   Select,
   Button,
+  useToast,
 } from "@/once-ui/components";
 import supabase from "services/supabase";
 import { useEffect, useState } from "react";
 export default function ProfileCard() {
   const [username, setUsername] = useState<string | null>(null);
   const [profilePicture, setProfilePicture] = useState<string | null>(null);
-
+  const slug = window.location.pathname.split("/").pop();
   useEffect(() => {
     const fetchUserInfo = async () => {
       const {
@@ -48,14 +49,51 @@ export default function ProfileCard() {
     fetchUserInfo();
   }, []);
 
+  const { addToast } = useToast();
+
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      const {
+        data: { user },
+        error: userError,
+      } = await supabase.auth.getUser();
+      if (userError || !user) {
+        console.error("Error fetching user:", userError);
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from("user_profile")
+        .select(
+          "first_name, last_name, intro, interests, website, github_username, online_status, total_pins, featured_pin, featured_pin_options"
+        )
+        .eq("id", user.id)
+        .single();
+
+      if (error) {
+        console.error("Error fetching profile data:", error);
+        return;
+      }
+
+      setFirstName(data?.first_name || "");
+      setLastName(data?.last_name || "");
+      setIntro(data?.intro || "");
+      setInterests(data?.interests || []);
+      setWebsite(data?.website || "");
+      setGithubUsername(data?.github_username || "");
+      setOnlineStatus(data?.online_status || false);
+      setTotalPins(data?.total_pins || 0);
+      setFeaturedPin(data?.featured_pin || "");
+    };
+
+    fetchProfileData();
+  }, []);
+
   const [firstName, setFirstName] = useState<string>();
-
   const [lastName, setLastName] = useState<string>("");
-
   const [intro, setIntro] = useState<string>("");
   const [interests, setInterests] = useState<string[]>([
     "Design systems",
-
     "UI / UX",
   ]);
   const [website, setWebsite] = useState<string>("");
@@ -65,20 +103,10 @@ export default function ProfileCard() {
   const [featuredPin, setFeaturedPin] = useState<string>("");
   const [featuredPinOptions, setFeaturedPinOptions] = useState([
     {
-      description: "Description for option 1",
-      label: "Option 1",
+      description: "A simple web app",
+      label: "Hellolink",
       value: "option1",
-    },
-    {
-      description: "Description for option 2",
-      label: "Option 2",
-      value: "option2",
-    },
-    {
-      description: "Description for option 3",
-      label: "Option 3",
-      value: "option3",
-    },
+    }, //use loop to add projects
   ]);
   useEffect(() => {
     if (username) {
@@ -92,6 +120,42 @@ export default function ProfileCard() {
       setFirstName(extractedFirstName);
     }
   }, [username]);
+
+  async function save_profile_to_supabase() {
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser();
+    if (userError || !user) {
+      console.error("Error fetching user:", userError);
+      return;
+    }
+
+    const { error: updateError } = await supabase
+      .from("user_profile")
+      .update({
+        first_name: firstName,
+        last_name: lastName,
+        intro: intro,
+        interests: interests,
+        website: website,
+        github_username: githubUsername,
+        online_status: onlineStatus,
+        total_pins: totalPins,
+        featured_pin: featuredPin,
+      })
+      .eq("id", user.id);
+
+    if (updateError) {
+      console.error("Error updating profile:", updateError);
+      return;
+    }
+    addToast({
+      variant: "success",
+      message: "Profile updated successfully",
+    });
+  }
+
   return (
     <Column
       radius="xl"
@@ -238,6 +302,7 @@ export default function ProfileCard() {
           size="l"
           fillWidth
           style={{ height: "54px", borderRadius: "17px", maxWidth: "100%" }}
+          onClick={save_profile_to_supabase}
         >
           Save
         </Button>

@@ -71,6 +71,8 @@ export default function Home() {
           ),
         });
       }
+
+      
     }
     syncUserInfo();
   }, []);
