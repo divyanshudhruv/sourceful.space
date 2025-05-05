@@ -143,6 +143,7 @@ export default function ProfileCard() {
         online_status: onlineStatus,
         total_pins: totalPins,
         featured_pin: featuredPin,
+        
       })
       .eq("id", user.id);
 
