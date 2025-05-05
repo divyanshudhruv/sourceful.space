@@ -4,6 +4,7 @@ import { Space_Grotesk } from "next/font/google";
 const lexend = Lexend({ subsets: ["latin"], weight: "400" });
 const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], weight: "400" });
 import ProfileCard from "./ProfileCard";
+import "./Profile.css";
 export default function Profile() {
   return (
     <>
@@ -14,7 +15,7 @@ export default function Profile() {
         horizontal="center"
       >
         <Flex paddingX="xl" direction="column" paddingY="s" horizontal="center">
-          <Flex fillWidth style={{ height: "60px" }}></Flex>
+          <Flex fillWidth style={{ height: "60px" }} className="responsive-row"></Flex>
           <Text
             variant="heading-strong-xl"
             className={`${lexend.className} responsive-text`}
@@ -27,17 +28,15 @@ export default function Profile() {
             variant="body-default-s"
             onBackground="neutral-medium"
             align="center"
-            className={spaceGrotesk.className}
-            style={{ marginTop: "15px", maxWidth:"700px" }}
+            className={`${spaceGrotesk.className} responsive-text-2`}
+            style={{ marginTop: "15px", maxWidth: "700px" }}
           >
             Update or create your<b> profile </b> to showcase your unique
-            identity, preferences, and achievements to
-             highlight your skills, experiences, contributions and
-            expertise.
+            identity, preferences, and achievements to highlight your skills,
+            experiences, contributions and expertise.
           </Text>
 
-          
-            <ProfileCard></ProfileCard>
+          <ProfileCard></ProfileCard>
         </Flex>
       </Column>
     </>

@@ -1,0 +1,26 @@
+@media (max-width: 835px) {
+    .responsive-text {
+        min-width: 65vw !important;
+        text-align: left !important;
+        margin: auto !important;
+
+        justify-content: space-around !important;
+        margin-bottom: 10px !important;
+    }
+
+    .responsive-text-2 {
+        min-width: 65vw !important;
+        text-align: left !important;
+        margin: auto !important;
+        justify-content: space-around !important;
+    }
+
+    .responsive-row {
+        flex-direction: column;
+        max-width: 70% !important;
+        left: 0;
+        right: 0;
+        margin: auto;
+    }
+
+}

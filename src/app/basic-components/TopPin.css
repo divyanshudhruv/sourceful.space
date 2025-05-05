@@ -21,6 +21,7 @@
         text-align: left !important;
         margin: auto !important;
         justify-content: space-around !important;
+        margin-bottom: 10px !important;
     }
 
     .responsive-text-2 {
@@ -28,5 +29,10 @@
         text-align: left !important;
         margin: auto !important;
         justify-content: space-around !important;
+    }
+
+    .hero-togglebuttons-container {
+        flex-direction: row !important;
+        justify-content: start !important;
     }
 }
