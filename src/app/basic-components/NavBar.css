@@ -12,3 +12,8 @@
         max-width: 70% !important;
     }
 }
+
+.usermenu {
+        scale: 0.85;
+        min-width: fit-content;
+    }
