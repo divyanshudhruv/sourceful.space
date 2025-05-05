@@ -19,7 +19,7 @@ export default function TopPin() {
     { label: "Details", href: "#" },
     {
       label: "Github",
-      href: "https://github.com/divyanshudhruv/sourceful.space",
+      href: "https://github.com",
     },
   ];
 
