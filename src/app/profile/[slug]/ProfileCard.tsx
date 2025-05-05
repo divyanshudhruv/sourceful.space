@@ -50,24 +50,13 @@ export default function ProfileCard() {
 
   const [firstName, setFirstName] = useState<string>();
 
-  useEffect(() => {
-    if (username) {
-      const extractedFirstName = username.split(" ")[0];
-      setFirstName(extractedFirstName);
-    }
-  }, [username]);
   const [lastName, setLastName] = useState<string>("");
-  useEffect(() => {
-    if (username) {
-      const nameParts = username.split(" ");
-      setLastName(nameParts.length > 1 ? nameParts[nameParts.length - 1] : "");
-    }
-  }, [username]);
+
   const [intro, setIntro] = useState<string>("");
   const [interests, setInterests] = useState<string[]>([
     "Design systems",
 
-    "UI / UX"
+    "UI / UX",
   ]);
   const [website, setWebsite] = useState<string>("");
   const [githubUsername, setGithubUsername] = useState<string>("");
@@ -91,7 +80,18 @@ export default function ProfileCard() {
       value: "option3",
     },
   ]);
-
+  useEffect(() => {
+    if (username) {
+      const nameParts = username.split(" ");
+      setLastName(nameParts.length > 1 ? nameParts[nameParts.length - 1] : "");
+    }
+  }, [username]);
+  useEffect(() => {
+    if (username) {
+      const extractedFirstName = username.split(" ")[0];
+      setFirstName(extractedFirstName);
+    }
+  }, [username]);
   return (
     <Column
       radius="xl"
