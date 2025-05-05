@@ -219,7 +219,7 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
                   labelAsPlaceholder
                   id="search"
                   label="Search"
-                  height="s"
+                  height="m"
                   radius="none"
                   hasSuffix={
                     searchQuery ? (
@@ -241,7 +241,12 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
                 />
               </Flex>
             )}
-            <Flex fillWidth padding="4" direction="column" gap="2">
+            <Flex
+              
+              padding="4"
+              direction="column"
+              gap="2"
+            >
               {options
                 .filter((option) =>
                   option.label

@@ -17,7 +17,10 @@ export default function TopPin() {
     "Sourceful is your community hub for open source. Discover projects, connect with others, invest, and build the future together with collaboration and innovation at its core.";
   const buttons = [
     { label: "Details", href: "#" },
-    { label: "Github", href: "https://github.com/divyanshudhruv/hellolink" },
+    {
+      label: "Github",
+      href: "https://github.com/divyanshudhruv/sourceful.space",
+    },
   ];
 
   return (
@@ -58,7 +61,11 @@ export default function TopPin() {
             unoptimized={true}
           />
         </Row>
-        <Column padding="40" style={{ maxWidth: "40%" }} className="responsive-column">
+        <Column
+          padding="40"
+          style={{ maxWidth: "40%" }}
+          className="responsive-column"
+        >
           <Row vertical="center" textVariant="body-default-xl">
             <Text style={{ fontSize: "32px", color: "#333" }}>{title}</Text>
             {tags.map((tag, index) => (
@@ -71,12 +78,11 @@ export default function TopPin() {
               ></Tag>
             ))}
           </Row>
-          <Row marginTop="20" > 
+          <Row marginTop="20">
             <Text
               variant="body-default-s"
               onBackground="neutral-weak"
               style={{ fontSize: "14px" }}
-              
             >
               {description}
             </Text>

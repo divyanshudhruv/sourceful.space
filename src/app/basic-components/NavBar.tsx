@@ -75,8 +75,10 @@ export default function NavBar() {
   return (
     <Row
       borderBottom="neutral-medium"
+      // borderLeft="neutral-medium"
+      // borderRight="neutral-medium"
       borderWidth={2}
-      fillWidth
+      style={{ maxWidth: "1220px", width: "100vw" }}
       content="center"
       vertical="center"
       horizontal="space-between"
@@ -175,6 +177,7 @@ function MegaNavBar() {
         {
           label: "Home",
           suffixIcon: "check",
+          href:"/"
         },
         {
           label: "Pins",
