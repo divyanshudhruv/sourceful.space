@@ -16,6 +16,8 @@ import {
   ToggleButton,
   Feedback,
   Chip,
+  Switch,
+  NumberInput,
 } from "@/once-ui/components";
 import { Lexend } from "next/font/google";
 import { useEffect, useState } from "react";
@@ -157,6 +159,33 @@ export default function NavBar() {
       )
     );
   };
+  const [pinTitle, setPinTitle] = useState("");
+  const [pinDescription, setPinDescription] = useState("");
+  const [pinContent, setPinContent] = useState("");
+  const [pinTags, setPinTags] = useState<string[]>([]);
+  const [pinWebsiteLink, setPinWebsiteLink] = useState("");
+  const [pinMedia, setPinMedia] = useState<File | null>(null);
+  const [pinBuiltWith, setPinBuiltWith] = useState("");
+  const [isOpenForFunding, setIsOpenForFunding] = useState(false);
+  const [fundingGoal, setFundingGoal] = useState<number>(0);
+  const [lookingForAmount, setLookingForAmount] = useState<number>(0);
+  const [fundingDescription, setFundingDescription] = useState("");
+  const [selectedValues, setSelectedValues] = useState<string[]>([]);
+
+  function send_project_data_to_supabase() {
+    console.log(pinDescription);
+    console.log(pinTitle);
+    console.log(pinContent);
+    console.log(pinTags);
+    console.log(pinWebsiteLink);
+    console.log(pinMedia);
+    console.log(pinBuiltWith);
+    console.log(isOpenForFunding);
+    console.log(fundingGoal);
+    console.log(lookingForAmount);
+    console.log(fundingDescription);
+    console.log(selectedValues);
+  }
   return (
     <Row
       borderBottom="neutral-medium"
@@ -294,6 +323,7 @@ export default function NavBar() {
           />
         </Row>
       </Row>
+
       <Dialog
         maxWidth={30}
         isOpen={isOpenPrimary} //isOpen
@@ -301,161 +331,225 @@ export default function NavBar() {
         title={<Text variant="heading-default-xl">New Pin</Text>}
         description={
           <Text variant="body-default-s" onBackground="neutral-weak">
-        Create a new pin to share with the community.
+            Create a new pin to share with the community.
           </Text>
         }
         shadow="xs"
         footer={
           <Row horizontal="start" fillWidth paddingX="8">
-        <Text
-          variant="label-default-s"
-          style={{ color: "#666", fontSize: "12px" }}
-        >
-          <i
-            className="ri-information-line"
-            style={{
-          fontSize: "14px",
-          color: "#666",
-          borderRadius: "100%",
-          marginRight: "4px",
-          marginTop: "2px",
-            }}
-          ></i>
-          You can upload your project only once, no editing allowed.
-        </Text>
+            <Text
+              variant="label-default-s"
+              style={{ color: "#666", fontSize: "12px" }}
+            >
+              <i
+                className="ri-information-line"
+                style={{
+                  fontSize: "14px",
+                  color: "#666",
+                  borderRadius: "100%",
+                  marginRight: "4px",
+                  marginTop: "2px",
+                }}
+              ></i>
+              You can upload your project only once, no editing allowed.
+            </Text>
           </Row>
         }
       >
         <Column fillWidth fillHeight horizontal="center" gap="12">
           <Column fillWidth>
-        <Input
-          id="pin-title"
-          label="Title"
-          value={""}
-          onInput={(e) => console.log("Title:", e.currentTarget.value)}
-          labelAsPlaceholder={false}
-          style={{ borderRadius: "0px !important" }}
-          error={false}
-          radius="top"
-          height="s"
-        />
-        <Textarea
-          id="pin-description"
-          label="Description"
-          lines={1}
-          value={""}
-          onInput={(e) => console.log("Description:", e.currentTarget.value)}
-          labelAsPlaceholder={false}
-          style={{ borderRadius: "0px !important" }}
-          radius="none"
-        />
-        <Textarea
-          id="pin-content"
-          description="Describe your pin in detail. (optional)"
-          label="Content"
-          lines={4}
-          value={""}
-          onInput={(e) => console.log("Content:", e.currentTarget.value)}
-          labelAsPlaceholder={false}
-          style={{ borderRadius: "0px !important" }}
-          radius="bottom"
-        />
+            <Input
+              id="pin-title-input"
+              label="Title"
+              value={pinTitle}
+              onInput={(e) => setPinTitle(e.currentTarget.value)}
+              labelAsPlaceholder={false}
+              style={{ borderRadius: "0px !important" }}
+              error={false}
+              radius="top"
+              height="s"
+            />
+            <Textarea
+              id="pin-description-textarea"
+              label="Description"
+              lines={1}
+              value={pinDescription}
+              onInput={(e) => setPinDescription(e.currentTarget.value)}
+              labelAsPlaceholder={false}
+              style={{ borderRadius: "0px !important" }}
+              radius="none"
+            />
+            <Textarea
+              id="pin-content-textarea"
+              description="Describe your pin in detail. (optional)"
+              label="Content"
+              lines={4}
+              value={pinContent}
+              onInput={(e) => setPinContent(e.currentTarget.value)}
+              labelAsPlaceholder={false}
+              style={{ borderRadius: "0px !important" }}
+              radius="bottom"
+            />
           </Column>
 
           <Column fillWidth gap="8">
-        <TagInput
-          id="pin-tags"
-          value={[]}
-          onChange={(tags) => console.log("Tags:", tags)}
-          hasSuffix={<Kbd>Enter</Kbd>}
-          label="Tags"
-        />
-        <Row
-          height={3}
-          fillWidth
-          gap="4"
-          paddingX="2"
-          style={{
-            maxWidth: "100%",
-            overflowY: "hidden",
-            overflowX: "scroll",
-          }}
-        >
-          {toggleStates.map((toggleState, index) => (
-            <ToggleButton
-          key={index}
-          onClick={() => handleToggle(index)}
-          selected={toggleState.selected}
-          size="m"
-          fillWidth={false}
-          justifyContent="center"
-          style={{
-            border: "1px solid #EFEEEB",
-            padding: "8px",
-          }}
+            <TagInput
+              id="pin-tags-input"
+              value={pinTags}
+              onChange={(tags) => setPinTags(tags)}
+              hasSuffix={<Kbd>Enter</Kbd>}
+              label="Tags"
+            />
+            <Row
+              height={3}
+              fillWidth
+              gap="4"
+              paddingX="2"
+              style={{
+                maxWidth: "100%",
+                overflowY: "hidden",
+                overflowX: "scroll",
+              }}
             >
-          <Text variant="body-default-xs" style={{ color: "#555" }}>
-            <Text variant="label-default-xs" style={{ color: "#777" }}>
-              #
-            </Text>
-            {toggleState.theText}
-          </Text>
-            </ToggleButton>
-          ))}
-        </Row>
+              {toggleStates.map((toggleState, index) => (
+                <ToggleButton
+                  key={index}
+                  onClick={() => {
+                    handleToggle(index);
+                    const selectedText = toggleState.theText;
+                    setSelectedValues((prevValues) =>
+                      toggleState.selected
+                        ? prevValues.filter((value) => value !== selectedText)
+                        : [...prevValues, selectedText]
+                    );
+                  }}
+                  selected={toggleState.selected}
+                  size="m"
+                  fillWidth={false}
+                  justifyContent="center"
+                  style={{
+                    border: "1px solid #EFEEEB",
+                    padding: "8px",
+                  }}
+                >
+                  <Text variant="body-default-xs" style={{ color: "#555" }}>
+                    <Text variant="label-default-xs" style={{ color: "#777" }}>
+                      #
+                    </Text>
+                    {toggleState.theText}
+                  </Text>
+                </ToggleButton>
+              ))}
+            </Row>
           </Column>
           <Row fillWidth>
-        <Input
-          id="pin-website-link"
-          label="Website Link"
-          value={""}
-          onInput={(e) => console.log("Website Link:", e.currentTarget.value)}
-          labelAsPlaceholder={false}
-          style={{ borderRadius: "0px !important" }}
-          error={false}
-          height="s"
-          hasPrefix={<Text variant="label-default-s">https://</Text>}
-        />
+            <Input
+              id="pin-website-link-input"
+              label="Website Link"
+              value={pinWebsiteLink}
+              onInput={(e) => setPinWebsiteLink(e.currentTarget.value)}
+              labelAsPlaceholder={false}
+              style={{ borderRadius: "0px !important" }}
+              error={false}
+              height="s"
+              hasPrefix={<Text variant="label-default-s">https://</Text>}
+            />
           </Row>
           <Row fillWidth>
-        <MediaUpload
-          id="pin-media-upload"
-          height={20}
-          compress={true}
-          aspectRatio="16 / 9"
-          quality={0}
-          loading={false}
-          initialPreviewImage=""
-          onChange={(file) => console.log("Media Uploaded:", file)}
-        />
+            <MediaUpload
+              id="pin-media-upload-input"
+              height={20}
+              compress={true}
+              aspectRatio="16 / 9"
+              quality={0}
+              loading={false}
+              initialPreviewImage=""
+              onChange={(event) => {
+                const file =
+                  (event.target as HTMLInputElement).files?.[0] || null;
+                setPinMedia(file);
+              }}
+            />
           </Row>
 
           <Row horizontal="start" fillWidth paddingX="8">
-        <Column>
-          <Text
-            variant="label-default-s"
-            style={{ color: "#333", fontSize: "12px" }}
-          >
-            Project Media
-          </Text>
-          <Text variant="label-default-s" style={{ color: "#666" }}></Text>
+            <Column>
+              <Text
+                variant="label-default-s"
+                style={{ color: "#333", fontSize: "12px" }}
+              >
+                Project Media
+              </Text>
+              <Text variant="label-default-s" style={{ color: "#666" }}></Text>
             </Column>
           </Row>
 
           <Input
-            id="first-name"
+            id="pin-built-with-input"
             label="Built with"
             hasSuffix={<Kbd>Techs</Kbd>}
-            value={""}
+            value={pinBuiltWith}
+            onInput={(e) => setPinBuiltWith(e.currentTarget.value)}
             labelAsPlaceholder={false}
             style={{ borderRadius: "0px !important" }}
             error={false}
             height="s"
             description={"Mention the tech stack used. (required)"}
           ></Input>
-          <Row horizontal="start" fillWidth gap="0"></Row>
+          <Column horizontal="start" fillWidth marginTop="32">
+            <Flex marginBottom="20">
+              <Switch
+                reverse={false}
+                label="Open for funding"
+                description="Is this project open for funding?"
+                isChecked={isOpenForFunding}
+                onToggle={() => setIsOpenForFunding(!isOpenForFunding)}
+                iconButtonProps={{
+                  onClick: () => {},
+                  tooltip: "This is an optional feature",
+                  tooltipPosition: "top",
+                }}
+              />
+            </Flex>
+
+            <NumberInput
+              id="pin-funding-amount-input"
+              error={false}
+              label="Funding goal ($)"
+              value={fundingGoal}
+              labelAsPlaceholder={false}
+              style={{ borderRadius: "0px !important" }}
+              onChange={(value) => setFundingGoal(value)}
+              radius="top"
+            />
+            <NumberInput
+              id="pin-funding-amount-input-looking-for"
+              error={false}
+              label="Looking for ($)"
+              value={lookingForAmount}
+              labelAsPlaceholder={false}
+              style={{ borderRadius: "0px !important" }}
+              onChange={(value) => setLookingForAmount(value)}
+              radius="none"
+            />
+
+            <Textarea
+              id="pin-funding-description-textarea"
+              label="Funding pitch"
+              lines={3}
+              value={fundingDescription}
+              onInput={(e) => setFundingDescription(e.currentTarget.value)}
+              radius="bottom"
+              labelAsPlaceholder={false}
+              style={{ borderRadius: "0px !important" }}
+              description="Describe your funding pitch and requirements in detail."
+            />
+          </Column>
           <Row horizontal="end" fillWidth paddingBottom="20">
-            <Button variant="primary">
+            <Button
+              variant="primary"
+              onClick={() => send_project_data_to_supabase()}
+            >
               <Text>Create</Text>
             </Button>
           </Row>
