@@ -78,110 +78,122 @@ export default function NavBar() {
       borderBottom="neutral-medium"
       // borderLeft="neutral-medium"
       // borderRight="neutral-medium"
+      fillWidth
+      horizontal="center"
       borderWidth={2}
-      style={{ maxWidth: "1220px", width: "100vw" }}
-      content="center"
-      vertical="center"
-      horizontal="space-between"
-      paddingX="m"
-      paddingY="4"
     >
       <Row
-        style={{ minWidth: "172px", maxWidth: "172px" }}
-        horizontal="start"
+        content="center"
         vertical="center"
+        horizontal="space-between"
+        paddingX="m"
+        style={{ maxWidth: "1220px", width: "100vw" }}
+        paddingY="4"
+        fillWidth
       >
-        <Button
-          variant="secondary"
-          size="s"
-          href="/"
-          style={{ backgroundColor: "white" }}
+        <Row
+          style={{ minWidth: "172px", maxWidth: "172px" }}
+          horizontal="start"
+          vertical="center"
         >
-          <Text variant="body-default-s" className={lexend.className}>
-            sourceful.space
-          </Text>
-        </Button>
-        <Row>
-          <Flex width={1}></Flex>
-          <MegaNavBar />
-        </Row>{" "}
-      </Row>
+          <Button
+            variant="secondary"
+            size="s"
+            href="/"
+            style={{ backgroundColor: "white" }}
+          >
+            <Text variant="body-default-s" className={lexend.className}>
+              sourceful.space
+            </Text>
+          </Button>
+          <Row>
+            <Flex width={1}></Flex>
+            <MegaNavBar />
+          </Row>{" "}
+        </Row>
 
-      <Row vertical="center" horizontal="center">
-        <UserMenu
-          name={username || "Guest"}
-          subline={username ? "Space User" : "Space Visitor"}
-          avatarProps={{
-            empty: false,
-            statusIndicator: {
-              color: "yellow",
-            },
-            src: profilePicture || "",
-          }}
-          loading={!username}
-          selected={false}
-          minWidth={2}
-          maxWidth={2}
-          className="usermenu"
-          dropdown={
-            <Column padding="0" className="usermenu-dropdown">
-              {session ? (
-                <Column paddingX="8" paddingY="4">
-                  <Option
-                    value="Profile"
-                    onClick={() =>
-                      (window.location.href = `/profile/${sessionID}`)
-                    }
-                    label={
-                      <Row horizontal="center" vertical="center" gap="8">
-                        <IconButton variant="secondary">
-                          <i
-                            className="ri-settings-line"
-                            style={{ fontSize: "14px", color: "#555" }}
-                          ></i>
-                        </IconButton>
-                        <Text>Profile</Text>
-                      </Row>
-                    }
-                  />
-                  <Option
-                    value="Profile"
-                    onClick={logout_supabase}
-                    label={
-                      <Row horizontal="center" vertical="center" gap="8">
-                        <IconButton variant="secondary">
-                          <i
-                            className="ri-user-line"
-                            style={{ fontSize: "14px", color: "#555" }}
-                          ></i>
-                        </IconButton>
-                        <Text>Logoudt</Text>
-                      </Row>
-                    }
-                  />
-                </Column>
-              ) : (
-                <Row paddingX="8" paddingY="4">
-                  <Option
-                    onClick={() => (window.location.href = "/login")}
-                    value="Login"
-                    label={
-                      <Row horizontal="center" vertical="center" gap="8">
-                        <IconButton variant="secondary">
-                          <i
-                            className="ri-login-box-line"
-                            style={{ fontSize: "14px", color: "#555" }}
-                          ></i>
-                        </IconButton>
-                        <Text>Login</Text>
-                      </Row>
-                    }
-                  />
-                </Row>
-              )}
-            </Column>
-          }
-        />
+        <Row vertical="center" horizontal="center">
+          <UserMenu
+            name={username || "Guest"}
+            subline={username ? "Space User" : "Space Visitor"}
+            avatarProps={{
+              empty: false,
+              statusIndicator: {
+                color: "yellow",
+              },
+              src: profilePicture || "",
+            }}
+            loading={!username}
+            selected={false}
+            minWidth={2}
+            maxWidth={2}
+            style={{ scale: "0.85" }}
+            className="usermenu"
+            dropdown={
+              <Column
+                padding="0"
+                className="usermenu-dropdown"
+                paddingTop="4"
+                paddingBottom="4"
+              >
+                {session ? (
+                  <Column paddingX="8" paddingY="4">
+                    <Option
+                      value="Profile"
+                      onClick={() =>
+                        (window.location.href = `/profile/${sessionID}`)
+                      }
+                      label={
+                        <Row horizontal="center" vertical="center" gap="8">
+                          <IconButton variant="secondary">
+                            <i
+                              className="ri-settings-line"
+                              style={{ fontSize: "14px", color: "#555" }}
+                            ></i>
+                          </IconButton>
+                          <Text>Profile</Text>
+                        </Row>
+                      }
+                    />
+                    <Option
+                      value="Profile"
+                      onClick={logout_supabase}
+                      label={
+                        <Row horizontal="center" vertical="center" gap="8">
+                          <IconButton variant="secondary">
+                            <i
+                              className="ri-user-line"
+                              style={{ fontSize: "14px", color: "#555" }}
+                            ></i>
+                          </IconButton>
+                          <Text>Logout</Text>
+                        </Row>
+                      }
+                    />
+                  </Column>
+                ) : (
+                  <Row paddingX="8" paddingY="4">
+                    <Option
+                      onClick={() => (window.location.href = "/login")}
+                      value="Login"
+                      label={
+                        <Row horizontal="center" vertical="center" gap="8">
+                          <IconButton variant="secondary">
+                            <i
+                              className="ri-login-box-line"
+                              style={{ fontSize: "14px", color: "#555" }}
+                            ></i>
+                          </IconButton>
+                          <Text>Login</Text>
+                        </Row>
+                      }
+                    />
+                  </Row>
+                )}
+              </Column>
+            }
+          />
+        </Row>
       </Row>
     </Row>
   );

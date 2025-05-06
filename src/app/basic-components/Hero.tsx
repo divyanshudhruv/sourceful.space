@@ -50,7 +50,7 @@ export default function Hero() {
             className="hero-togglebuttons-container"
             gap="8"
             wrap
-            
+            style={{ maxWidth: "800px" }}
           >
             <ToggleButtons />
           </Row>

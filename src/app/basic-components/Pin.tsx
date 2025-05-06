@@ -8,17 +8,14 @@ import {
   SmartImage,
 } from "@/once-ui/components";
 import "./TopPin.css"; // Import the CSS file for styles
-export default function TopPin() {
+export default function Pin() {
   const imageSrc = "/l4.png";
   const imageAlt = "Image description";
-  const title = "Sourceful";
-  const tags = [{ label: "#1" }, { label: "feat" }];
+  const title = "Neartha Antivirus";
+  const tags = [{ label: "#2" }];
   const description =
     "Sourceful is your community hub for open source. Discover projects, connect with others, invest, and build the future together with collaboration and innovation at its core.";
-  const buttons = [
-    { label: "Details", href: "#" },
-    { label: "Github", href: "https://github.com" },
-  ];
+  const buttons = [{ label: "Details", href: "#" }];
 
   return (
     <>
@@ -112,6 +109,36 @@ export default function TopPin() {
             onBackground="neutral-weak"
             horizontal="space-between"
           >
+            <Row gap="4" horizontal="center" vertical="center">
+              <Button
+                variant="secondary"
+                radius="none"
+                style={{ borderRadius: "8px", color: "#333" }}
+                fillWidth
+              >
+                <Text
+                  style={{ fontSize: "13px !important" }}
+                  variant="label-default-s"
+                  onBackground="neutral-strong"
+                >
+                  Upvote
+                </Text>{" "}
+              </Button>
+              <Button
+                fillWidth
+                variant="secondary"
+                radius="none"
+                style={{ borderRadius: "8px", color: "#333" }}
+              >
+                <Text
+                  style={{ fontSize: "13px !important" }}
+                  variant="label-default-s"
+                  onBackground="neutral-strong"
+                >
+                  Downvote
+                </Text>{" "}
+              </Button>
+            </Row>
             {buttons.map((button, index) => (
               <Button
                 key={index}
@@ -138,5 +165,5 @@ export default function TopPin() {
 }
 
 export function App() {
-  return <TopPin />;
+  return <Pin />;
 }

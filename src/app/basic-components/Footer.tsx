@@ -14,6 +14,8 @@ export default function Footer() {
         horizontal="center"
         gap="4"
         paddingY="16"
+        marginTop="32"
+        
       >
         <Text
           variant="body-default-xs"

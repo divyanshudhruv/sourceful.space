@@ -11,6 +11,7 @@ import Hero from "./basic-components/Hero";
 import Pins from "./basic-components/Pins";
 import Footer from "./basic-components/Footer";
 import Theme from "./basic-components/Theme";
+import Pin from "./basic-components/Pin";
 
 import "./page.css";
 
