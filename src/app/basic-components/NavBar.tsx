@@ -17,6 +17,7 @@ import {
   Feedback,
   Chip,
   Switch,
+  useToast,
   NumberInput,
 } from "@/once-ui/components";
 import { Lexend } from "next/font/google";
@@ -171,20 +172,53 @@ export default function NavBar() {
   const [lookingForAmount, setLookingForAmount] = useState<number>(0);
   const [fundingDescription, setFundingDescription] = useState("");
   const [selectedValues, setSelectedValues] = useState<string[]>([]);
+  const { addToast } = useToast();
 
-  function send_project_data_to_supabase() {
-    console.log(pinDescription);
-    console.log(pinTitle);
-    console.log(pinContent);
-    console.log(pinTags);
-    console.log(pinWebsiteLink);
-    console.log(pinMedia);
-    console.log(pinBuiltWith);
-    console.log(isOpenForFunding);
-    console.log(fundingGoal);
-    console.log(lookingForAmount);
-    console.log(fundingDescription);
-    console.log(selectedValues);
+  async function send_project_data_to_supabase() {
+    if (session && sessionID) {
+      try {
+        const { data, error } = await supabase.from("projects").insert([
+          {
+            id: sessionID,
+            project_id: `prj_${Math.random().toString(36).substring(2, 10)}`,
+            title: pinTitle,
+            description: pinDescription,
+            content: pinContent,
+            tags: pinTags,
+            default_tags: selectedValues,
+            website_link: pinWebsiteLink,
+            media_url: pinMedia ? URL.createObjectURL(pinMedia) : null,
+            built_with: pinBuiltWith,
+            looking_for: [lookingForAmount],
+            open_for_funding: isOpenForFunding,
+            funding_goal: fundingGoal,
+            funding_pitch: fundingDescription,
+          },
+        ]);
+
+        if (error) {
+          console.error("Error uploading project data:", error.message);
+          addToast({
+            message: "Error uploading project data.",
+            variant: "danger",
+          });
+        } else {
+          console.log("Project data uploaded successfully:", data);
+          addToast({
+            message: "Project data uploaded successfully.",
+            variant: "success",
+          });
+        }
+      } catch (err) {
+        console.error("Unexpected error:", err);
+        addToast({
+          message: "Unexpected error occurred.",
+          variant: "danger",
+        });
+      }
+    } else {
+      console.error("No active session or session ID found.");
+    }
   }
   return (
     <Row
