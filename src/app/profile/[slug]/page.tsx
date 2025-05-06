@@ -12,19 +12,7 @@ import Theme from "./../../basic-components/Theme";
 
 
 export default function Home() {
-  // useEffect(() => {
-  //   const checkSession = async () => {
-  //     const {
-  //       data: { session },
-  //     } = await supabase.auth.getSession();
-  //     if (!session) {
-  //       window.location.href = "/login";
-  //     }
-  //   };
-
-  //   checkSession();
-  // }, []);
-
+ 
   return (
     <>
       <Column

@@ -20,49 +20,100 @@ export default function NavBar() {
   const [profilePicture, setProfilePicture] = useState<string | null>(null);
   const [session, setSession] = useState(false);
   const [sessionID, setSessionID] = useState<string | null>(null);
+  const [email, setEmail] = useState<string | null>(null);
 
   useEffect(() => {
-    const checkSession = async () => {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-      setSession(!!session);
-      setSessionID(session?.user?.id || null);
-    };
-
+    async function checkSession() {
+      const { data, error } = await supabase.auth.getSession();
+      if (error) {
+        console.error("Error fetching session:", error.message);
+      } else if (data.session) {
+        setSession(true);
+        setSessionID(data.session.user.id);
+        const { user } = data.session;
+        const displayName = user.user_metadata?.full_name || "Guest";
+        const profilePicUrl = user.user_metadata?.avatar_url || "";
+        const email = user.user_metadata?.email || "No email provided";
+        console.log(user.user_metadata);
+        setUsername(displayName);
+        setProfilePicture(profilePicUrl);
+        setEmail(email);
+      }
+    }
     checkSession();
   }, []);
 
   useEffect(() => {
-    const fetchUserInfo = async () => {
-      const {
-        data: { user },
-        error: userError,
-      } = await supabase.auth.getUser();
-      if (userError) {
-        console.error("Error fetching user:", userError);
-        setUsername("Guest");
-        setProfilePicture(null);
-        return;
+    async function uploadUserInfo() {
+      if (session && sessionID) {
+        try {
+          const { data, error }: { data: any; error: any } = await supabase
+            .from("user_info")
+            .upsert(
+              {
+                id: sessionID,
+                email: email,
+                username: username?.toLowerCase().trim().replace(/\s+/g, "_"),
+                profile_picture: profilePicture,
+                has_access: false,
+                joined_at: new Date().toISOString(),
+              },
+              { onConflict: "id" }
+            );
+
+          if (error) {
+            console.error("Error uploading user info:", error.message);
+          } else {
+            console.log("User info uploaded successfully:", data);
+          }
+        } catch (err) {
+          console.error("Unexpected error:", err);
+        }
       }
+    }
 
-      const { data, error } = await supabase
-        .from("user_info")
-        .select("username, profile_picture")
-        .eq("id", user?.id)
-        .single();
+    uploadUserInfo();
+  }, [session, sessionID, username, profilePicture]);
 
-      if (error) {
-        console.error("Error fetching user info:", error);
-        return;
+  useEffect(() => {
+    async function uploadUserProfile() {
+      if (session && sessionID) {
+        try {
+          const { data, error }: { data: any; error: any } = await supabase
+            .from("user_profile")
+            .upsert(
+              {
+                id: sessionID,
+                email: email,
+                profile_picture: profilePicture,
+                joined_at: new Date().toISOString(),
+                first_name: username?.split(" ")[0] || null,
+                last_name: username?.split(" ")[1] || null,
+                intro: null,
+                interests: ["Design systems", "UI / UX"],
+                website: null,
+                github_username: null,
+                online_status: false,
+                total_pins: 0,
+                featured_pin: null,
+                featured_pin_options: null,
+              },
+              { onConflict: "id" }
+            );
+
+          if (error) {
+            console.error("Error uploading user profile:", error.message);
+          } else {
+            console.log("User profile uploaded successfully:", data);
+          }
+        } catch (err) {
+          console.error("Unexpected error:", err);
+        }
       }
+    }
 
-      setUsername(data?.username || null);
-      setProfilePicture(data?.profile_picture || null);
-    };
-
-    fetchUserInfo();
-  }, []);
+    uploadUserProfile();
+  }, [session, sessionID, username, profilePicture, email]);
 
   async function logout_supabase() {
     const { error } = await supabase.auth.signOut();

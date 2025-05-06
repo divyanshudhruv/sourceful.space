@@ -16,142 +16,89 @@ import supabase from "services/supabase";
 import { useEffect, useState } from "react";
 import "./ProfileCard.css";
 export default function ProfileCard() {
-  const [username, setUsername] = useState<string | null>(null);
+  const [username, setUsername] = useState<string>("Guest");
   const [profilePicture, setProfilePicture] = useState<string | null>(null);
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
   const [intro, setIntro] = useState<string>("");
-  const [interests, setInterests] = useState<string[]>([
-    "Design systems",
-    "UI / UX",
-  ]);
+  const [interests, setInterests] = useState<string[]>([]);
   const [website, setWebsite] = useState<string>("");
   const [githubUsername, setGithubUsername] = useState<string>("");
   const [onlineStatus, setOnlineStatus] = useState<boolean>(false);
   const [totalPins, setTotalPins] = useState<number>(0);
   const [featuredPin, setFeaturedPin] = useState<string>("");
-  const [featuredPinOptions, setFeaturedPinOptions] = useState([
-    { description: "A simple web app", label: "Hellolink", value: "option1" },
-  ]);
-  const [slug, setSlug] = useState<string | null>(
-    window.location.pathname.split("/").pop() || null
-  );
+  const [featuredPinOptions, setFeaturedPinOptions] = useState<
+    { label: string; value: string }[]
+  >([]);
   const [originalUser, setOriginalUser] = useState<boolean>(false);
-  const [sessionID, setSessionID] = useState<string | null>(null);
 
   const { addToast } = useToast();
 
   useEffect(() => {
-    const fetchSessionID = async () => {
+    const fetchData = async () => {
       try {
-        const {
-          data: { session },
-          error,
-        } = await supabase.auth.getSession();
+        const slug = window.location.pathname.split("/").pop();
+        const { data: session } = await supabase.auth.getSession();
+        const userId = session?.session?.user?.id || null;
+        setOriginalUser(slug === userId);
+
+        const { data: profileData, error } = await supabase
+          .from("user_profile")
+          .select("*")
+          .eq("id", slug)
+          .single();
+
         if (error) throw error;
-        setSessionID(session?.user?.id || null);
+
+        setUsername(profileData.username || "Guest");
+        setProfilePicture(profileData.profile_picture || null);
+        setFirstName(profileData.first_name || "");
+        setLastName(profileData.last_name || "");
+        setIntro(profileData.intro || "");
+        setInterests(profileData.interests || []);
+        setWebsite(profileData.website || "");
+        setGithubUsername(profileData.github_username || "");
+        setOnlineStatus(profileData.online_status || false);
+        setTotalPins(profileData.total_pins || 0);
+        setFeaturedPin(profileData.featured_pin || "");
+        setFeaturedPinOptions(profileData.featured_pin_options || []);
       } catch (error) {
-        console.error("Error fetching session:", error);
+        console.error("Error fetching profile data:", error);
       }
     };
-    fetchSessionID();
+
+    fetchData();
   }, []);
-
-  useEffect(() => {
-    if (slug === sessionID) {
-      setOriginalUser(true);
-    }
-  }, [slug, sessionID]);
-
-  useEffect(() => {
-    fetchUserInfo();
-    fetchProfileData();
-  }, []);
-
-  useEffect(() => {
-    if (username) {
-      const [first, ...rest] = username.split(" ");
-      setFirstName(first);
-      setLastName(rest.join(" "));
-    }
-  }, [username]);
-
-  const fetchUserInfo = async () => {
-    try {
-      const {
-        data: { user },
-        error: userError,
-      } = await supabase.auth.getUser();
-      if (userError) throw userError;
-
-      const { data, error } = await supabase
-        .from("user_info")
-        .select("username, profile_picture")
-        .eq("id", slug)
-        .single();
-      if (error) throw error;
-
-      setUsername(data?.username || "null");
-      setProfilePicture(data?.profile_picture || null);
-    } catch (error) {
-      console.error("Error fetching user info:", error);
-      setUsername("Guest");
-      setProfilePicture(null);
-    }
-  };
-
-  const fetchProfileData = async () => {
-    try {
-      const { data, error } = await supabase
-        .from("user_profile")
-        .select(
-          "first_name, last_name, intro, interests, website, github_username, online_status, total_pins, featured_pin, featured_pin_options"
-        )
-        .eq("id", slug)
-        .single();
-      if (error) throw error;
-
-      setFirstName(data?.first_name || "");
-      setLastName(data?.last_name || "");
-      setIntro(data?.intro || "");
-      setInterests(data?.interests || []);
-      setWebsite(data?.website || "");
-      setGithubUsername(data?.github_username || "");
-      setOnlineStatus(data?.online_status || false);
-      setTotalPins(data?.total_pins || 0);
-      setFeaturedPin(data?.featured_pin || "");
-    } catch (error) {
-      console.error("Error fetching profile data:", error);
-    }
-  };
 
   const saveProfileToSupabase = async () => {
     try {
-      const {
-        data: { user },
-        error: userError,
-      } = await supabase.auth.getUser();
-      if (userError || !user) throw userError;
+      const { data: session } = await supabase.auth.getSession();
+      const userId = session?.session?.user?.id || null;
 
-      const { error: updateError } = await supabase
-        .from("user_profile")
-        .update({
-          first_name: firstName,
-          last_name: lastName,
-          intro: intro,
-          interests: interests,
-          website: website,
-          github_username: githubUsername,
-          online_status: onlineStatus,
-          total_pins: totalPins,
-          featured_pin: featuredPin,
-        })
-        .eq("id", user.id);
-      if (updateError) throw updateError;
+      if (!userId) throw new Error("User not authenticated");
+
+      const { error } = await supabase.from("user_profile").upsert({
+        id: userId,
+        email: session.session?.user?.email || "",
+        profile_picture: profilePicture,
+        first_name: firstName,
+        last_name: lastName,
+        intro,
+        interests,
+        website,
+        github_username: githubUsername,
+        online_status: onlineStatus,
+        total_pins: totalPins,
+        featured_pin: featuredPin,
+        featured_pin_options: featuredPinOptions,
+      });
+
+      if (error) throw error;
 
       addToast({ variant: "success", message: "Profile updated successfully" });
     } catch (error) {
-      console.error("Error updating profile:", error);
+      console.error("Error saving profile:", error);
+      addToast({ variant: "danger", message: "Failed to update profile" });
     }
   };
 
@@ -307,28 +254,6 @@ export default function ProfileCard() {
           >
             Save
           </Button>
-
-          {/* <Button
-                    variant="primary"
-                    size="l"
-                    fillWidth
-                    style={{
-                        height: "54px",
-                        borderRadius: "17px",
-                        maxWidth: "100%",
-                        color: "#d32f2f",
-                        border: "1px solid #f57373",
-                        backgroundColor: "#FFCDD2",
-                    }}
-                    onMouseEnter={(e: any) => {
-                        e.currentTarget.style.backgroundColor = "#FFbfc2";
-                    }}
-                    onMouseLeave={(e: any) => {
-                        e.currentTarget.style.backgroundColor = "#FFCDD2";
-                    }}
-                >
-                    Delete account
-                </Button> */}
         </Row>
       )}
     </Column>
