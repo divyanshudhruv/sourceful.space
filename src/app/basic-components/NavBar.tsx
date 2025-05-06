@@ -8,12 +8,22 @@ import {
   Column,
   UserMenu,
   IconButton,
+  Dialog,
+  Input,
+  Textarea,
+  TagInput,
+  Kbd,
+  ToggleButton,
+  Feedback,
+  Chip,
 } from "@/once-ui/components";
 import { Lexend } from "next/font/google";
 import { useEffect, useState } from "react";
 const lexend = Lexend({ subsets: ["latin"], weight: "400" });
 import "./NavBar.css";
 import supabase from "services/supabase";
+import { s } from "node_modules/framer-motion/dist/types.d-DDSxwf0n";
+import { MediaUpload } from "@/once-ui/modules";
 
 export default function NavBar() {
   const [username, setUsername] = useState<string | null>(null);
@@ -21,6 +31,8 @@ export default function NavBar() {
   const [session, setSession] = useState(false);
   const [sessionID, setSessionID] = useState<string | null>(null);
   const [email, setEmail] = useState<string | null>(null);
+  const [isOpenPrimary, setIsOpenPrimary] = useState(false);
+  const [isOpenSecondary, setIsOpenSecondary] = useState(false);
 
   useEffect(() => {
     async function checkSession() {
@@ -124,6 +136,27 @@ export default function NavBar() {
     }
   }
 
+  const toggleButtonsData = [
+    { selected: true, theText: "AI" },
+    { selected: false, theText: "BuildInPublic" },
+    { selected: false, theText: "OpenSource" },
+    { selected: false, theText: "Portfolio" },
+    { selected: false, theText: "SaaS" },
+    { selected: false, theText: "Concept" },
+    { selected: false, theText: "Others" },
+  ];
+
+  const [toggleStates, setToggleStates] = useState(
+    toggleButtonsData.map((data) => ({ ...data }))
+  );
+
+  const handleToggle = (index: number) => {
+    setToggleStates((prevStates) =>
+      prevStates.map((state, i) =>
+        i === index ? { ...state, selected: !state.selected } : state
+      )
+    );
+  };
   return (
     <Row
       borderBottom="neutral-medium"
@@ -176,8 +209,8 @@ export default function NavBar() {
             }}
             loading={!username}
             selected={false}
-            minWidth={2}
-            maxWidth={2}
+            minWidth={4}
+            maxWidth={4}
             style={{ scale: "0.85" }}
             className="usermenu"
             dropdown={
@@ -203,6 +236,21 @@ export default function NavBar() {
                             ></i>
                           </IconButton>
                           <Text>Profile</Text>
+                        </Row>
+                      }
+                    />
+                    <Option
+                      value="Profile"
+                      onClick={() => setIsOpenPrimary(true)}
+                      label={
+                        <Row horizontal="center" vertical="center" gap="8">
+                          <IconButton variant="secondary">
+                            <i
+                              className="ri-add-line"
+                              style={{ fontSize: "14px", color: "#555" }}
+                            ></i>
+                          </IconButton>
+                          <Text>Create</Text>
                         </Row>
                       }
                     />
@@ -246,6 +294,173 @@ export default function NavBar() {
           />
         </Row>
       </Row>
+      <Dialog
+        maxWidth={30}
+        isOpen={isOpenPrimary} //isOpen
+        onClose={() => setIsOpenPrimary(false)}
+        title={<Text variant="heading-default-xl">New Pin</Text>}
+        description={
+          <Text variant="body-default-s" onBackground="neutral-weak">
+        Create a new pin to share with the community.
+          </Text>
+        }
+        shadow="xs"
+        footer={
+          <Row horizontal="start" fillWidth paddingX="8">
+        <Text
+          variant="label-default-s"
+          style={{ color: "#666", fontSize: "12px" }}
+        >
+          <i
+            className="ri-information-line"
+            style={{
+          fontSize: "14px",
+          color: "#666",
+          borderRadius: "100%",
+          marginRight: "4px",
+          marginTop: "2px",
+            }}
+          ></i>
+          You can upload your project only once, no editing allowed.
+        </Text>
+          </Row>
+        }
+      >
+        <Column fillWidth fillHeight horizontal="center" gap="12">
+          <Column fillWidth>
+        <Input
+          id="pin-title"
+          label="Title"
+          value={""}
+          onInput={(e) => console.log("Title:", e.currentTarget.value)}
+          labelAsPlaceholder={false}
+          style={{ borderRadius: "0px !important" }}
+          error={false}
+          radius="top"
+          height="s"
+        />
+        <Textarea
+          id="pin-description"
+          label="Description"
+          lines={1}
+          value={""}
+          onInput={(e) => console.log("Description:", e.currentTarget.value)}
+          labelAsPlaceholder={false}
+          style={{ borderRadius: "0px !important" }}
+          radius="none"
+        />
+        <Textarea
+          id="pin-content"
+          description="Describe your pin in detail. (optional)"
+          label="Content"
+          lines={4}
+          value={""}
+          onInput={(e) => console.log("Content:", e.currentTarget.value)}
+          labelAsPlaceholder={false}
+          style={{ borderRadius: "0px !important" }}
+          radius="bottom"
+        />
+          </Column>
+
+          <Column fillWidth gap="8">
+        <TagInput
+          id="pin-tags"
+          value={[]}
+          onChange={(tags) => console.log("Tags:", tags)}
+          hasSuffix={<Kbd>Enter</Kbd>}
+          label="Tags"
+        />
+        <Row
+          height={3}
+          fillWidth
+          gap="4"
+          paddingX="2"
+          style={{
+            maxWidth: "100%",
+            overflowY: "hidden",
+            overflowX: "scroll",
+          }}
+        >
+          {toggleStates.map((toggleState, index) => (
+            <ToggleButton
+          key={index}
+          onClick={() => handleToggle(index)}
+          selected={toggleState.selected}
+          size="m"
+          fillWidth={false}
+          justifyContent="center"
+          style={{
+            border: "1px solid #EFEEEB",
+            padding: "8px",
+          }}
+            >
+          <Text variant="body-default-xs" style={{ color: "#555" }}>
+            <Text variant="label-default-xs" style={{ color: "#777" }}>
+              #
+            </Text>
+            {toggleState.theText}
+          </Text>
+            </ToggleButton>
+          ))}
+        </Row>
+          </Column>
+          <Row fillWidth>
+        <Input
+          id="pin-website-link"
+          label="Website Link"
+          value={""}
+          onInput={(e) => console.log("Website Link:", e.currentTarget.value)}
+          labelAsPlaceholder={false}
+          style={{ borderRadius: "0px !important" }}
+          error={false}
+          height="s"
+          hasPrefix={<Text variant="label-default-s">https://</Text>}
+        />
+          </Row>
+          <Row fillWidth>
+        <MediaUpload
+          id="pin-media-upload"
+          height={20}
+          compress={true}
+          aspectRatio="16 / 9"
+          quality={0}
+          loading={false}
+          initialPreviewImage=""
+          onChange={(file) => console.log("Media Uploaded:", file)}
+        />
+          </Row>
+
+          <Row horizontal="start" fillWidth paddingX="8">
+        <Column>
+          <Text
+            variant="label-default-s"
+            style={{ color: "#333", fontSize: "12px" }}
+          >
+            Project Media
+          </Text>
+          <Text variant="label-default-s" style={{ color: "#666" }}></Text>
+            </Column>
+          </Row>
+
+          <Input
+            id="first-name"
+            label="Built with"
+            hasSuffix={<Kbd>Techs</Kbd>}
+            value={""}
+            labelAsPlaceholder={false}
+            style={{ borderRadius: "0px !important" }}
+            error={false}
+            height="s"
+            description={"Mention the tech stack used. (required)"}
+          ></Input>
+          <Row horizontal="start" fillWidth gap="0"></Row>
+          <Row horizontal="end" fillWidth paddingBottom="20">
+            <Button variant="primary">
+              <Text>Create</Text>
+            </Button>
+          </Row>
+        </Column>
+      </Dialog>
     </Row>
   );
 }
