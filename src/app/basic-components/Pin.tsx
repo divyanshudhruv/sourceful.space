@@ -9,13 +9,13 @@ import {
   Tooltip,
   Flex,
   LetterFx,
+  RevealFx,
 } from "@/once-ui/components";
 import { createClient } from "@supabase/supabase-js";
 import supabase from "services/supabase";
 import { useState, useEffect } from "react";
 export default function Pin() {
   const [loading, setLoading] = useState(true);
-
   async function fetchProjects() {
     setLoading(true);
     try {
@@ -45,10 +45,12 @@ export default function Pin() {
   const [projects, setProjects] = useState<any[]>([]);
 
   useEffect(() => {
-    fetchProjects().then((projects) => {
-      console.log("Fetched projects:", projects);
-      setProjects(projects);
-    });
+    const timeoutId = setTimeout(() => {
+      fetchProjects().then((projects) => {
+        console.log("Fetched projects:", projects);
+        setProjects(projects);
+      });
+    }, 200); // Delay fetchProjects by 1 second
 
     const channel = supabase.realtime
       .channel("pins")
@@ -89,6 +91,7 @@ export default function Pin() {
       .subscribe();
 
     return () => {
+      clearTimeout(timeoutId); // Clear timeout on cleanup
       supabase.removeChannel(channel);
     };
   }, []);
@@ -100,7 +103,7 @@ export default function Pin() {
           <Text variant="label-default-s" style={{ color: "#333" }}>
             <LetterFx
               speed="fast"
-              trigger="instant"
+              trigger="custom"
               charset={[
                 "X",
                 "@",
@@ -125,22 +128,30 @@ export default function Pin() {
         </Flex>
       )}
       {projects.map((project, index) => (
-        <PinCard
+        <RevealFx
           key={index}
-          imageSrc={project.blob_image_url || "null"}
-          imageAlt={project.title || "null"}
-          title={project.title || "null"}
-          tags={[
-            { label: `#${index + 1}` }, // Set pin position in the tag
-            ...(project.default_tags
-              ? project.default_tags.map((tag: string) => ({ label: tag }))
-              : []),
-          ]}
-          description={project.description || ""}
-          buttons={[
-            { label: "Details", href: `/projects/${project.project_id}` },
-          ]}
-        />
+          speed="fast"
+          delay={-400}
+          translateY={0}
+          trigger={false}
+        >
+          <PinCard
+            key={index}
+            imageSrc={project.blob_image_url || "null"}
+            imageAlt={project.title || "null"}
+            title={project.title || "null"}
+            tags={[
+              { label: `#${index + 1}` }, // Set pin position in the tag
+              ...(project.default_tags
+                ? project.default_tags.map((tag: string) => ({ label: tag }))
+                : []),
+            ]}
+            description={project.description || ""}
+            buttons={[
+              { label: "Details", href: `/projects/${project.project_id}` },
+            ]}
+          />
+        </RevealFx>
       ))}
     </div>
   );

@@ -1,4 +1,11 @@
-import { Column, Flex, Row, Text } from "@/once-ui/components";
+import {
+  Column,
+  Flex,
+  LetterFx,
+  RevealFx,
+  Row,
+  Text,
+} from "@/once-ui/components";
 import { Lexend } from "next/font/google";
 import { Space_Grotesk } from "next/font/google";
 const lexend = Lexend({ subsets: ["latin"], weight: "400" });
@@ -9,7 +16,6 @@ import ToggleButtons from "./ToggleButtons";
 export default function Hero() {
   return (
     <>
-      {" "}
       <Column
         fillWidth
         style={{ height: "fit-content" }}

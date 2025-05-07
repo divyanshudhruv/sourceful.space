@@ -1,6 +1,5 @@
 import React from "react";
-import { Row, Column, Button, Text } from "@/once-ui/components";
-import TopPin from "./TopPin";
+import {  Column } from "@/once-ui/components";
 import Pin from "./Pin";
 export default function Pins() {
   return (

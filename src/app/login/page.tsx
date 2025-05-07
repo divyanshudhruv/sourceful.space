@@ -24,9 +24,9 @@ export default function Home() {
   async function google_auth() {
     await supabase.auth.signInWithOAuth({
       provider: "google",
-      options: {
-        redirectTo: `https://123.com`,
-      },
+      // options: {
+      //   redirectTo: `https://123.com`,
+      // },
     });
   }
 
