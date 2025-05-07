@@ -7,6 +7,6 @@
 node_modules/
 dist/
 build/ 
-
+ 
 # Ignore specific files
 src/ -->
