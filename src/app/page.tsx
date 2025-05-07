@@ -11,23 +11,11 @@ import Hero from "./basic-components/Hero";
 import Pins from "./basic-components/Pins";
 import Footer from "./basic-components/Footer";
 import Theme from "./basic-components/Theme";
-import Pin from "./basic-components/Pin";
 
 import "./page.css";
 
 export default function Home() {
-  // useEffect(() => {
-  //   const checkSession = async () => {
-  //     const {
-  //       data: { session },
-  //     } = await supabase.auth.getSession();
-  //     if (!session) {
-  //       window.location.href = "/login";
-  //     }
-  //   };
-
-  //   checkSession();
-  // }, []);
+  
 
   return (
     <>

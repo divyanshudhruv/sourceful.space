@@ -6,12 +6,10 @@ import {
   Button,
   Tag,
   SmartImage,
-  Tooltip,
   Flex,
   LetterFx,
   RevealFx,
 } from "@/once-ui/components";
-import { createClient } from "@supabase/supabase-js";
 import supabase from "services/supabase";
 import { useState, useEffect } from "react";
 export default function Pin() {

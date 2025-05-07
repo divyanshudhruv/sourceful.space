@@ -1,8 +1,7 @@
 import {
   Column,
   Flex,
-  LetterFx,
-  RevealFx,
+
   Row,
   Text,
 } from "@/once-ui/components";
