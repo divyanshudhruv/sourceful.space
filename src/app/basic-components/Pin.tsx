@@ -148,6 +148,7 @@ export default function Pin() {
             buttons={[
               { label: "Details", href: `/projects/${project.project_id}` },
             ]}
+            className="responsive-card"
           />
         </RevealFx>
       ))}
@@ -214,9 +215,10 @@ function PinCard({
           <Row
             vertical="center"
             textVariant="body-default-xl"
-            height={6}
+            height={4}
             width={16}
             gap="2"
+            className="responsive-card-text-container"
           >
             <Text
               style={{
@@ -240,7 +242,11 @@ function PinCard({
               />
             ))}
           </Row>
-          <Row marginTop="20">
+          <Row
+            marginTop="20"
+            marginBottom="20"
+            style={{ marginTop: "20px !important" }}
+          >
             <Text
               variant="body-default-s"
               onBackground="neutral-weak"

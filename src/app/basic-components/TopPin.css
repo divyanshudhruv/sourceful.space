@@ -1,10 +1,8 @@
 @media (max-width: 835px) {
     .responsive-row {
         flex-direction: column;
-        max-width: 70% !important;
-        left: 0;
-        right: 0;
-        margin: auto;
+        max-width: 60vw !important;
+        height: fit-content !important;
     }
 
     .responsive-image {
@@ -34,5 +32,13 @@
     .hero-togglebuttons-container {
         flex-direction: row !important;
         justify-content: start !important;
+    }
+
+    .responsive-card-text-container {
+        width: 100% !important;
+    }
+
+    .responsive-card {
+        max-width: 65vw !important;
     }
 }
