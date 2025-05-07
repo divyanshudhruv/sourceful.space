@@ -60,7 +60,7 @@ export default function NavBar() {
 
   useEffect(() => {
     async function uploadUserInfo() {
-      if (session && sessionID) {
+      if (session && sessionID && !isLoading) {
         try {
           const { data, error }: { data: any; error: any } = await supabase
             .from("user_info")
@@ -172,54 +172,123 @@ export default function NavBar() {
   const [lookingForAmount, setLookingForAmount] = useState<number>(0);
   const [fundingDescription, setFundingDescription] = useState("");
   const [selectedValues, setSelectedValues] = useState<string[]>([]);
+  const [fileNameSupabase, setFileNameSupabase] = useState<string | null>(null);
+  const [base64Image, setBase64Image] = useState<string | null>(null);
   const { addToast } = useToast();
 
-  async function send_project_data_to_supabase() {
-    if (session && sessionID) {
-      try {
-        const { data, error } = await supabase.from("projects").insert([
-          {
-            id: sessionID,
-            project_id: `prj_${Math.random().toString(36).substring(2, 10)}`,
-            title: pinTitle,
-            description: pinDescription,
-            content: pinContent,
-            tags: pinTags,
-            default_tags: selectedValues,
-            website_link: pinWebsiteLink,
-            media_url: pinMedia ? URL.createObjectURL(pinMedia) : null,
-            built_with: pinBuiltWith,
-            looking_for: [lookingForAmount],
-            open_for_funding: isOpenForFunding,
-            funding_goal: fundingGoal,
-            funding_pitch: fundingDescription,
-          },
-        ]);
+  const [isLoading, setIsLoading] = useState(false);
 
-        if (error) {
-          console.error("Error uploading project data:", error.message);
+  async function send_project_data_to_supabase() {
+    if (!session || !sessionID) {
+      console.error("No active session or session ID found.");
+      addToast({
+        message: "No active session or session ID found.",
+        variant: "danger",
+      });
+      return;
+    }
+
+    if (
+      !pinTitle ||
+      !pinDescription ||
+      !pinContent ||
+      !pinTags.length ||
+      !pinBuiltWith ||
+      (isOpenForFunding && (!fundingGoal || !fundingDescription))
+    ) {
+      addToast({
+        message: "Please fill in all required fields.",
+        variant: "danger",
+      });
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      let mediaUrl: string | null = null;
+
+      if (pinMedia) {
+        const fileName = `${sessionID}_${Date.now()}_${pinMedia.name}`;
+        setFileNameSupabase(fileName);
+       
+
+        const reader = new FileReader();
+        reader.readAsDataURL(pinMedia);
+        reader.onloadend = () => {
+          const base64String = reader.result as string;
+          setBase64Image(base64String);
+        };
+
+        const { error: uploadError } = await supabase.storage
+          .from("project-covers")
+          .upload(fileName, pinMedia);
+
+        if (uploadError) {
+          console.error(
+            "Error uploading media to storage:",
+            uploadError.message
+          );
           addToast({
-            message: "Error uploading project data.",
+            message: "Error uploading media to storage.",
             variant: "danger",
           });
-        } else {
-          console.log("Project data uploaded successfully:", data);
-          addToast({
-            message: "Project data uploaded successfully.",
-            variant: "success",
-          });
+          setIsLoading(false);
+          return;
         }
-      } catch (err) {
-        console.error("Unexpected error:", err);
+
+        const { data: publicUrlData } = supabase.storage
+          .from("project-covers")
+          .getPublicUrl(fileName);
+
+        mediaUrl = publicUrlData?.publicUrl || null;
+      }
+
+      const { error } = await supabase.from("projects").insert([
+        {
+          id: sessionID,
+          project_id: `prj_${Math.random().toString(36).substring(2, 10)}`,
+          title: pinTitle,
+          description: pinDescription,
+          content: pinContent,
+          tags: pinTags,
+          default_tags: selectedValues,
+          website_link: pinWebsiteLink,
+          media_url: mediaUrl,
+          built_with: pinBuiltWith,
+          looking_for: [lookingForAmount],
+          open_for_funding: isOpenForFunding,
+          funding_goal: fundingGoal,
+          funding_pitch: fundingDescription,
+          blob_image_url: base64Image,
+          file_name: fileNameSupabase,
+        },
+      ]);
+
+      if (error) {
+        console.error("Error uploading project data:", error.message);
         addToast({
-          message: "Unexpected error occurred.",
+          message: "Error uploading project data.",
           variant: "danger",
         });
+      } else {
+        console.log("Project data uploaded successfully.");
+        addToast({
+          message: "Project data uploaded successfully.",
+          variant: "success",
+        });
       }
-    } else {
-      console.error("No active session or session ID found.");
+    } catch (err) {
+      console.error("Unexpected error:", err);
+      addToast({
+        message: "Unexpected error occurred.",
+        variant: "danger",
+      });
+    } finally {
+      setIsLoading(false);
     }
   }
+
   return (
     <Row
       borderBottom="neutral-medium"
@@ -583,6 +652,7 @@ export default function NavBar() {
             <Button
               variant="primary"
               onClick={() => send_project_data_to_supabase()}
+              disabled={isLoading}
             >
               <Text>Create</Text>
             </Button>

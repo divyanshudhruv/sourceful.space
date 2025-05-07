@@ -8,24 +8,99 @@ import {
   SmartImage,
 } from "@/once-ui/components";
 import "./TopPin.css"; // Import the CSS file for styles
+import { createClient } from "@supabase/supabase-js";
+import supabase from "services/supabase";
+import { useState, useEffect } from "react";
 export default function Pin() {
-  const imageSrc = "/l4.png";
-  const imageAlt = "Image description";
-  const title = "Neartha Antivirus";
-  const tags = [{ label: "#2" }];
-  const description =
-    "Sourceful is your community hub for open source. Discover projects, connect with others, invest, and build the future together with collaboration and innovation at its core.";
-  const buttons = [{ label: "Details", href: "#" }];
+  async function fetchProjects() {
+    try {
+      const { data, error } = await supabase
+        .from("projects")
+        .select(
+          "project_id, title, description, blob_image_url, open_for_funding, default_tags"
+        )
+        .limit(10); // Fetch top 10 projects
+
+      if (error) {
+        console.error("Error fetching projects:", error);
+        return [];
+      }
+
+      return data || [];
+    } catch (err) {
+      console.error("Unexpected error:", err);
+      return [];
+    }
+  }
+
+  const [projects, setProjects] = useState<any[]>([]);
+
+  useEffect(() => {
+    fetchProjects().then((projects) => {
+      console.log("Fetched projects:", projects);
+      setProjects(projects);
+    });
+
+    const channel = supabase.realtime.channel("projects")
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "projects" },
+        (payload: { new: any }) => {
+          console.log("New project added:", payload.new);
+          setProjects((prevProjects) => [payload.new, ...prevProjects]);
+        }
+      )
+      .on(
+        "postgres_changes",
+        { event: "UPDATE", schema: "public", table: "projects" },
+        (payload: { new: any }) => {
+          console.log("Project updated:", payload.new);
+          setProjects((prevProjects) =>
+            prevProjects.map((project) =>
+              project.project_id === payload.new.project_id ? payload.new : project
+            )
+          );
+        }
+      )
+      .on(
+        "postgres_changes",
+        { event: "DELETE", schema: "public", table: "projects" },
+        (payload: { old: any }) => {
+          console.log("Project deleted:", payload.old);
+          setProjects((prevProjects) =>
+            prevProjects.filter(
+              (project) => project.project_id !== payload.old.project_id
+            )
+          );
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, []);
 
   return (
-    <PinCard
-      imageSrc={imageSrc}
-      imageAlt={imageAlt}
-      title={title}
-      tags={tags}
-      description={description}
-      buttons={buttons}
-    />
+    <div>
+      {projects.map((project, index) => (
+        <PinCard
+          key={index}
+          imageSrc={project.blob_image_url || "null"}
+          imageAlt={project.title || "null"}
+          title={project.title || "null"}
+          tags={
+            project.default_tags
+              ? project.default_tags.map((tag: string) => ({ label: tag }))
+              : [{ label: "" }]
+          }
+          description={project.description || ""}
+          buttons={[
+            { label: "Details", href: `/projects/${project.project_id}` },
+          ]}
+        />
+      ))}
+    </div>
   );
 }
 

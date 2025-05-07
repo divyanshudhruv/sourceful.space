@@ -3,7 +3,7 @@
   "version": "0.6",
   "scripts": {
     "dev": "next dev --turbopack",
-    "export": "next export",
+    "export": "next export", 
     "build": "next build",
     "start": "next start",
     "biome-write": "npx @biomejs/biome format --write .",
