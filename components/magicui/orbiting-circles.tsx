@@ -5,7 +5,7 @@ export interface OrbitingCirclesProps
   extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
   children?: React.ReactNode;
-  reverse?: boolean;
+  reverse?: boolean; 
   duration?: number;
   delay?: number;
   radius?: number;
