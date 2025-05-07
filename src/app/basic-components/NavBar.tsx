@@ -24,7 +24,7 @@ import { useEffect, useState } from "react";
 const lexend = Lexend({ subsets: ["latin"], weight: "400" });
 import "./NavBar.css";
 import supabase from "services/supabase";
-import { s } from "node_modules/framer-motion/dist/types.d-DDSxwf0n";
+import { s, t } from "node_modules/framer-motion/dist/types.d-DDSxwf0n";
 import { MediaUpload } from "@/once-ui/modules";
 
 export default function NavBar() {
@@ -272,6 +272,21 @@ export default function NavBar() {
         });
       } else {
         console.log("Project data uploaded successfully.");
+        setPinTitle("");
+        setPinDescription("");
+        setPinContent("");
+        setPinTags([]);
+        setPinWebsiteLink("");
+        setPinMedia(null);
+        setPinBuiltWith("");
+        setIsOpenForFunding(false);
+        setFundingGoal(0);
+        setLookingForAmount(0);
+        setFundingDescription("");
+        setSelectedValues([]);
+        setFileNameSupabase(null);
+        setBase64Image(null);
+
         addToast({
           message: "Project data uploaded successfully.",
           variant: "success",
@@ -461,7 +476,8 @@ export default function NavBar() {
         <Column fillWidth fillHeight horizontal="center" gap="12">
           <Column fillWidth>
             <Input
-              id="pin-title-input"
+              id="pin-title-input"              spellCheck= {false}
+
               label="Title"
               value={pinTitle}
               onInput={(e) => setPinTitle(e.currentTarget.value)}
@@ -473,8 +489,10 @@ export default function NavBar() {
             />
             <Textarea
               id="pin-description-textarea"
+              spellCheck= {false}
               label="Description"
               lines={1}
+             resize="vertical"
               value={pinDescription}
               onInput={(e) => setPinDescription(e.currentTarget.value)}
               labelAsPlaceholder={false}
@@ -485,7 +503,8 @@ export default function NavBar() {
               id="pin-content-textarea"
               description="Describe your pin in detail. (optional)"
               label="Content"
-              lines={4}
+              lines={4}              spellCheck= {false}
+
               value={pinContent}
               onInput={(e) => setPinContent(e.currentTarget.value)}
               labelAsPlaceholder={false}
@@ -553,7 +572,8 @@ export default function NavBar() {
               labelAsPlaceholder={false}
               style={{ borderRadius: "0px !important" }}
               error={false}
-              height="s"
+              height="s"              spellCheck= {false}
+
               hasPrefix={<Text variant="label-default-s">https://</Text>}
             />
           </Row>
@@ -587,7 +607,8 @@ export default function NavBar() {
           </Row>
 
           <Input
-            id="pin-built-with-input"
+            id="pin-built-with-input"              spellCheck= {false}
+
             label="Built with"
             hasSuffix={<Kbd>Techs</Kbd>}
             value={pinBuiltWith}
@@ -621,7 +642,8 @@ export default function NavBar() {
               value={fundingGoal}
               labelAsPlaceholder={false}
               style={{ borderRadius: "0px !important" }}
-              onChange={(value) => setFundingGoal(value)}
+              onChange={(value) => setFundingGoal(value)}              spellCheck= {false}
+
               radius="top"
             />
             <NumberInput
@@ -629,7 +651,8 @@ export default function NavBar() {
               error={false}
               label="Looking for ($)"
               value={lookingForAmount}
-              labelAsPlaceholder={false}
+              labelAsPlaceholder={false}              spellCheck= {false}
+
               style={{ borderRadius: "0px !important" }}
               onChange={(value) => setLookingForAmount(value)}
               radius="none"
@@ -638,7 +661,8 @@ export default function NavBar() {
             <Textarea
               id="pin-funding-description-textarea"
               label="Funding pitch"
-              lines={3}
+              lines={3}              spellCheck= {false}
+
               value={fundingDescription}
               onInput={(e) => setFundingDescription(e.currentTarget.value)}
               radius="bottom"
