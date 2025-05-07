@@ -6,7 +6,7 @@
 # Or ignore specific directories
 node_modules/
 dist/
-build/
+build/ 
 
 # Ignore specific files
 src/ -->
