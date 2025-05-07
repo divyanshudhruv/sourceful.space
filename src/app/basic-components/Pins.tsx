@@ -6,8 +6,6 @@ export default function Pins() {
   return (
     <div id="pins">
       <Column horizontal="center" style={{ maxWidth: "800px" }} gap="32">
-        <TopPin></TopPin>
-
         <Pin />
       </Column>
     </div>
