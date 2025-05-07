@@ -5,7 +5,7 @@ A design system for indie builders who move fast and break limits without neglec
 
 ![Once UI](public/images/og/home.jpg)
  
-# Features
+# Features 
 
 Start building your Next.js app in minutes with: 
 * **A robust token and style system** that simplifies customization and ensures consistency. 
