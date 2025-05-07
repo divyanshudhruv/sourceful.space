@@ -5,7 +5,7 @@ const nextConfig = {
     silenceDeprecations: ["legacy-js-api"],
   },
   images: {
-    remotePatterns: [
+    remotePatterns: [ 
       {
         protocol: 'https',
         hostname: 'lh3.googleusercontent.com',
