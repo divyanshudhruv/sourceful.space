@@ -71,7 +71,7 @@ const effects = {
     radius: 100,
   },
   gradient: {
-    display: true,
+    display: false,
     opacity: 50,
     x: 50,
     y: 0,

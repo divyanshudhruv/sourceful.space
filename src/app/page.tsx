@@ -41,6 +41,7 @@ import {
   StyleOverlay,
   CompareImage,
   ThemeSwitcher,
+  UserMenu,
 } from "@/once-ui/components";
 import { CodeBlock, MediaUpload } from "@/once-ui/modules";
 import { ScrollToTop } from "@/once-ui/components/ScrollToTop";
@@ -72,36 +73,30 @@ export default function Home() {
           data-border="rounded"
           horizontal="space-between"
           maxWidth="l"
-          paddingRight="64"
+          paddingRight="32"
           paddingLeft="32"
           paddingY="20"
+          vertical="center"
         >
-          <Logo size="s" icon={false} href="https://once-ui.com" />
+          <Text variant="body-default-l">sourceful.space</Text>
           <Row gap="12" hide="s">
-            <Button
-              href="https://discord.com/invite/5EyAQ4eNdS"
-              prefixIcon="discord"
-              size="s"
-              label="Discord"
-              weight="default"
-              variant="tertiary"
+            <UserMenu
+              name="Divyanshu Dhruv"
+              subline="Space User"
+              tagProps={{
+                variant: "accent",
+                label: "",
+              }}
+              avatarProps={{
+                empty: false,
+                src: "/images/pfp.png",
+                statusIndicator: {
+                  color: "gray",
+                },
+              }}
+              loading={false}
+              selected={false}
             />
-            <Button
-              href="https://github.com/once-ui-system"
-              prefixIcon="github"
-              size="s"
-              label="GitHub"
-              weight="default"
-              variant="tertiary"
-            />
-            <Row position="fixed" top="20" right="20">
-              <StyleOverlay
-                position="fixed"
-                top="8"
-                right="8"
-                style={{ height: "calc(100vh - var(--static-space-16))" }}
-              />
-            </Row>
           </Row>
         </Row>
       </Row>
@@ -178,9 +173,9 @@ export default function Home() {
             position="relative"
           >
             <InlineCode radius="xl" shadow="m" fit paddingX="16" paddingY="8">
-              2025 in review |
+              Highlights of 2025 |
               <Text onBackground="brand-medium" marginLeft="8">
-                Read more
+                Discover more
               </Text>
             </InlineCode>
             <Heading wrap="balance" variant="display-strong-xl" align="center">
@@ -214,10 +209,8 @@ export default function Home() {
                   bottom: "45px",
                   right: "15px",
                   zIndex: "9999",
-                  borderRadius: "10px",
-                  paddingBlock: "18px",
                 }}
-                size="s"
+                size="m"
                 variant="primary"
                 disabled={false}
                 className={lexend.className}
@@ -232,7 +225,6 @@ export default function Home() {
                 description={
                   <>
                     <Row vertical="center">
-                      {" "}
                       <IconButton
                         icon="infoCircle"
                         size="s"
@@ -250,7 +242,7 @@ export default function Home() {
               />
             </Column>
 
-            <Column horizontal="center" paddingTop="64" fillWidth gap="24">
+            <Column horizontal="center" paddingTop="8" fillWidth gap="24">
               <Line
                 maxWidth={4}
                 marginBottom="16"
