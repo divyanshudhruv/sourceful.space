@@ -106,7 +106,7 @@ export default function Home() {
           vertical="center"
         >
           <Text variant="body-default-l">sourceful.space</Text>
-          <Row gap="12" hide="s">
+          <Row gap="12" hide="s" vertical="center">
             <UserMenu
               name="Divyanshu Dhruv"
               subline="Space User"
@@ -123,7 +123,9 @@ export default function Home() {
               }}
               loading={false}
               selected={false}
-            />
+            />{" "}
+            <Line vert={true} height={2}></Line>
+            <ThemeSwitcher fillHeight />
           </Row>
         </Row>
       </Row>
