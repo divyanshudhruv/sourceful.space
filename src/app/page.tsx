@@ -50,17 +50,30 @@ import { Lexend } from "next/font/google";
 
 export default function Home() {
   const [idea, setIdea] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const handleSubmit = async (prompt: string) => {
-    const response = await fetch('/api/gemini', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+    if (!prompt) {
+      return;
+    }
+    setIsLoading(true);
+    const response = await fetch("/api/gemini", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ prompt }),
     });
 
     const data = await response.json();
 
-    alert(data.generatedText);
-    console.log('Usage Metadata:', data.usageMetadata);
+    setIsLoading(false);
+    if (!response.ok) {
+      console.error("Error:", data);
+      return;
+    }
+    setTimeout(() => {
+      alert(data.generatedText);
+    }, 1000);
+
+    console.log("Usage Metadata:", data.usageMetadata);
   };
 
   return (
@@ -135,7 +148,7 @@ export default function Home() {
           <Background
             mask={{
               x: 0,
-              y: 48,
+              y: 10,
             }}
             position="absolute"
             grid={{
@@ -216,15 +229,15 @@ export default function Home() {
               size="l"
               arrowIcon
             />
-            <Column maxWidth={30} marginTop="8">
+            <Column maxWidth={31} marginTop="8">
               <Textarea
                 id="example-textarea"
                 label="Submit your open-source startup idea"
-                lines={5}
+                lines={6}
                 value={idea}
                 onChange={(e) => setIdea(e.target.value)}
                 spellCheck={false}
-                maxLength={500}
+                maxLength={600}
                 description={
                   <>
                     <Row vertical="center">
@@ -236,7 +249,7 @@ export default function Home() {
                         variant="ghost"
                         disabled={true}
                       />
-                      <Text>Keep the text under 500 words</Text>
+                      <Text>Keep the text under 600 characters</Text>
                     </Row>
                   </>
                   // meul
@@ -250,6 +263,7 @@ export default function Home() {
                   bottom: "45px",
                   right: "15px",
                   zIndex: "9999",
+                  transition: "0.3s !important",
                 }}
                 size="m"
                 variant="primary"
@@ -260,7 +274,33 @@ export default function Home() {
                   console.log(response);
                 }}
               >
-                <Text variant="label-default-s">Review by AI</Text>
+                {isLoading ? (
+                  <Row
+                    horizontal="center"
+                    vertical="center"
+                    fillHeight
+                    fillWidth
+                  >
+                    <i
+                      className="ri-loader-line"
+                      style={{
+                        animation: "spin 1s linear infinite",
+                      }}
+                    />
+                    <style jsx>{`
+                      @keyframes spin {
+                        0% {
+                          transform: rotate(0deg);
+                        }
+                        100% {
+                          transform: rotate(360deg);
+                        }
+                      }
+                    `}</style>
+                  </Row>
+                ) : (
+                  <Text variant="label-default-s">Review by AI</Text>
+                )}
               </Button>
             </Column>
 

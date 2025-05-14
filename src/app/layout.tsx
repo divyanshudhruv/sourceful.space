@@ -1,26 +1,31 @@
 import "@/once-ui/styles/index.scss";
 import "@/once-ui/tokens/index.scss";
-import { Work_Sans } from 'next/font/google';
-import { DM_Sans } from 'next/font/google';
+import { Work_Sans } from "next/font/google";
+import { DM_Sans } from "next/font/google";
 import { Lexend } from "next/font/google";
 
 const primary = Lexend({
-    variable: '--font-primary',
-    subsets: ['latin'],
-    display: 'swap'
+  variable: "--font-primary",
+  subsets: ["latin"],
+  display: "swap",
 });
 
 const secondary = DM_Sans({
-    variable: '--font-secondary',
-    subsets: ['latin'],
-    display: 'swap'
+  variable: "--font-secondary",
+  subsets: ["latin"],
+  display: "swap",
 });
-
 
 import classNames from "classnames";
 
 import { baseURL, style, meta, font, effects } from "@/app/resources/config";
-import { Background, Column, Flex, ToastProvider, ThemeProvider } from "@/once-ui/components";
+import {
+  Background,
+  Column,
+  Flex,
+  ToastProvider,
+  ThemeProvider,
+} from "@/once-ui/components";
 
 import { opacity, SpacingToken } from "@/once-ui/types";
 import { Meta, Schema } from "@/once-ui/modules";
@@ -62,7 +67,7 @@ export default function RootLayout({
         font.primary.variable,
         font.secondary.variable,
         font.tertiary.variable,
-        font.code.variable,
+        font.code.variable
       )}
     >
       <Schema
@@ -73,6 +78,10 @@ export default function RootLayout({
         path={meta.home.path}
       />
       <head>
+        <link
+          href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
+          rel="stylesheet"
+        />
         <script
           // biome-ignore lint/security/noDangerouslySetInnerHtml: <It's not dynamic nor a security issue.>
           dangerouslySetInnerHTML={{
@@ -104,7 +113,7 @@ export default function RootLayout({
                 x: effects.mask.x,
                 y: effects.mask.y,
                 radius: effects.mask.radius,
-                cursor: effects.mask.cursor
+                cursor: effects.mask.cursor,
               }}
               gradient={{
                 display: effects.gradient.display,
