@@ -49,6 +49,20 @@ import { RiArrowRightUpFill, RiArrowRightUpLine } from "react-icons/ri";
 import { Lexend } from "next/font/google";
 
 export default function Home() {
+  const [idea, setIdea] = useState("");
+  const handleSubmit = async (prompt: string) => {
+    const response = await fetch('/api/gemini', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt }),
+    });
+
+    const data = await response.json();
+
+    alert(data.generatedText);
+    console.log('Usage Metadata:', data.usageMetadata);
+  };
+
   return (
     <Column fillWidth paddingY="80" paddingX="s" horizontal="center" flex={1}>
       <ScrollToTop>
@@ -203,6 +217,33 @@ export default function Home() {
               arrowIcon
             />
             <Column maxWidth={30} marginTop="8">
+              <Textarea
+                id="example-textarea"
+                label="Submit your open-source startup idea"
+                lines={5}
+                value={idea}
+                onChange={(e) => setIdea(e.target.value)}
+                spellCheck={false}
+                maxLength={500}
+                description={
+                  <>
+                    <Row vertical="center">
+                      <IconButton
+                        icon="infoCircle"
+                        size="s"
+                        tooltip="Information"
+                        tooltipPosition="top"
+                        variant="ghost"
+                        disabled={true}
+                      />
+                      <Text>Keep the text under 500 words</Text>
+                    </Row>
+                  </>
+                  // meul
+                }
+                labelAsPlaceholder={false}
+                resize="none"
+              />
               <Button
                 style={{
                   position: "absolute",
@@ -214,42 +255,51 @@ export default function Home() {
                 variant="primary"
                 disabled={false}
                 className={lexend.className}
+                onClick={async () => {
+                  const response = await handleSubmit(idea);
+                  console.log(response);
+                }}
               >
                 <Text variant="label-default-s">Review by AI</Text>
               </Button>
-
-              <Textarea
-                id="example-textarea"
-                label="Describe your open-source startup idea"
-                lines={5}
-                description={
-                  <>
-                    <Row vertical="center">
-                      <IconButton
-                        icon="infoCircle"
-                        size="s"
-                        tooltip="Tooltip"
-                        tooltipPosition="top"
-                        variant="ghost"
-                        disabled={true}
-                      />
-                      <Text>Keep the text under 500 words</Text>
-                    </Row>
-                  </>
-                }
-                labelAsPlaceholder={false}
-                resize="none"
-              />
             </Column>
 
-            <Column horizontal="center" paddingTop="8" fillWidth gap="24">
+            <Column
+              horizontal="center"
+              paddingTop="32"
+              paddingBottom="32"
+              fillWidth
+              gap="24"
+            >
               <Line
                 maxWidth={4}
                 marginBottom="16"
                 background="neutral-alpha-medium"
               />
             </Column>
+            <Column horizontal="center" fillWidth gap="4">
+              <Heading as="h1" variant="display-default-m">
+                Showcase
+              </Heading>
+              <Text
+                marginBottom="32"
+                align="center"
+                onBackground="neutral-weak"
+              >
+                Tiny open-source projects that are making a big impact
+              </Text>
+
+              {/* COMPARE IMAGE */}
+              <CompareImage
+                radius="xl"
+                overflow="hidden"
+                border="neutral-alpha-weak"
+                leftContent={{ src: "/images/1.jpg", alt: "alt" }}
+                rightContent={{ src: "/images/2.jpg", alt: "alt" }}
+              />
+            </Column>
           </Column>
+          {/*ending of the main column */}
         </Column>
       </Column>
     </Column>
