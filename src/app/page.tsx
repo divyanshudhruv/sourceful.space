@@ -43,6 +43,7 @@ import {
   ThemeSwitcher,
   UserMenu,
   Flex,
+  Kbar,
 } from "@/once-ui/components";
 import { CodeBlock, MediaUpload } from "@/once-ui/modules";
 import { ScrollToTop } from "@/once-ui/components/ScrollToTop";
@@ -55,6 +56,15 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [response, setResponse] = useState("");
+  const [searchValue, setSearchValue] = useState<string>("");
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(e.target.value);
+  };
+
+  const handleClear = () => {
+    setSearchValue("");
+  };
 
   const handleSubmit = async (prompt: string) => {
     if (!prompt) {
@@ -129,7 +139,11 @@ export default function Home() {
               loading={false}
               selected={false}
             />{" "}
-            <Line vert={true} height={2}></Line>
+            <Line
+              vert={true}
+              height={2}
+              background="neutral-alpha-medium"
+            ></Line>
             <ThemeSwitcher fillHeight />
           </Row>
         </Row>
@@ -189,7 +203,7 @@ export default function Home() {
             gradient={{
               display: true,
               tilt: -35,
-              opacity: 50,
+              opacity: 90,
               height: 50,
               width: 35,
               x: 100,
@@ -209,7 +223,7 @@ export default function Home() {
             <InlineCode radius="xl" shadow="m" fit paddingX="16" paddingY="8">
               Backed by none 🥲 |
               <Text onBackground="brand-medium" marginLeft="8">
-               <SmartLink href={"#"}>Support us</SmartLink>
+                <SmartLink href={"#"}>Support us</SmartLink>
               </Text>
             </InlineCode>
             <Heading wrap="balance" variant="display-strong-xl" align="center">
@@ -271,8 +285,7 @@ export default function Home() {
                   right: "15px",
                   zIndex: "2",
                   transition: "0.3s !important",
-                                          paddingBlock:"22px"
-
+                  paddingBlock: "22px",
                 }}
                 size="m"
                 variant="primary"
@@ -312,8 +325,8 @@ export default function Home() {
                 )}
               </Button>
               <Dialog
-              maxWidth={35}
-              style={{ zIndex: 999999999 }}
+                maxWidth={35}
+                style={{ zIndex: 999999999 }}
                 isOpen={isOpen}
                 onClose={() => setIsOpen(false)}
                 title="AI Review"
@@ -336,8 +349,7 @@ export default function Home() {
                 // }
               >
                 <Column fillWidth gap="16" marginTop="12">
-                <Text style={{lineHeight:"1.3em"}}> {response}</Text>
-                 
+                  <Text style={{ lineHeight: "1.3em" }}> {response}</Text>
                 </Column>
               </Dialog>
             </Column>
@@ -377,9 +389,109 @@ export default function Home() {
               />
             </Column>
           </Column>
+          <Line
+            maxWidth={4}
+            marginBottom="16"
+            background="neutral-alpha-medium"
+          />
+          <Column horizontal="center" fillWidth gap="4" paddingBottom="40">
+            <Column maxWidth="s" fillHeight>
+              <Input
+                id="input-1"
+                label="Search"
+                value={searchValue}
+                labelAsPlaceholder={true}
+                onChange={handleChange}
+                hasPrefix={<Icon name="search" size="xs" />}
+                hasSuffix={
+                  searchValue.length > 0 ? (
+                    <IconButton
+                      variant="ghost"
+                      icon="close"
+                      size="s"
+                      onClick={handleClear}
+                      aria-label="Clear search"
+                    />
+                  ) : null
+                }
+              />
+            </Column>
+          </Column>
           {/*ending of the main column */}
         </Column>
       </Column>
+      <MyLayout>{""}</MyLayout>
     </Column>
+  );
+}
+
+const kbarItems = [
+  {
+    id: "home",
+    name: "Home",
+    section: "Navigation",
+    shortcut: ["H"],
+    keywords: "home main start",
+    href: "/",
+    icon: "home",
+  },
+  {
+    id: "submit",
+    name: "Submit Idea",
+    section: "Navigation",
+    shortcut: ["I"],
+    keywords: "submit idea startup",
+    href: "/submit",
+    icon: "document",
+  },
+  {
+    id: "signup",
+    name: "Sign Up",
+    section: "Auth",
+    shortcut: ["S"],
+    keywords: "login signin register signup",
+    href: "/auth/signup",
+    icon: "key",
+  },
+
+  {
+    id: "support",
+    name: "Support Us",
+    section: "Community",
+    shortcut: ["U"],
+    keywords: "support donate help",
+    href: "/support",
+    icon: "heart",
+  },
+  {
+    id: "github",
+    name: "Github",
+    section: "Socials",
+    shortcut: ["G"],
+    keywords: "github code repository",
+    href: "https://github.com/divyanshudhruv/sourceful.space",
+    icon: "book",
+  },
+  {
+    id: "linkedin",
+    name: "LinkedIn",
+    section: "Socials",
+    shortcut: ["L"],
+    keywords: "linkedin professional network",
+    href: "https://linkedin.com",
+    icon: "linkedin",
+  },
+];
+
+function MyLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <>
+      <header>
+        <Kbar items={kbarItems}>
+          <Button prefixIcon="command">Search</Button>
+        </Kbar>
+      </header>
+      <main>{children}</main>
+    </>
   );
 }
