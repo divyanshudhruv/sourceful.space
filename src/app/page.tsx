@@ -42,15 +42,20 @@ import {
   CompareImage,
   ThemeSwitcher,
   UserMenu,
+  Flex,
 } from "@/once-ui/components";
 import { CodeBlock, MediaUpload } from "@/once-ui/modules";
 import { ScrollToTop } from "@/once-ui/components/ScrollToTop";
 import { RiArrowRightUpFill, RiArrowRightUpLine } from "react-icons/ri";
 import { Lexend } from "next/font/google";
+import Link from "next/link";
 
 export default function Home() {
   const [idea, setIdea] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [response, setResponse] = useState("");
+
   const handleSubmit = async (prompt: string) => {
     if (!prompt) {
       return;
@@ -63,15 +68,15 @@ export default function Home() {
     });
 
     const data = await response.json();
+    setResponse(data.generatedText.trim());
+
+    setIsOpen(true);
 
     setIsLoading(false);
     if (!response.ok) {
       console.error("Error:", data);
       return;
     }
-    setTimeout(() => {
-      alert(data.generatedText);
-    }, 1000);
 
     console.log("Usage Metadata:", data.usageMetadata);
   };
@@ -202,9 +207,9 @@ export default function Home() {
             position="relative"
           >
             <InlineCode radius="xl" shadow="m" fit paddingX="16" paddingY="8">
-              Highlights of 2025 |
+              Backed by none 🥲 |
               <Text onBackground="brand-medium" marginLeft="8">
-                Discover more
+               <SmartLink href={"#"}>Support us</SmartLink>
               </Text>
             </InlineCode>
             <Heading wrap="balance" variant="display-strong-xl" align="center">
@@ -235,7 +240,7 @@ export default function Home() {
               <Textarea
                 id="example-textarea"
                 label="Submit your open-source startup idea"
-                lines={6}
+                lines={7}
                 value={idea}
                 onChange={(e) => setIdea(e.target.value)}
                 spellCheck={false}
@@ -264,8 +269,10 @@ export default function Home() {
                   position: "absolute",
                   bottom: "45px",
                   right: "15px",
-                  zIndex: "9999",
+                  zIndex: "2",
                   transition: "0.3s !important",
+                                          paddingBlock:"22px"
+
                 }}
                 size="m"
                 variant="primary"
@@ -301,9 +308,38 @@ export default function Home() {
                     `}</style>
                   </Row>
                 ) : (
-                  <Text variant="label-default-s">Review by AI</Text>
+                  <Text variant="label-strong-s">Review by AI</Text>
                 )}
               </Button>
+              <Dialog
+              maxWidth={35}
+              style={{ zIndex: 999999999 }}
+                isOpen={isOpen}
+                onClose={() => setIsOpen(false)}
+                title="AI Review"
+                description="Your idea has been reviewed by AI, and here are the suggestions."
+                // footer={
+                //   <Row vertical="center" fillWidth>
+                //     <IconButton
+                //       icon="infoCircle"
+                //       size="s"
+                //       tooltip="Information"
+                //       tooltipPosition="top"
+                //       variant="ghost"
+                //       disabled={true}
+                //     />{" "}
+                //     <Flex height="4"/>
+                //     <Text variant="label-default-s">
+                //       &nbsp;This is a suggestion from AI, you can choose to ignore it.
+                //     </Text>
+                //   </Row>
+                // }
+              >
+                <Column fillWidth gap="16" marginTop="12">
+                <Text style={{lineHeight:"1.3em"}}> {response}</Text>
+                 
+                </Column>
+              </Dialog>
             </Column>
 
             <Column
