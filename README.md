@@ -1,4 +1,4 @@
-# Once UI for Next.js
+# sourceful.space
 
 A design system for indie builders who move fast and break limits without neglecting quality.
 

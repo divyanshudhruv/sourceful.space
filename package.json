@@ -9,6 +9,7 @@
     "biome-write": "npx @biomejs/biome format --write .",
     "lint": "next lint"
   },
+  
   "dependencies": {
     "@floating-ui/react-dom": "^2.1.1",
     "classnames": "^2.5.1",
