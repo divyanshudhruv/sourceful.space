@@ -389,6 +389,39 @@ export default function Home() {
               />
             </Column>
           </Column>
+          <Column horizontal="center" fillWidth gap="24">
+            <AvatarGroup
+              marginBottom="8"
+              reverse
+              size="m"
+              limit={2}
+              avatars={[
+                {
+                  src: "/images/pfp.png",
+                  
+                },
+                {
+                  src: "",
+                },
+                {
+                  src: "",
+                },
+                {
+                  src: "",
+                },
+              ]}
+            />
+            
+            <Heading
+              marginBottom="12"
+              as="h2"
+              align="center"
+              variant="heading-default-l"
+            >
+              Brought to you by indie creators
+              <br /> crafting stellar ideas.
+            </Heading>
+          </Column>
           <Line
             maxWidth={4}
             marginBottom="16"
@@ -398,7 +431,7 @@ export default function Home() {
             <Column maxWidth="s" fillHeight>
               <Input
                 id="input-1"
-                label="Search"
+                label="Search for pins"
                 value={searchValue}
                 labelAsPlaceholder={true}
                 onChange={handleChange}
@@ -420,7 +453,7 @@ export default function Home() {
           {/*ending of the main column */}
         </Column>
       </Column>
-      <MyLayout>{""}</MyLayout>
+      <CommandPalette />
     </Column>
   );
 }
@@ -483,15 +516,10 @@ const kbarItems = [
   },
 ];
 
-function MyLayout({ children }: { children: React.ReactNode }) {
+function CommandPalette() {
   return (
     <>
-      <header>
-        <Kbar items={kbarItems}>
-          <Button prefixIcon="command">Search</Button>
-        </Kbar>
-      </header>
-      <main>{children}</main>
+      <Kbar items={kbarItems}>{""}</Kbar>
     </>
   );
 }
