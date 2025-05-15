@@ -168,12 +168,43 @@ export default function Home() {
         >
           <Background
             mask={{
-              x: 0,
+              x: 5,
               y: 10,
             }}
             position="absolute"
             grid={{
               display: true,
+              width: "0.25rem",
+              color: "neutral-alpha-medium",
+              height: "0.25rem",
+            }}
+          />
+          {/* bottom */}
+          <Background
+            mask={{
+              x: 100,
+              y: 100,
+            }}
+            position="absolute"
+            grid={{
+              display: true,
+              opacity: 90,
+              width: "0.25rem",
+              color: "neutral-alpha-medium",
+              height: "0.25rem",
+            }}
+          />
+
+          {/* bottom over */}
+          <Background
+            mask={{
+              x: 100,
+              y: 25,
+            }}
+            position="absolute"
+            grid={{
+              display: true,
+              opacity: 90,
               width: "0.25rem",
               color: "neutral-alpha-medium",
               height: "0.25rem",
@@ -182,20 +213,6 @@ export default function Home() {
           <Background
             mask={{
               x: 100,
-              y: 10,
-            }}
-            position="absolute"
-            grid={{
-              display: true,
-              opacity: 90,
-              width: "0.25rem",
-              color: "neutral-alpha-medium",
-              height: "0.25rem",
-            }}
-          />
-          <Background
-            mask={{
-              x: 80,
               y: 0,
               radius: 100,
             }}
@@ -203,7 +220,7 @@ export default function Home() {
             gradient={{
               display: true,
               tilt: -35,
-              opacity: 90,
+              opacity: 100,
               height: 50,
               width: 35,
               x: 100,
@@ -583,6 +600,45 @@ export default function Home() {
           {/*ending of the main column */}
         </Column>
       </Column>
+      <Row
+        position="relative"
+        as="footer"
+        fillWidth
+        paddingX="l"
+        paddingTop="64"
+      >
+        {/* <Background
+          mask={{
+            x: 50,
+            y: 0,
+          }}
+          position="absolute"
+          grid={{
+            opacity:30,
+            display: true,
+            width: "0.25rem",
+            color: "brand-alpha-strong",
+            height: "0.25rem",
+          }}
+        /> */}
+        <Column
+          position="relative"
+          textVariant="body-default-xs"
+          onBackground="neutral-medium"
+          horizontal="center"
+          align="center"
+          fillWidth
+          gap="16"
+        >
+          <Logo wordmark={false} size="s" />
+          <Text size="m">
+            <Text onBackground="neutral-weak">2025 /</Text> Sourceful Space
+          </Text>
+          <SmartLink href="https://github.com/once-ui-system/nextjs-starter?tab=MIT-1-ov-file">
+            MIT License
+          </SmartLink>
+        </Column>
+      </Row>
       <CommandPalette />
     </Column>
   );
