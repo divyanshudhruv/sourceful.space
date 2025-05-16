@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
+import { Lexend } from "next/font/google";
 const lexend = Lexend({ subsets: ["latin"] });
 import {
   Heading,
@@ -48,10 +49,10 @@ import {
 import { CodeBlock, MediaUpload } from "@/once-ui/modules";
 import { ScrollToTop } from "@/once-ui/components/ScrollToTop";
 import { RiArrowRightUpFill, RiArrowRightUpLine } from "react-icons/ri";
-import { Lexend } from "next/font/google";
 import Link from "next/link";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
+import { getSupabaseClient } from "./utils/supabase/client";
 
 export default function Home() {
   const [idea, setIdea] = useState("");
@@ -60,23 +61,61 @@ export default function Home() {
   const [response, setResponse] = useState("");
   const [searchValue, setSearchValue] = useState<string>("");
   const [isDialogOpenForSignUp, setIsDialogOpenForSignUp] = useState(false);
-  // Open signup dialog when a custom event is dispatched
+  const [supabaseClient, setSupabaseClient] = useState({
+    url: process.env.NEXT_PUBLIC_SUPABASE_URL || "",
+    key: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "",
+  });
 
-  React.useEffect(() => {
-    const handleHashChange = () => {
-      if (window.location.hash === "#signup") {
-        setIsDialogOpenForSignUp(true);
-        setTimeout(() => {
-          alert(true);
-        }, 1000);
-      }
+  // useEffect(() => {
+  //   async function fetchSupabaseClient() {
+  //     try {
+  //       const res = await fetch("/api/supabase");
+  //       const data = await res.json();
+  //       if (data && data.supabaseUrl && data.supabaseAnonKey) {
+  //         setSupabaseClient({
+  //           url: data.supabaseUrl,
+  //           key: data.supabaseAnonKey,
+  //         });
+  //       }
+  //     } catch (err) {
+  //       console.error("Failed to fetch Supabase client info:", err);
+  //     }
+  //   }
+  //   fetchSupabaseClient();
+  // }, []);
+
+  useEffect(() => {
+    const handleOpenDialog = () => {
+      setIsDialogOpenForSignUp(true);
     };
-    window.addEventListener("hashchange", handleHashChange);
-    // Check on mount in case hash is already #signup
-    handleHashChange();
-    return () => window.removeEventListener("hashchange", handleHashChange);
-  }, []);
 
+    window.addEventListener("open-signup-dialog", handleOpenDialog);
+
+    // Cleanup the event listener
+    return () => {
+      window.removeEventListener("open-signup-dialog", handleOpenDialog);
+    };
+  }, []); // Open signup dialog when a custom event is dispatched
+
+  async function supabaseSignIn() {
+    // Sign in with Google using Supabase
+    try {
+      const supabase = getSupabaseClient(
+        supabaseClient.url,
+        supabaseClient.key
+      );
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+      });
+
+      if (error) {
+        console.error("Supabase sign-in error:", error.message);
+      }
+    } catch (err) {
+      console.error("Unexpected error during sign-in:", err);
+    } finally {
+    }
+  }
   const kbarItems = [
     {
       id: "home",
@@ -102,8 +141,7 @@ export default function Home() {
       section: "Auth",
       shortcut: ["S"],
       keywords: "login signin register signup",
-      // Use onClick to trigger the dialog
-      href: "/#signup",
+      href: "javascript:window.dispatchEvent(new CustomEvent('open-signup-dialog'))",
       icon: "key",
     },
     {
@@ -856,7 +894,7 @@ export default function Home() {
         description="Sign up effortlessly with your Google account to join our vibrant community of developers and creators."
       >
         <Column fillWidth gap="16" marginTop="12">
-          <Button variant="primary" size="m">
+          <Button variant="primary" size="m" onClick={supabaseSignIn}>
             SignUp
           </Button>
         </Column>
