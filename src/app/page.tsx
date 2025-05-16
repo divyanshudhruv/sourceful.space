@@ -1,8 +1,8 @@
-// Example page: delete the content or rework the blocks
 "use client";
 
 import type React from "react";
 import { useState } from "react";
+
 const lexend = Lexend({ subsets: ["latin"] });
 import {
   Heading,
@@ -178,6 +178,31 @@ export default function Home() {
               color: "neutral-alpha-medium",
               height: "0.25rem",
             }}
+          />
+          <Background
+            mask={{
+              x: 95,
+              y: 2,
+            }}
+            gradient={{
+              display: true,
+              opacity: 40,
+              height: 50,
+              width: 50,
+              tilt: -35,
+              x: 100,
+              y: 0,
+              colorStart: "accent-solid-medium",
+              colorEnd: "accent-solid-medium",
+            }}
+            grid={{
+              display: true,
+              opacity: 90,
+              width: "0.25rem",
+              color: "neutral-alpha-medium",
+              height: "0.25rem",
+            }}
+            position="absolute"
           />
           {/* bottom */}
           <Background
@@ -440,10 +465,101 @@ export default function Home() {
           </Column>
           <Line
             maxWidth={4}
-            marginBottom="16"
+            marginBottom="20"
             background="neutral-alpha-medium"
           />
-          <Column horizontal="center" fillWidth gap="4" paddingBottom="40">
+          <Column
+            horizontal="center"
+            fillWidth
+            gap="4"
+            paddingBottom="40"
+            paddingTop="40"
+          >
+            <Background
+              mask={{
+                x: 5,
+                y: 10,
+              }}
+              position="absolute"
+              grid={{
+                display: true,
+                opacity: 60,
+                width: "0.25rem",
+                color: "neutral-alpha-medium",
+                height: "0.25rem",
+              }}
+            />
+            <Background
+              mask={{
+                x: 95,
+                y: 2,
+              }}
+              grid={{
+                display: true,
+                opacity: 10,
+                width: "0.25rem",
+                color: "neutral-alpha-medium",
+                height: "0.25rem",
+              }}
+              position="absolute"
+            />
+            {/* bottom over */}
+            <Fade
+              fill
+              position="absolute"
+              base="page"
+              bottom="0"
+              to="top"
+              bottomRadius="l"
+              pattern={{ display: true, size: "8" }}
+            />
+            <Background
+              mask={{
+                x: 100,
+                y: 25,
+              }}
+              position="absolute"
+              grid={{
+                display: true,
+                opacity: 90,
+                width: "0.25rem",
+                color: "neutral-alpha-medium",
+                height: "0.25rem",
+              }}
+            />
+            <Background
+              mask={{
+                x: 100,
+                y:100,
+                radius: 100,
+              }}
+              position="absolute"
+              gradient={{
+                display: true,
+                tilt: -35,
+                opacity: 80,
+                height: 40,
+                width: 25,
+                x: 90,
+                y: 60,
+                colorStart: "accent-solid-medium",
+                colorEnd: "static-transparent",
+              }}
+            />
+ <Background
+              mask={{
+                x: 100,
+                y: 100,
+              }}
+              position="absolute"
+              grid={{
+                display: true,
+                opacity: 90,
+                width: "0.25rem",
+                color: "neutral-alpha-medium",
+                height: "0.25rem",
+              }}
+            />
             <Column maxWidth="s" fillHeight marginBottom="40">
               <Input
                 id="input-1"
@@ -479,7 +595,7 @@ export default function Home() {
                     gap="8"
                     vertical="center"
                   >
-                    <Avatar size="xs" src="/images/pfp.png" />
+                    <Avatar size="s" src="/images/pfp.png" />
                     <Text
                       variant="label-default-s"
                       className={lexend.className}
@@ -522,9 +638,9 @@ export default function Home() {
                       <i className="ri-heart-line"></i>
                       34
                     </Flex>
-                    <Flex gap="4">
+                    {/* <Flex gap="4">
                       <i className="ri-funds-line"></i> true
-                    </Flex>
+                    </Flex> */}
                   </Row>
                 </Card>
               </Row>
@@ -541,7 +657,7 @@ export default function Home() {
                     gap="8"
                     vertical="center"
                   >
-                    <Avatar size="xs" src="/images/pfp.png" />
+                    <Avatar size="s" src="/images/pfp.png" />
                     <Text
                       variant="label-default-s"
                       className={lexend.className}
@@ -584,9 +700,9 @@ export default function Home() {
                       <i className="ri-heart-line"></i>
                       34
                     </Flex>
-                    <Flex gap="4">
+                    {/* <Flex gap="4">
                       <i className="ri-funds-line"></i> true
-                    </Flex>
+                    </Flex> */}
                   </Row>
                 </Card>
               </Row>

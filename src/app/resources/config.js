@@ -73,7 +73,7 @@ const effects = {
   gradient: {
     display: false,
     opacity: 50,
-    x: 50,
+    x: 80,
     y: 0,
     width: 70,
     height: 50,
@@ -107,14 +107,19 @@ const effects = {
 // metadata for pages
 const meta = {
   home: {
-    path: "/",
-    title: "Once UI for Next.js",
+    title: "Sourceful Space: Redefining open-source",
     description:
-      "An open-source design system and component library for Next.js that emphasizes easy styling and accessibility in UI development.",
-    image: "/og/home.jpg",
-    canonical: "https://once-ui.com",
+      "Sourceful Space is a platform that connects developers and designers to create open-source projects.",
+    baseURL: "https://sourceful-space.vercel.app",
+    type: "website",
+    image: "/images/cover.jpg",
+    path: "/",
     robots: "index,follow",
-    alternates: [{ href: "https://once-ui.com", hrefLang: "en" }],
+    alternates: [{ href: "https://sourceful.space", hrefLang: "en" }],
+  },
+  author: {
+    name: "Divyanshu Dhruv",
+    url: "https://divyanshudhruv.is-a.dev",
   },
   // add more routes and reference them in page.tsx
 };
@@ -122,17 +127,14 @@ const meta = {
 // default schema data
 const schema = {
   logo: "",
-  type: "Organization",
-  name: "Once UI",
+  type: "website",
+  url: baseURL,
+  title: "Sourceful Space",
+  name: "Sourceful Space",
   description: meta.home.description,
-  email: "lorant@once-ui.com",
+  email: "divyanshudhruv@proton.me",
 };
 
 // social links
-const social = {
-  twitter: "https://www.twitter.com/_onceui",
-  linkedin: "https://www.linkedin.com/company/once-ui/",
-  discord: "https://discord.com/invite/5EyAQ4eNdS",
-};
 
-export { baseURL, font, style, meta, schema, social, effects };
+export { baseURL, font, style, meta, schema, effects };
