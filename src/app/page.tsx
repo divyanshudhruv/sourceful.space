@@ -1,7 +1,6 @@
 "use client";
 
-import type React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 
 const lexend = Lexend({ subsets: ["latin"] });
 import {
@@ -44,6 +43,7 @@ import {
   UserMenu,
   Flex,
   Kbar,
+  Kbd,
 } from "@/once-ui/components";
 import { CodeBlock, MediaUpload } from "@/once-ui/modules";
 import { ScrollToTop } from "@/once-ui/components/ScrollToTop";
@@ -59,6 +59,81 @@ export default function Home() {
   const [isOpen, setIsOpen] = useState(false);
   const [response, setResponse] = useState("");
   const [searchValue, setSearchValue] = useState<string>("");
+  const [isDialogOpenForSignUp, setIsDialogOpenForSignUp] = useState(false);
+  // Open signup dialog when a custom event is dispatched
+
+  React.useEffect(() => {
+    const handleHashChange = () => {
+      if (window.location.hash === "#signup") {
+        setIsDialogOpenForSignUp(true);
+        setTimeout(() => {
+          alert(true);
+        }, 1000);
+      }
+    };
+    window.addEventListener("hashchange", handleHashChange);
+    // Check on mount in case hash is already #signup
+    handleHashChange();
+    return () => window.removeEventListener("hashchange", handleHashChange);
+  }, []);
+
+  const kbarItems = [
+    {
+      id: "home",
+      name: "Home",
+      section: "Navigation",
+      shortcut: ["H"],
+      keywords: "home main start",
+      href: "/",
+      icon: "home",
+    },
+    {
+      id: "submit",
+      name: "Submit Idea",
+      section: "Navigation",
+      shortcut: ["I"],
+      keywords: "submit idea startup",
+      href: "/submit",
+      icon: "document",
+    },
+    {
+      id: "signup",
+      name: "Sign Up",
+      section: "Auth",
+      shortcut: ["S"],
+      keywords: "login signin register signup",
+      // Use onClick to trigger the dialog
+      href: "/#signup",
+      icon: "key",
+    },
+    {
+      id: "support",
+      name: "Support Us",
+      section: "Community",
+      shortcut: ["U"],
+      keywords: "support donate help",
+      href: "/support",
+      icon: "heart",
+    },
+    {
+      id: "github",
+      name: "Github",
+      section: "Socials",
+      shortcut: ["G"],
+      keywords: "github code repository",
+      href: "https://github.com/divyanshudhruv/sourceful.space",
+      icon: "book",
+    },
+    {
+      id: "linkedin",
+      name: "LinkedIn",
+      section: "Socials",
+      shortcut: ["L"],
+      keywords: "linkedin professional network",
+      href: "https://linkedin.com",
+      icon: "linkedin",
+    },
+  ];
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value);
@@ -122,7 +197,19 @@ export default function Home() {
           paddingY="20"
           vertical="center"
         >
-          <Text variant="body-default-l">sourceful.space</Text>
+          <Row vertical="center" gap="12">
+            <Text variant="body-default-l">sourceful.space</Text>
+            <Kbd
+            // borderWidth={1}
+            // borderStyle="solid"
+            // border="neutral-alpha-strong"
+            >
+              <Text as="span" style={{ scale: "0.85" }}>
+                <Text variant="code-default-xs">ctrl+k</Text>
+              </Text>
+            </Kbd>
+          </Row>
+
           <Row gap="12" hide="s" vertical="center">
             <UserMenu
               name="Divyanshu Dhruv"
@@ -757,73 +844,27 @@ export default function Home() {
           </SmartLink>
         </Column>
       </Row>
-      <CommandPalette />
+      {/* <CommandPalette /> */}
+      <Kbar items={kbarItems}>{""}</Kbar>
+
+      <Dialog
+        maxWidth={35}
+        style={{ zIndex: 999999999 }}
+        isOpen={isDialogOpenForSignUp}
+        onClose={() => setIsDialogOpenForSignUp(false)}
+        title="Signup"
+        description="Sign up effortlessly with your Google account to join our vibrant community of developers and creators."
+      >
+        <Column fillWidth gap="16" marginTop="12">
+          <Button variant="primary" size="m">
+            SignUp
+          </Button>
+        </Column>
+      </Dialog>
     </Column>
   );
 }
 
-const kbarItems = [
-  {
-    id: "home",
-    name: "Home",
-    section: "Navigation",
-    shortcut: ["H"],
-    keywords: "home main start",
-    href: "/",
-    icon: "home",
-  },
-  {
-    id: "submit",
-    name: "Submit Idea",
-    section: "Navigation",
-    shortcut: ["I"],
-    keywords: "submit idea startup",
-    href: "/submit",
-    icon: "document",
-  },
-  {
-    id: "signup",
-    name: "Sign Up",
-    section: "Auth",
-    shortcut: ["S"],
-    keywords: "login signin register signup",
-    href: "/auth/signup",
-    icon: "key",
-  },
-
-  {
-    id: "support",
-    name: "Support Us",
-    section: "Community",
-    shortcut: ["U"],
-    keywords: "support donate help",
-    href: "/support",
-    icon: "heart",
-  },
-  {
-    id: "github",
-    name: "Github",
-    section: "Socials",
-    shortcut: ["G"],
-    keywords: "github code repository",
-    href: "https://github.com/divyanshudhruv/sourceful.space",
-    icon: "book",
-  },
-  {
-    id: "linkedin",
-    name: "LinkedIn",
-    section: "Socials",
-    shortcut: ["L"],
-    keywords: "linkedin professional network",
-    href: "https://linkedin.com",
-    icon: "linkedin",
-  },
-];
-
 function CommandPalette() {
-  return (
-    <>
-      <Kbar items={kbarItems}>{""}</Kbar>
-    </>
-  );
+  return <></>;
 }
