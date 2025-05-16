@@ -11,8 +11,5 @@ export async function GET() {
     );
   }
 
-  return NextResponse.json({
-    supabaseUrl,
-    supabaseAnonKey,
-  });
+  return NextResponse.json({});
 }

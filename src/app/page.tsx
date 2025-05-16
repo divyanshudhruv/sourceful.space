@@ -50,6 +50,8 @@ import { ScrollToTop } from "@/once-ui/components/ScrollToTop";
 import { RiArrowRightUpFill, RiArrowRightUpLine } from "react-icons/ri";
 import { Lexend } from "next/font/google";
 import Link from "next/link";
+import { drizzle } from "drizzle-orm/postgres-js";
+import postgres from "postgres";
 
 export default function Home() {
   const [idea, setIdea] = useState("");
@@ -530,7 +532,7 @@ export default function Home() {
             <Background
               mask={{
                 x: 100,
-                y:100,
+                y: 100,
                 radius: 100,
               }}
               position="absolute"
@@ -546,7 +548,7 @@ export default function Home() {
                 colorEnd: "static-transparent",
               }}
             />
- <Background
+            <Background
               mask={{
                 x: 100,
                 y: 100,

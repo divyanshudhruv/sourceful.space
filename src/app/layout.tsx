@@ -36,7 +36,6 @@ export async function generateMetadata() {
     description: meta.home.description,
     baseURL: baseURL,
     path: meta.home.path,
-    canonical: meta.home.canonical,
     image: meta.home.image,
     robots: meta.home.robots,
     alternates: meta.home.alternates,
