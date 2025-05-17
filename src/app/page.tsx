@@ -52,8 +52,8 @@ import { RiArrowRightUpFill, RiArrowRightUpLine } from "react-icons/ri";
 import Link from "next/link";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
-import { getSupabaseClient } from "./utils/supabase/client";
-
+import { supabase } from "./utils/supabase/client";
+import { SourcefulCard } from "./sourceful-ui/SourcefulCard";
 export default function Home() {
   const [idea, setIdea] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -61,28 +61,64 @@ export default function Home() {
   const [response, setResponse] = useState("");
   const [searchValue, setSearchValue] = useState<string>("");
   const [isDialogOpenForSignUp, setIsDialogOpenForSignUp] = useState(false);
-  const [supabaseClient, setSupabaseClient] = useState({
-    url: process.env.NEXT_PUBLIC_SUPABASE_URL || "",
-    key: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "",
+  const [isCmdOpenFromButton, setIsCmdOpenFromButton] = useState(false);
+  const { addToast } = useToast();
+
+  const [user, setUser] = useState({
+    name: "User",
+    pfp: "",
+    subline: "Space User",
   });
 
-  // useEffect(() => {
-  //   async function fetchSupabaseClient() {
-  //     try {
-  //       const res = await fetch("/api/supabase");
-  //       const data = await res.json();
-  //       if (data && data.supabaseUrl && data.supabaseAnonKey) {
-  //         setSupabaseClient({
-  //           url: data.supabaseUrl,
-  //           key: data.supabaseAnonKey,
-  //         });
-  //       }
-  //     } catch (err) {
-  //       console.error("Failed to fetch Supabase client info:", err);
-  //     }
-  //   }
-  //   fetchSupabaseClient();
-  // }, []);
+  useEffect(() => {
+    async function fetchUser() {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      if (session?.user) {
+        const { user } = session;
+        addToast({
+          variant: "success",
+          message: "Logged in successfully",
+        });
+        setUser({
+          name: user.user_metadata?.name || user.email || "User",
+          pfp: user.user_metadata?.avatar_url || "",
+          subline: "Space User",
+        });
+      }
+    }
+    fetchUser();
+  }, []);
+  useEffect(() => {
+    const handleLogOut = async () => {
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        console.error("Error signing out:", error);
+        addToast({
+          variant: "danger",
+          message: "Error signing out",
+        });
+      } else {
+        setIsDialogOpenForSignUp(false);
+        console.log("User signed out successfully");
+        addToast({
+          variant: "success",
+          message: "Logged out successfully",
+        });
+        setTimeout(() => {
+          window.location.reload();
+        }, 500);
+      }
+    };
+
+    window.addEventListener("log-out", handleLogOut);
+
+    // Cleanup the event listener
+    return () => {
+      window.removeEventListener("log-out", handleLogOut);
+    };
+  }, []);
 
   useEffect(() => {
     const handleOpenDialog = () => {
@@ -99,22 +135,12 @@ export default function Home() {
 
   async function supabaseSignIn() {
     // Sign in with Google using Supabase
-    try {
-      const supabase = getSupabaseClient(
-        supabaseClient.url,
-        supabaseClient.key
-      );
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: "google",
-      });
-
-      if (error) {
-        console.error("Supabase sign-in error:", error.message);
-      }
-    } catch (err) {
-      console.error("Unexpected error during sign-in:", err);
-    } finally {
-    }
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback`,
+      },
+    });
   }
   const kbarItems = [
     {
@@ -142,6 +168,15 @@ export default function Home() {
       shortcut: ["S"],
       keywords: "login signin register signup",
       href: "javascript:window.dispatchEvent(new CustomEvent('open-signup-dialog'))",
+      icon: "key",
+    },
+    {
+      id: "logout",
+      name: "Log Out",
+      section: "Auth",
+      shortcut: ["O"],
+      keywords: "logout signout delete sign out",
+      href: "javascript:window.dispatchEvent(new CustomEvent('log-out'))",
       icon: "key",
     },
     {
@@ -237,10 +272,28 @@ export default function Home() {
         >
           <Row vertical="center" gap="12">
             <Text variant="body-default-l">sourceful.space</Text>
+            <Line
+              vert={true}
+              height={2}
+              background="neutral-alpha-medium"
+            ></Line>
             <Kbd
-            // borderWidth={1}
-            // borderStyle="solid"
-            // border="neutral-alpha-strong"
+              style={{
+                cursor: "pointer",
+              }}
+              onClick={() => setIsCmdOpenFromButton(true)}              
+              ref={el => {
+                if (!el) return;
+                const handleClickOutside = (event: MouseEvent) => {
+                if (!el.contains(event.target as Node)) {
+                  setIsCmdOpenFromButton(false);
+                }
+                };
+                document.addEventListener("mousedown", handleClickOutside);
+                return () => {
+                document.removeEventListener("mousedown", handleClickOutside);
+                };
+              }}
             >
               <Text as="span" style={{ scale: "0.85" }}>
                 <Text variant="code-default-xs">ctrl+k</Text>
@@ -250,15 +303,15 @@ export default function Home() {
 
           <Row gap="12" hide="s" vertical="center">
             <UserMenu
-              name="Divyanshu Dhruv"
-              subline="Space User"
+              name={user.name}
+              subline={user.subline}
               tagProps={{
                 variant: "accent",
                 label: "",
               }}
               avatarProps={{
                 empty: false,
-                src: "/images/pfp.png",
+                src: user.pfp,
                 statusIndicator: {
                   color: "gray",
                 },
@@ -590,11 +643,7 @@ export default function Home() {
               <br /> crafting stellar ideas.
             </Heading>
           </Column>
-          <Line
-            maxWidth={4}
-            marginBottom="20"
-            background="neutral-alpha-medium"
-          />
+          <Line maxWidth={4} background="neutral-alpha-medium" />
           <Column
             horizontal="center"
             fillWidth
@@ -661,17 +710,17 @@ export default function Home() {
                 radius: 100,
               }}
               position="absolute"
-              gradient={{
-                display: true,
-                tilt: -35,
-                opacity: 80,
-                height: 40,
-                width: 25,
-                x: 90,
-                y: 60,
-                colorStart: "accent-solid-medium",
-                colorEnd: "static-transparent",
-              }}
+              // gradient={{
+              //   display: true,
+              //   tilt: -35,
+              //   opacity: 80,
+              //   height: 40,
+              //   width: 25,
+              //   x: 90,
+              //   y: 100,
+              //   colorStart: "accent-solid-medium",
+              //   colorEnd: "static-transparent",
+              // }}
             />
             <Background
               mask={{
@@ -708,132 +757,19 @@ export default function Home() {
                 }
               />
             </Column>
+            {/* SOURCEFUL CARD */}
             <Row maxWidth={65} horizontal="center" gap="64" wrap>
-              <Row maxWidth={24} maxHeight={32}>
-                <Card
-                  radius="l-4"
-                  direction="column"
-                  border="neutral-alpha-medium"
-                >
-                  <Row
-                    fillWidth
-                    paddingX="20"
-                    paddingY="12"
-                    gap="8"
-                    vertical="center"
-                  >
-                    <Avatar size="s" src="/images/pfp.png" />
-                    <Text
-                      variant="label-default-s"
-                      className={lexend.className}
-                    >
-                      Divyanshu Dhruv
-                    </Text>
-                  </Row>
-                  <SmartImage
-                    border="neutral-alpha-weak"
-                    sizes="400px"
-                    fillWidth
-                    aspectRatio="4 / 3"
-                    radius="l"
-                    alt="Proxima b"
-                    src="/images/sample.png"
-                  />
-                  <Column fillWidth paddingX="20" paddingY="24" gap="8">
-                    <Text
-                      variant="body-default-xl"
-                      className={lexend.className}
-                    >
-                      Sourceful Space
-                    </Text>
-                    <Text onBackground="neutral-weak" variant="body-default-s">
-                      A planet so cruel on the surface, but once you explore
-                      what's underneath, you'll question everything you know.
-                      Yet, you vibe with it.
-                    </Text>
-                  </Column>
-                  <Line background="neutral-alpha-medium" />
-                  <Row
-                    paddingX="20"
-                    paddingY="12"
-                    gap="12"
-                    vertical="center"
-                    textVariant="label-default-s"
-                    onBackground="neutral-medium"
-                  >
-                    <Flex gap="4">
-                      <i className="ri-heart-line"></i>
-                      34
-                    </Flex>
-                    {/* <Flex gap="4">
-                      <i className="ri-funds-line"></i> true
-                    </Flex> */}
-                  </Row>
-                </Card>
-              </Row>
-              <Row maxWidth={24} maxHeight={32}>
-                <Card
-                  radius="l-4"
-                  direction="column"
-                  border="neutral-alpha-medium"
-                >
-                  <Row
-                    fillWidth
-                    paddingX="20"
-                    paddingY="12"
-                    gap="8"
-                    vertical="center"
-                  >
-                    <Avatar size="s" src="/images/pfp.png" />
-                    <Text
-                      variant="label-default-s"
-                      className={lexend.className}
-                    >
-                      Divyanshu Dhruv
-                    </Text>
-                  </Row>
-                  <SmartImage
-                    border="neutral-alpha-weak"
-                    sizes="400px"
-                    fillWidth
-                    aspectRatio="4 / 3"
-                    radius="l"
-                    alt="Proxima b"
-                    src="/images/sample.png"
-                  />
-                  <Column fillWidth paddingX="20" paddingY="24" gap="8">
-                    <Text
-                      variant="body-default-xl"
-                      className={lexend.className}
-                    >
-                      Sourceful Space
-                    </Text>
-                    <Text onBackground="neutral-weak" variant="body-default-s">
-                      A planet so cruel on the surface, but once you explore
-                      what's underneath, you'll question everything you know.
-                      Yet, you vibe with it.
-                    </Text>
-                  </Column>
-                  <Line background="neutral-alpha-medium" />
-                  <Row
-                    paddingX="20"
-                    paddingY="12"
-                    gap="12"
-                    vertical="center"
-                    textVariant="label-default-s"
-                    onBackground="neutral-medium"
-                  >
-                    <Flex gap="4">
-                      <i className="ri-heart-line"></i>
-                      34
-                    </Flex>
-                    {/* <Flex gap="4">
-                      <i className="ri-funds-line"></i> true
-                    </Flex> */}
-                  </Row>
-                </Card>
-              </Row>
+              <SourcefulCard
+                avatarSrc="/images/pfp.png"
+                name="Sourceful Space"
+                imageSrc="/images/1.jpg"
+                imageAlt="alt"
+                title="Sourceful Space"
+                description="A platform for developers to share and discover open-source projects."
+                likes={100}
+              />
             </Row>
+            {/* SOURCEFUL CARD */}
             <Row paddingY="20" paddingTop="40">
               <Button variant="secondary" size="l">
                 <Text variant="body-default-l">Load more</Text>
@@ -883,7 +819,9 @@ export default function Home() {
         </Column>
       </Row>
       {/* <CommandPalette /> */}
-      <Kbar items={kbarItems}>{""}</Kbar>
+      <Kbar items={kbarItems} isCmdOpen={isCmdOpenFromButton}>
+        {""}
+      </Kbar>
 
       <Dialog
         maxWidth={35}
