@@ -242,7 +242,7 @@ export default function Home() {
   };
 
   return (
-    <Column fillWidth paddingY="80" paddingX="s" horizontal="center" flex={1}>
+    <Column fillWidth paddingY="80" paddingX="s" horizontal="center" >
       <ScrollToTop>
         <IconButton variant="secondary" icon="chevronUp" />
       </ScrollToTop>
@@ -281,17 +281,19 @@ export default function Home() {
               style={{
                 cursor: "pointer",
               }}
-              onClick={() => setIsCmdOpenFromButton(true)}              
-              ref={el => {
+              onClick={() => setIsCmdOpenFromButton(true)}
+              ref={(el) => {
                 if (!el) return;
                 const handleClickOutside = (event: MouseEvent) => {
-                if (!el.contains(event.target as Node)) {
-                  setIsCmdOpenFromButton(false);
-                }
+                  if (!el.contains(event.target as Node)) {
+                   setTimeout(() => {
+                     setIsCmdOpenFromButton(false);
+                   }, 700);
+                  }
                 };
                 document.addEventListener("mousedown", handleClickOutside);
                 return () => {
-                document.removeEventListener("mousedown", handleClickOutside);
+                  document.removeEventListener("mousedown", handleClickOutside);
                 };
               }}
             >
@@ -464,10 +466,9 @@ export default function Home() {
               solutions in the tech ecosystem.
             </Text>
             <Button
-              id="readDocs"
-              target="_blank"
+              id="getStarted"
               label="Get started"
-              href="https://once-ui.com/docs"
+              href="#sourceful-section"
               variant="primary"
               size="l"
               arrowIcon
@@ -611,7 +612,7 @@ export default function Home() {
               />
             </Column>
           </Column>
-          <Column horizontal="center" fillWidth gap="24">
+          <Column horizontal="center" fillWidth gap="24" id="sourceful-section">
             <AvatarGroup
               marginBottom="8"
               reverse
@@ -760,13 +761,13 @@ export default function Home() {
             {/* SOURCEFUL CARD */}
             <Row maxWidth={65} horizontal="center" gap="64" wrap>
               <SourcefulCard
-                avatarSrc="/images/pfp.png"
-                name="Sourceful Space"
+                avatarSrc={user.pfp}
+                name={user.name}
                 imageSrc="/images/1.jpg"
                 imageAlt="alt"
                 title="Sourceful Space"
                 description="A platform for developers to share and discover open-source projects."
-                likes={100}
+                likes={64}
               />
             </Row>
             {/* SOURCEFUL CARD */}
@@ -813,7 +814,7 @@ export default function Home() {
           <Text size="m">
             <Text onBackground="neutral-weak">2025 /</Text> Sourceful Space
           </Text>
-          <SmartLink href="https://github.com/once-ui-system/nextjs-starter?tab=MIT-1-ov-file">
+          <SmartLink href="#">
             MIT License
           </SmartLink>
         </Column>

@@ -71,7 +71,9 @@ export function SourcefulCard({
         >
           <Flex gap="4">
             <i className="ri-heart-line"></i>
-            {likes}
+            <Text  className={lexend.className}>
+              {likes}
+            </Text>
           </Flex>
         </Row>
       </Card>
