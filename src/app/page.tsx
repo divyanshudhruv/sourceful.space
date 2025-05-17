@@ -3,7 +3,13 @@
 import React, { useState, useEffect } from "react";
 
 import { Lexend } from "next/font/google";
+import "./../once-ui/styles/background.scss";
+import { Playwrite_DK_Loopet } from "next/font/google";
 const lexend = Lexend({ subsets: ["latin"] });
+const cedarville = Playwrite_DK_Loopet({
+  weight: "400",
+});
+
 import {
   Heading,
   Text,
@@ -242,7 +248,7 @@ export default function Home() {
   };
 
   return (
-    <Column fillWidth paddingY="80" paddingX="s" horizontal="center" >
+    <Column fillWidth paddingY="80" paddingX="s" horizontal="center">
       <ScrollToTop>
         <IconButton variant="secondary" icon="chevronUp" />
       </ScrollToTop>
@@ -286,9 +292,9 @@ export default function Home() {
                 if (!el) return;
                 const handleClickOutside = (event: MouseEvent) => {
                   if (!el.contains(event.target as Node)) {
-                   setTimeout(() => {
-                     setIsCmdOpenFromButton(false);
-                   }, 700);
+                    setTimeout(() => {
+                      setIsCmdOpenFromButton(false);
+                    }, 700);
                   }
                 };
                 document.addEventListener("mousedown", handleClickOutside);
@@ -450,10 +456,31 @@ export default function Home() {
                 <SmartLink href={"#"}>Support us</SmartLink>
               </Text>
             </InlineCode>
-            <Heading wrap="balance" variant="display-strong-xl" align="center">
+            <Heading
+              wrap="balance"
+              variant="display-strong-xl"
+              align="center"
+              style={{
+                fontWeight: "bolder",
+              }}
+            >
               Where ideas
               <br />
-              emerges like grains
+              <a
+                className={cedarville.className}
+                style={{
+                  color: "var(--neutral-strong)",
+                }}
+              >
+                <u
+                  style={{
+                    textDecorationColor: "var(--accent-background-strong)",
+                  }}
+                >
+                  emerges
+                </u>
+              </a>{" "}
+              like grains.
             </Heading>
             <Text
               wrap="balance"
@@ -814,9 +841,7 @@ export default function Home() {
           <Text size="m">
             <Text onBackground="neutral-weak">2025 /</Text> Sourceful Space
           </Text>
-          <SmartLink href="#">
-            MIT License
-          </SmartLink>
+          <SmartLink href="#">MIT License</SmartLink>
         </Column>
       </Row>
       {/* <CommandPalette /> */}
