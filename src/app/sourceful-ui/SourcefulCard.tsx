@@ -69,6 +69,7 @@ export function SourcefulCard(props: SourcefulCardProps) {
           radius="l"
           alt={imageAlt}
           src={imageSrc}
+          draggable={false}
         />
         <Column fillWidth paddingX="20" paddingY="24" gap="8">
           <Text variant="body-default-xl" className={lexend.className}>
