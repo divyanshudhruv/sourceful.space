@@ -54,6 +54,9 @@ type User = {
 export default function Home() {
   // State hooks
   const [idea, setIdea] = useState("");
+  const [statusIndicatorColor, setStatusIndicatorColor] = useState<
+    "green" | "yellow" | "red" | "gray"
+  >("red");
   const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [response, setResponse] = useState("");
@@ -163,7 +166,7 @@ export default function Home() {
     const timestamp = dateStr;
     const randomStr = Math.random().toString(36).substring(2, 8);
     const fileName = `covers/project-cover-${timestamp}-${randomStr}.${fileExt}`;
-alert("Uploading file: " + fileName);
+    alert("Uploading file: " + fileName);
     const { data, error } = await supabase.storage
       .from("project-covers")
       .upload(fileName, file, {
@@ -419,7 +422,7 @@ alert("Uploading file: " + fileName);
       name: "Log Out",
       section: "Auth",
       shortcut: ["O"],
-      keywords: "logout signout delete sign out",
+      keywords: "logout signout signout",
       href: "javascript:window.dispatchEvent(new CustomEvent('log-out'))",
       icon: "key",
     },
@@ -514,12 +517,17 @@ alert("Uploading file: " + fileName);
           paddingY="20"
           vertical="center"
         >
-          <Row vertical="center" gap="12">
+          <Row vertical="center" gap="8">
             <Text variant="body-default-l">sourceful.space </Text>
             <Column horizontal="start" vertical="center" fitWidth>
               <InlineCode textVariant="code-default-s">beta</InlineCode>
             </Column>
-            <Line vert={true} height={2} background="neutral-alpha-medium" />
+            <Line
+              vert={true}
+              height={2}
+              background="neutral-alpha-medium"
+              marginX="4"
+            />
             {/* Command palette trigger */}
             <Kbd
               style={{ cursor: "pointer" }}
@@ -545,7 +553,7 @@ alert("Uploading file: " + fileName);
             </Kbd>
           </Row>
           {/* User menu and theme switcher */}
-          <Row gap="12" hide="s" vertical="center">
+          <Row gap="12" vertical="center">
             <UserMenu
               name={user.name}
               subline={user.subline}
@@ -553,7 +561,21 @@ alert("Uploading file: " + fileName);
               avatarProps={{
                 empty: false,
                 src: user.pfp,
-                statusIndicator: { color: "gray" },
+                statusIndicator: { color: statusIndicatorColor },
+                onClick: () => {
+                  setStatusIndicatorColor((prev) => {
+                    const colors: Array<"green" | "yellow" | "red" | "gray"> = [
+                      "green",
+                      "yellow",
+                      "red",
+                      "gray",
+                    ];
+                    const next =
+                      colors[(colors.indexOf(prev) + 1) % colors.length];
+                    return next;
+                  });
+                },
+                style: { cursor: "pointer" },
               }}
               loading={false}
               selected={false}
@@ -663,7 +685,12 @@ alert("Uploading file: " + fileName);
             <InlineCode radius="xl" shadow="m" fit paddingX="16" paddingY="8">
               Backed by none 🥲 |
               <Text onBackground="brand-medium" marginLeft="8">
-                <SmartLink href={"#"}>Support us</SmartLink>
+                <SmartLink
+                  href={"https://github.com/divyanshudhruv/sourceful.space"}
+                  target="_blank"
+                >
+                  Support us
+                </SmartLink>
               </Text>
             </InlineCode>
             <Heading
@@ -945,13 +972,15 @@ alert("Uploading file: " + fileName);
             <Row maxWidth={65} horizontal="center" gap="64" wrap minHeight={32}>
               <RevealFx delay={0.2} translateY={0.5}>
                 {(() => {
-                  const filteredProjects = projectsData.filter((proj) =>
+                    const filteredProjects = projectsData.filter((proj) =>
                     searchValue.trim() === ""
                       ? true
-                      : proj.title
-                          .toLowerCase()
-                          .includes(searchValue.toLowerCase())
-                  );
+                      : (
+                        (proj.title?.toLowerCase() ?? "") +
+                        " " +
+                        (proj.name?.toLowerCase() ?? "")
+                      ).includes(searchValue.toLowerCase())
+                    );
                   if (filteredProjects.length === 0) {
                     return (
                       <Text
@@ -1175,7 +1204,14 @@ alert("Uploading file: " + fileName);
               id="project-tags-input"
               value={project.tags}
               onChange={(tags) => setProject({ ...project, tags })}
-              hasSuffix={<Kbd>Enter</Kbd>}
+              hasSuffix={
+                <Row vertical="center" fit>
+                  <Kbd>
+                    Enter
+                    {/* &nbsp;<i className="ri-corner-down-left-fill"></i> */}
+                  </Kbd>
+                </Row>
+              }
               label="Tags"
             />
           </Column>
