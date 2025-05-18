@@ -1103,10 +1103,8 @@ export default function Home() {
         </Column>
       </Dialog>
       {/* New project dialog */}
-      <Dialog
-        key={isDialogOpenForNewProject ? "open" : "closed"}
+        <Dialog
         maxWidth={33}
-        style={{ zIndex: 999999999 }}
         maxHeight={40}
         isOpen={isDialogOpenForNewProject}
         onClose={() => setIsDialogOpenForNewProject(false)}
