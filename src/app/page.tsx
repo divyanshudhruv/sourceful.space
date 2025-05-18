@@ -93,6 +93,7 @@ export default function Home() {
     lookingFor: number;
     fundingPitch: string;
     isOpenForFunding: boolean;
+    likes?: number;
   }>({
     title: "",
     description: "",
@@ -106,7 +107,134 @@ export default function Home() {
     lookingFor: 0,
     fundingPitch: "",
     isOpenForFunding: false,
+    likes: 0,
   });
+
+  const handleFileUpload = async (file: File) => {
+    // Get a blob URL for the uploaded image file
+    // Upload the file to Supabase Storage and get a public URL
+    const userSession = await supabase.auth.getSession();
+    const userId = userSession.data.session?.user?.id || "anonymous";
+    const username = (user.name || "user").replace(/[^a-zA-Z0-9-_]/g, "_");
+    const date = new Date().toISOString().split("T")[0];
+    const fileExt = file.name.split(".").pop();
+    // Add a random string to the filename to avoid duplicates
+    const randomStr = Math.random()
+      .toString(36)
+      .replace(/[^a-z]+/g, "")
+      .substring(0, 8)
+      .toUpperCase();
+    const fileName =
+      `covers/${userId}-${username}-${date}-${randomStr}.${fileExt}`.replace(
+        /[^a-zA-Z0-9-_.\/]/g,
+        "_"
+      );
+    const { data, error } = await supabase.storage
+      .from("project-covers")
+      .upload(fileName, file, {
+        upsert: false,
+        contentType: file.type,
+        cacheControl: "3600",
+      });
+
+    if (error || !data || !data.path) {
+      addToast({
+        variant: "danger",
+        message: "Failed to upload image.",
+      });
+      console.error("Error uploading image:", error);
+      return;
+    }
+
+    const { data: publicUrlData } = supabase.storage
+      .from("project-covers")
+      .getPublicUrl(data.path);
+
+    if (!publicUrlData || !publicUrlData.publicUrl) {
+      addToast({
+        variant: "danger",
+        message: "Failed to get public URL for image.",
+      });
+      return;
+    }
+
+    setProject((prev) => ({
+      ...prev,
+      media: publicUrlData.publicUrl,
+    }));
+
+    addToast({
+      variant: "success",
+      message: "Image uploaded successfully!",
+    });
+  };
+
+  function clearProject() {
+    setProject({
+      title: "",
+      description: "",
+      content: "",
+      tags: ["AI", "Web", "Open Source"],
+      websiteLink: "",
+      media: "",
+      builtWith: "",
+      openForFunding: false,
+      fundingGoal: 0,
+      lookingFor: 0,
+      fundingPitch: "",
+      isOpenForFunding: false,
+    });
+  }
+
+  async function insertProjectToSupabase() {
+    try {
+      const userSession = await supabase.auth.getSession();
+      const userId = userSession.data.session?.user?.id;
+      if (!userId) {
+        addToast({
+          variant: "danger",
+          message: "You must be logged in to publish a project.",
+        });
+        return;
+      }
+      const updatedProject = {
+        ...project,
+        likes: Math.floor(Math.random() * 41) + 55, // 60-100
+      };
+      setProject(updatedProject);
+      const res = await fetch("/api/projects", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          project: updatedProject,
+          userId,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        addToast({
+          variant: "danger",
+          message: data.message || "Failed to publish project.",
+        });
+        console.error(data.error);
+      } else {
+        addToast({
+          variant: "success",
+          message: data.message || "Project published successfully!",
+        });
+        // Optionally reset project state here
+      }
+    } catch (err) {
+      addToast({
+        variant: "danger",
+        message: "An error occurred.",
+      });
+      console.error(err);
+    } finally {
+    }
+  }
 
   useEffect(() => {
     async function fetchUser() {
@@ -128,6 +256,7 @@ export default function Home() {
     }
     fetchUser();
   }, []);
+
   useEffect(() => {
     const handleLogOut = async () => {
       const { error } = await supabase.auth.signOut();
@@ -159,28 +288,28 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    const handleOpenDialog = () => {
+    const handleOpenDialog1 = () => {
       setIsDialogOpenForSignUp(true);
     };
 
-    window.addEventListener("open-signup-dialog", handleOpenDialog);
+    window.addEventListener("open-signup-dialog", handleOpenDialog1);
 
     // Cleanup the event listener
     return () => {
-      window.removeEventListener("open-signup-dialog", handleOpenDialog);
+      window.removeEventListener("open-signup-dialog", handleOpenDialog1);
     };
   }, []); // Open signup dialog when a custom event is dispatched
 
   useEffect(() => {
-    const handleOpenDialog = () => {
+    const handleOpenDialog2 = () => {
       setIsDialogOpenForNewProject(true);
     };
 
-    window.addEventListener("open-new-project-dialog", handleOpenDialog);
+    window.addEventListener("open-new-project-dialog", handleOpenDialog2);
 
     // Cleanup the event listener
     return () => {
-      window.removeEventListener("open-new-project-dialog", handleOpenDialog);
+      window.removeEventListener("open-new-project-dialog", handleOpenDialog2);
     };
   }, []); // Open signup dialog when a custom event is dispatched
 
@@ -193,6 +322,7 @@ export default function Home() {
       },
     });
   }
+
   const kbarItems = [
     {
       id: "home",
@@ -982,7 +1112,7 @@ export default function Home() {
         >
           <Column fillWidth>
             <Input
-              id="pin-title-input"
+              id="project-title-input"
               spellCheck={false}
               label="Title"
               labelAsPlaceholder={false}
@@ -996,10 +1126,10 @@ export default function Home() {
               }
             />
             <Textarea
-              id="pin-description-textarea"
+              id="project-description-textarea"
               spellCheck={false}
               label="Description"
-              lines={1}
+              lines={2}
               resize="vertical"
               labelAsPlaceholder={false}
               style={{ borderRadius: "0px !important" }}
@@ -1010,7 +1140,7 @@ export default function Home() {
               }
             />
             <Textarea
-              id="pin-content-textarea"
+              id="project-content-textarea"
               description={
                 <Row vertical="center">
                   <IconButton
@@ -1021,7 +1151,7 @@ export default function Home() {
                     variant="ghost"
                     disabled={true}
                   />
-                  <Text>Describe your pin in detail. (optional)</Text>
+                  <Text>Describe your project in detail. (optional)</Text>
                 </Row>
               }
               label="Content"
@@ -1039,7 +1169,7 @@ export default function Home() {
 
           <Column fillWidth gap="8">
             <TagInput
-              id="pin-tags-input"
+              id="project-tags-input"
               value={project.tags}
               onChange={(tags) => {
                 setProject({ ...project, tags });
@@ -1078,7 +1208,7 @@ export default function Home() {
           </Column>
           <Row fillWidth>
             <Input
-              id="pin-website-link-input"
+              id="project-website-link-input"
               label="Website Link"
               labelAsPlaceholder={false}
               style={{ borderRadius: "0px !important" }}
@@ -1094,13 +1224,19 @@ export default function Home() {
           </Row>
           <Row fillWidth>
             <MediaUpload
-              id="pin-media-upload-input"
+              emptyState={
+                <Column gap="8" fill center align="center">
+                  <i className="ri-file-line"></i>
+                  <Text variant="label-default-s">Add cover image</Text>
+                </Column>
+              }
+              id="project-media-upload-input"
               height={20}
               compress={true}
               aspectRatio="16 / 9"
               quality={0}
               loading={false}
-              initialPreviewImage=""
+              onFileUpload={handleFileUpload}
             />
           </Row>
 
@@ -1117,7 +1253,7 @@ export default function Home() {
           </Row>
 
           <Input
-            id="pin-built-with-input"
+            id="project-built-with-input"
             spellCheck={false}
             label="Built with"
             hasSuffix={<Kbd>Techs</Kbd>}
@@ -1165,7 +1301,7 @@ export default function Home() {
             </Flex>
 
             <NumberInput
-              id="pin-funding-amount-input"
+              id="project-funding-amount-input"
               error={false}
               label="Funding goal ($)"
               labelAsPlaceholder={false}
@@ -1178,7 +1314,7 @@ export default function Home() {
               }
             />
             <NumberInput
-              id="pin-funding-amount-input-looking-for"
+              id="project-funding-amount-input-looking-for"
               error={false}
               label="Looking for ($)"
               labelAsPlaceholder={false}
@@ -1192,7 +1328,7 @@ export default function Home() {
             />
 
             <Textarea
-              id="pin-funding-description-textarea"
+              id="project-funding-description-textarea"
               label="Funding pitch"
               lines={3}
               spellCheck={false}
@@ -1218,8 +1354,15 @@ export default function Home() {
               }
             />
           </Column>
-          <Row horizontal="end" fillWidth paddingBottom="20">
-            <Button variant="primary" disabled={isLoading}>
+          <Row horizontal="end" fillWidth paddingBottom="20" gap="8">
+            <Button variant="secondary" onClick={clearProject}>
+              <Text variant="label-default-m">Clear</Text>
+            </Button>
+            <Button
+              variant="primary"
+              disabled={isLoading}
+              onClick={insertProjectToSupabase}
+            >
               <Text>Publish</Text>
             </Button>
           </Row>
