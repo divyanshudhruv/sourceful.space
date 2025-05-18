@@ -16,17 +16,17 @@ import {
 import { opacity, SpacingToken } from "@/once-ui/types";
 import { Meta, Schema } from "@/once-ui/modules";
 
-export async function generateMetadata() {
-  return Meta.generate({
-    title: meta.home.title,
-    description: meta.home.description,
-    baseURL: baseURL,
-    path: meta.home.path,
-    image: meta.home.image,
-    robots: meta.home.robots,
-    alternates: meta.home.alternates,
-  });
-}
+// export async function generateMetadata() {
+//   return Meta.generate({
+//     title: meta.home.title,
+//     description: meta.home.description,
+//     baseURL: baseURL,
+//     path: meta.home.path,
+//     image: meta.home.image,
+//     robots: meta.home.robots,
+//     alternates: meta.home.alternates,
+//   });
+// }
 
 export const metadata = {
   title: "Sourceful Space: Redefining open-source",
