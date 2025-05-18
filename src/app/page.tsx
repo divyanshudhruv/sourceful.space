@@ -104,6 +104,7 @@ export default function Home() {
       likes?: number;
       name?: string;
       pfp?: string;
+      website_link?: string;
     }[]
   >([]);
 
@@ -112,7 +113,7 @@ export default function Home() {
     const fetchProjects = async () => {
       const { data, error } = await supabase
         .from("projects")
-        .select("project_id, title, description, media_url, likes, name, pfp");
+        .select("project_id, title, description, media_url, likes, name, pfp, website_link");
 
       if (error) {
         console.error("Error fetching projects:", error);
@@ -753,9 +754,9 @@ export default function Home() {
               onBackground="neutral-weak"
               align="center"
             >
-              Empowering developers with AI-crafted briefs to streamline
-              workflows, foster community engagement, and drive impactful
-              solutions in the tech ecosystem.
+              Empowering developers and designers to explore, share,
+              and contribute to open-source projects with AI-crafted
+              briefs—streamlining projects, building community.
             </Text>
             <Button
               id="getStarted"
@@ -1062,6 +1063,7 @@ export default function Home() {
                   title={proj.title}
                   description={proj.description}
                   likes={proj.likes ?? 0}
+                  href={proj.website_link ?? ""}
                 />
               ))}
             </Row>

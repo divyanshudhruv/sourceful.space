@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
         description: project.description,
         content: project.content,
         tags: project.tags,
-        website_link: project.websiteLink,
+        website_link: `https://${project.websiteLink}`,
         media_url: project.media,
         built_with: project.builtWith,
         open_for_funding: project.openForFunding,
