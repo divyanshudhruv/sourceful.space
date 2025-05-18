@@ -588,7 +588,12 @@ export default function Home() {
               loading={false}
               selected={false}
             />
-            <Line vert={true} height={2} background="neutral-alpha-medium" />
+            <Line
+              vert={true}
+              height={2}
+              background="neutral-alpha-medium"
+              hide="s"
+            />
             <ThemeSwitcher fillHeight />
           </Row>
         </Row>
@@ -718,7 +723,7 @@ export default function Home() {
                     textDecorationColor: "var(--accent-background-strong)",
                   }}
                 >
-                  emerges
+                  emerge
                 </u>
               </a>{" "}
               like grains.
@@ -1073,11 +1078,14 @@ export default function Home() {
                 <Text>
                   <u>supabase</u>
                 </Text>
-              </SmartLink> and   <SmartLink href="https://ai.google.dev" target="_blank">
+              </SmartLink>{" "}
+              and{" "}
+              <SmartLink href="https://ai.google.dev" target="_blank">
                 <Text>
-                  <u>gemini</u> 
+                  <u>gemini</u>
                 </Text>
-              </SmartLink> AI
+              </SmartLink>{" "}
+              AI
             </Text>
           </Column>
         </Column>
