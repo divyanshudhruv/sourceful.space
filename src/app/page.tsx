@@ -228,6 +228,8 @@ export default function Home() {
       lookingFor: 0,
       fundingPitch: "",
       isOpenForFunding: false,
+     
+
     });
   }
 
@@ -242,7 +244,7 @@ export default function Home() {
       addToast({
         variant: "danger",
         message:
-          "Please fill all required fields (Title, Description, Cover Image, Built With).",
+          "Please fill all required fields (Title, Description, Cover image, Built with, etc).",
       });
       return;
     }
@@ -434,11 +436,11 @@ export default function Home() {
     },
     {
       id: "support",
-      name: "Support Us",
+      name: "Request deletion",
       section: "Community",
-      shortcut: ["U"],
-      keywords: "support donate help",
-      href: "/support",
+      shortcut: ["D"],
+      keywords: "support delete remove account project",
+      href: "https://github.com/divyanshudhruv/sourceful.space/issues",
       icon: "heart",
     },
     {
@@ -456,7 +458,7 @@ export default function Home() {
       section: "Socials",
       shortcut: ["L"],
       keywords: "linkedin professional network",
-      href: "https://linkedin.com",
+      href: "https://linkedin.com/",
       icon: "linkedin",
     },
   ];
@@ -524,7 +526,10 @@ export default function Home() {
           vertical="center"
         >
           <Row vertical="center" gap="12">
-            <Text variant="body-default-l">sourceful.space</Text>
+            <Text variant="body-default-l">sourceful.space </Text>
+            <Column horizontal="start" vertical="center" fitWidth>
+              <InlineCode textVariant="code-default-s">beta</InlineCode>
+            </Column>
             <Line vert={true} height={2} background="neutral-alpha-medium" />
             {/* Command palette trigger */}
             <Kbd
@@ -716,7 +721,7 @@ export default function Home() {
             <Column maxWidth={31} marginTop="8">
               <Textarea
                 id="example-textarea"
-                label="Submit your open-source startup idea"
+                label="Describe your open-source startup idea"
                 lines={7}
                 value={idea}
                 onChange={(e) => setIdea(e.target.value)}
@@ -852,7 +857,7 @@ export default function Home() {
               variant="heading-default-l"
             >
               Brought to you by indie creators
-              <br /> crafting stellar ideas.
+              <br /> unveiling ingenious ideas.
             </Heading>
           </Column>
           <Line maxWidth={4} background="neutral-alpha-medium" />
@@ -923,10 +928,10 @@ export default function Home() {
               }}
             />
             {/* Search input */}
-            <Column maxWidth="s" fillHeight marginBottom="40">
+            <Column maxWidth="s" fillHeight marginBottom="40" paddingX="20">
               <Input
                 id="input-1"
-                label="Search for pins"
+                label="Search for projects"
                 value={searchValue}
                 labelAsPlaceholder={true}
                 onChange={handleChange}
@@ -947,15 +952,27 @@ export default function Home() {
             {/* Project cards */}
             <Row maxWidth={65} horizontal="center" gap="64" wrap minHeight={32}>
               <RevealFx delay={0.2} translateY={0.5}>
-                {projectsData
-                  .filter((proj) =>
+                {(() => {
+                  const filteredProjects = projectsData.filter((proj) =>
                     searchValue.trim() === ""
                       ? true
                       : proj.title
                           .toLowerCase()
                           .includes(searchValue.toLowerCase())
-                  )
-                  .map((proj) => (
+                  );
+                  if (filteredProjects.length === 0) {
+                    return (
+                      <Text
+                        variant="label-default-l"
+                        onBackground="neutral-weak"
+                        align="center"
+                        style={{ width: "100%", height: "100%" }}
+                      >
+                        No projects found
+                      </Text>
+                    );
+                  }
+                  return filteredProjects.map((proj) => (
                     <SourcefulCard
                       key={proj.project_id}
                       id={proj.title}
@@ -969,7 +986,8 @@ export default function Home() {
                       href={proj.website_link ?? ""}
                       open_for_funding={proj.open_for_funding ?? false}
                     />
-                  ))}
+                  ));
+                })()}
               </RevealFx>
             </Row>
             {/* Load more button */}
@@ -1003,6 +1021,14 @@ export default function Home() {
             <Text onBackground="neutral-weak">2025 /</Text> Sourceful Space
           </Text>
           <SmartLink href="#">MIT License</SmartLink>
+          <Text onBackground="neutral-weak">
+            <Text onBackground="neutral-weak">Powered by </Text>
+            <SmartLink href="https://once-ui.com" target="_blank">
+              <Text>
+                <u>once-ui</u>
+              </Text>
+            </SmartLink>
+          </Text>
         </Column>
       </Row>
       {/* Signup Dialog */}
@@ -1091,7 +1117,7 @@ export default function Home() {
           marginBottom="2"
         >
           {/* Project title */}
-          <Column fillWidth>
+          <Column fillWidth marginBottom="4">
             <Input
               id="project-title-input"
               spellCheck={false}
@@ -1135,7 +1161,7 @@ export default function Home() {
                     tooltipPosition="top"
                     variant="ghost"
                     disabled={true}
-                  />
+                  /> {" "}
                   <Text>Describe your project in detail. (optional)</Text>
                 </Row>
               }
@@ -1201,9 +1227,9 @@ export default function Home() {
             <Column>
               <Text
                 variant="label-default-s"
-                style={{ color: "#333", fontSize: "12px" }}
+                style={{ color: "#666", fontSize: "12px" }}
               >
-                Project Media (Aspect ratio: 16/9)
+                Project Media (Aspect ratio: 4/3)
               </Text>
               <Text variant="label-default-s" style={{ color: "#666" }}></Text>
             </Column>
@@ -1223,8 +1249,7 @@ export default function Home() {
                 <IconButton
                   icon="infoCircle"
                   size="s"
-                  tooltip="😏"
-                  tooltipPosition="top"
+                  
                   variant="ghost"
                   disabled={true}
                 />
@@ -1265,6 +1290,7 @@ export default function Home() {
               labelAsPlaceholder={false}
               style={{ borderRadius: "0px !important" }}
               spellCheck={false}
+              min={0}
               radius="top"
               value={project.fundingGoal}
               onChange={(value) =>
@@ -1277,6 +1303,7 @@ export default function Home() {
               error={false}
               label="Looking for ($)"
               labelAsPlaceholder={false}
+              min={0}
               spellCheck={false}
               style={{ borderRadius: "0px !important" }}
               radius="none"
@@ -1299,8 +1326,7 @@ export default function Home() {
                   <IconButton
                     icon="infoCircle"
                     size="s"
-                    tooltip="😏"
-                    tooltipPosition="top"
+                  
                     variant="ghost"
                     disabled={true}
                   />
