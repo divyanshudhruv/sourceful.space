@@ -160,6 +160,15 @@ export default function Home() {
 
   // Handle file upload for project cover image
   const handleFileUpload = async (file: File) => {
+    const userSession = await supabase.auth.getSession();
+    if (!userSession.data.session) {
+      addToast({
+      variant: "danger",
+      message: "You must be logged in to upload a cover image.",
+      });
+      return;
+    }
+
     const fileExt = file.name.split(".").pop();
     const now = new Date();
     const dateStr = now.toISOString().slice(0, 10); // YYYY-MM-DD
@@ -169,15 +178,15 @@ export default function Home() {
     const { data, error } = await supabase.storage
       .from("project-covers")
       .upload(fileName, file, {
-        upsert: false,
-        contentType: file.type,
-        cacheControl: "3600",
+      upsert: false,
+      contentType: file.type,
+      cacheControl: "3600",
       });
 
     if (error || !data || !data.path) {
       addToast({
-        variant: "danger",
-        message: "Failed to upload image.",
+      variant: "danger",
+      message: "Failed to upload image.",
       });
       console.error("Error uploading image:", error);
       return;
@@ -189,8 +198,8 @@ export default function Home() {
 
     if (!publicUrlData || !publicUrlData.publicUrl) {
       addToast({
-        variant: "danger",
-        message: "Failed to get public URL for image.",
+      variant: "danger",
+      message: "Failed to get public URL for image.",
       });
       return;
     }
@@ -226,6 +235,15 @@ export default function Home() {
 
   // Insert new project to Supabase
   async function insertProjectToSupabase() {
+    const userSession = await supabase.auth.getSession();
+    if (!userSession.data.session) {
+      addToast({
+      variant: "danger",
+      message: "You must be logged in to publish a project.",
+      });
+      return;
+    }
+
     if (
       !project.title.trim() ||
       !project.description.trim() ||
@@ -233,65 +251,56 @@ export default function Home() {
       !project.builtWith.trim()
     ) {
       addToast({
-        variant: "danger",
-        message:
-          "Please fill all required fields (Title, Description, Cover image, Built with, etc).",
+      variant: "danger",
+      message:
+        "Please fill all required fields (Title, Description, Cover image, Built with, etc).",
       });
       return;
     }
 
     setIsLoading(true);
     try {
-      const userSession = await supabase.auth.getSession();
       const userId = userSession.data.session?.user?.id;
       const name =
-        userSession.data.session?.user?.user_metadata?.name || "User";
+      userSession.data.session?.user?.user_metadata?.name || "User";
       const pfp =
-        userSession.data.session?.user?.user_metadata?.avatar_url || "";
-      if (!userId) {
-        addToast({
-          variant: "danger",
-          message: "You must be logged in to publish a project.",
-        });
-        setIsLoading(false);
-        return;
-      }
+      userSession.data.session?.user?.user_metadata?.avatar_url || "";
       const updatedProject = {
-        ...project,
-        likes: Math.floor(Math.random() * 30) + 65, // 70-95
-        name,
-        pfp,
+      ...project,
+      likes: Math.floor(Math.random() * 30) + 65, // 70-95
+      name,
+      pfp,
       };
       setProject(updatedProject);
       const res = await fetch("/api/projects", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          project: updatedProject,
-          userId,
-        }),
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        project: updatedProject,
+        userId,
+      }),
       });
 
       const data = await res.json();
 
       if (!res.ok) {
-        addToast({
-          variant: "danger",
-          message: data.message || "Failed to publish project.",
-        });
-        console.error(data.error);
+      addToast({
+        variant: "danger",
+        message: data.message || "Failed to publish project.",
+      });
+      console.error(data.error);
       } else {
-        addToast({
-          variant: "success",
-          message: data.message || "Project published successfully!",
-        });
-        clearProject();
-        setIsDialogOpenForNewProject(false);
+      addToast({
+        variant: "success",
+        message: data.message || "Project published successfully!",
+      });
+      clearProject();
+      setIsDialogOpenForNewProject(false);
       }
     } catch (err) {
       addToast({
-        variant: "danger",
-        message: "An error occurred.",
+      variant: "danger",
+      message: "An error occurred.",
       });
       console.error(err);
     } finally {
