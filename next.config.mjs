@@ -5,8 +5,12 @@ const nextConfig = {
     silenceDeprecations: ["legacy-js-api"],
   },
   images: {
-    domains: ["lh3.googleusercontent.com"],
+    domains: [
+      "lh3.googleusercontent.com",
+      "zduscsbntjgsqtjtusok.supabase.co"
+    ],
   },
 };
 
 export default nextConfig;
+

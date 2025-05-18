@@ -62,6 +62,22 @@ import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 import { supabase } from "./utils/supabase/client";
 import { SourcefulCard } from "./sourceful-ui/SourcefulCard";
+
+type User = {
+  name: string;
+  pfp: string;
+};
+
+type Project = {
+  title: string;
+  description: string;
+  blob_image_url?: string;
+  media_url?: string;
+  likes?: number;
+  id: string;
+  users: User; // ⚠️ Aliased from `auth.users` as `users`
+};
+
 export default function Home() {
   const [idea, setIdea] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -79,6 +95,51 @@ export default function Home() {
     pfp: "",
     subline: "Space User",
   });
+  const [projectsData, setProjectsData] = useState<
+    {
+      project_id: string;
+      title: string;
+      description: string;
+      media_url?: string;
+      likes?: number;
+      name?: string;
+      pfp?: string;
+    }[]
+  >([]);
+
+  useEffect(() => {
+    // Initial fetch
+    const fetchProjects = async () => {
+      const { data, error } = await supabase
+        .from("projects")
+        .select("project_id, title, description, media_url, likes, name, pfp");
+
+      if (error) {
+        console.error("Error fetching projects:", error);
+      } else {
+        setProjectsData(data);
+      }
+    };
+
+    fetchProjects();
+
+    // Subscribe to realtime changes
+    const channel = supabase
+      .channel("realtime:projects")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "projects" },
+        () => {
+          // Refetch all projects on any change
+          fetchProjects();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, []);
 
   const [project, setProject] = useState<{
     title: string;
@@ -94,6 +155,8 @@ export default function Home() {
     fundingPitch: string;
     isOpenForFunding: boolean;
     likes?: number;
+    name?: string;
+    pfp?: string;
   }>({
     title: "",
     description: "",
@@ -108,6 +171,8 @@ export default function Home() {
     fundingPitch: "",
     isOpenForFunding: false,
     likes: 0,
+    name: "",
+    pfp: "",
   });
 
   const handleFileUpload = async (file: File) => {
@@ -187,19 +252,42 @@ export default function Home() {
   }
 
   async function insertProjectToSupabase() {
+    // Validate required fields
+    if (
+      !project.title.trim() ||
+      !project.description.trim() ||
+      !project.media.trim() ||
+      !project.builtWith.trim()
+    ) {
+      addToast({
+        variant: "danger",
+        message:
+          "Please fill all required fields (Title, Description, Cover Image, Built With).",
+      });
+      return;
+    }
+
+    setIsLoading(true);
     try {
       const userSession = await supabase.auth.getSession();
       const userId = userSession.data.session?.user?.id;
+      const name =
+        userSession.data.session?.user?.user_metadata?.name || "User";
+      const pfp =
+        userSession.data.session?.user?.user_metadata?.avatar_url || "";
       if (!userId) {
         addToast({
           variant: "danger",
           message: "You must be logged in to publish a project.",
         });
+        setIsLoading(false);
         return;
       }
       const updatedProject = {
         ...project,
-        likes: Math.floor(Math.random() * 41) + 55, // 60-100
+        likes: Math.floor(Math.random() * 41) + 55, // 55-95
+        name,
+        pfp,
       };
       setProject(updatedProject);
       const res = await fetch("/api/projects", {
@@ -224,7 +312,8 @@ export default function Home() {
           variant: "success",
           message: data.message || "Project published successfully!",
         });
-        // Optionally reset project state here
+        clearProject();
+        setIsDialogOpenForNewProject(false);
       }
     } catch (err) {
       addToast({
@@ -233,6 +322,7 @@ export default function Home() {
       });
       console.error(err);
     } finally {
+      setIsLoading(false);
     }
   }
 
@@ -962,20 +1052,23 @@ export default function Home() {
             </Column>
             {/* SOURCEFUL CARD */}
             <Row maxWidth={65} horizontal="center" gap="64" wrap>
-              <SourcefulCard
-                avatarSrc={user.pfp}
-                name={user.name}
-                imageSrc="/images/1.jpg"
-                imageAlt="alt"
-                title="Sourceful Space"
-                description="A platform for developers to share and discover open-source projects."
-                likes={64}
-              />
+              {projectsData.map((proj) => (
+                <SourcefulCard
+                  key={proj.project_id}
+                  avatarSrc={proj.pfp ?? ""}
+                  name={proj.name ?? "User"}
+                  imageSrc={proj.media_url || "/images/placeholder.jpg"}
+                  imageAlt={proj.title}
+                  title={proj.title}
+                  description={proj.description}
+                  likes={proj.likes ?? 0}
+                />
+              ))}
             </Row>
-            {/* SOURCEFUL CARD */}
+
             <Row paddingY="20" paddingTop="40">
-              <Button variant="secondary" size="l">
-                <Text variant="body-default-l">Load more</Text>
+              <Button variant="secondary" size="l" onClick={() => {}}>
+                <Text variant="body-default-l">Load more </Text>
               </Button>
             </Row>
           </Column>
@@ -1127,6 +1220,7 @@ export default function Home() {
             />
             <Textarea
               id="project-description-textarea"
+              maxLength={200}
               spellCheck={false}
               label="Description"
               lines={2}
@@ -1141,6 +1235,7 @@ export default function Home() {
             />
             <Textarea
               id="project-content-textarea"
+              maxLength={500}
               description={
                 <Row vertical="center">
                   <IconButton
