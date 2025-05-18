@@ -28,6 +28,44 @@ export async function generateMetadata() {
   });
 }
 
+export const metadata = {
+  title: "Sourceful Space: Redefining open-source",
+  description:
+    "Sourceful Space is a platform that connects developers and designers together to build amazing open-source projects. Join us to explore, contribute, and innovate in the world of open-source.",
+  openGraph: {
+    title: "Sourceful Space: Redefining open-source",
+    description:
+      "Sourceful Space is a platform that connects developers and designers together to build amazing open-source projects. Join us to explore, contribute, and innovate in the world of open-source.",
+    url: "https://sourceful-space.vercel.app",
+    siteName: "Sourceful Space",
+    images: [
+      {
+        url: "/cover.png",
+
+        alt: "Sourceful Space",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Sourceful Space: Redefining open-source",
+    description:
+      "Sourceful Space is a platform that connects developers and designers together to build amazing open-source projects. Join us to explore, contribute, and innovate in the world of open-source.",
+    images: ["/cover.png"],
+  },
+  keywords: "open-source, projects, developers, designers, collaboration",
+  robots: "index,follow",
+  alternates: [{ href: "https://sourceful.space", hrefLang: "en" }],
+  authors: [
+    {
+      name: "Divyanshu Dhruv",
+      url: "https://divyanshudhruv.is-a.dev",
+    },
+  ],
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{

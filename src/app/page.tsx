@@ -969,7 +969,14 @@ export default function Home() {
             </Column>
             {/* Project cards */}
             <Row maxWidth={65}>
-              <RevealFx delay={0.2} translateY={0.5} horizontal="center" gap="64" wrap minHeight={32}>
+              <RevealFx
+                delay={0.2}
+                translateY={0.5}
+                horizontal="center"
+                gap="64"
+                wrap
+                minHeight={32}
+              >
                 {(() => {
                   const filteredProjects = projectsData.filter((proj) =>
                     searchValue.trim() === ""
@@ -1097,10 +1104,17 @@ export default function Home() {
       </Dialog>
       {/* New project dialog */}
       <Dialog
+        key={isDialogOpenForNewProject ? "open" : "closed"}
         maxWidth={33}
+        style={{ zIndex: 999999999 }}
         maxHeight={40}
         isOpen={isDialogOpenForNewProject}
-        onClose={() => setIsDialogOpenForNewProject(false)}
+        onClose={() => {
+          setIsDialogOpenForNewProject(false);
+          setTimeout(() => {
+            setIsDialogOpenForNewProject(false);
+          }, 0);
+        }}
         title={<Text variant="heading-default-xl">New Project</Text>}
         description={
           <Text variant="body-default-s" onBackground="neutral-weak">
