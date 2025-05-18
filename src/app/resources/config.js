@@ -128,7 +128,7 @@ const meta = {
 
 // default schema data
 const schema = {
-  logo: "",
+  logo: "/logo.png",
   type: "website",
   url: baseURL,
   title: "Sourceful Space",

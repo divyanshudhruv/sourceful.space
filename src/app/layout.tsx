@@ -1,7 +1,5 @@
 import "@/once-ui/styles/index.scss";
 import "@/once-ui/tokens/index.scss";
-import { DM_Sans } from "next/font/google";
-import { Lexend } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 
 import classNames from "classnames";
@@ -17,7 +15,6 @@ import {
 
 import { opacity, SpacingToken } from "@/once-ui/types";
 import { Meta, Schema } from "@/once-ui/modules";
-import Script from "next/script";
 
 export async function generateMetadata() {
   return Meta.generate({
@@ -66,6 +63,7 @@ export default function RootLayout({
         path={meta.home.path}
       />
       <head>
+        <link rel="shortcut icon" href="logo.png" type="image/x-icon" />
         <link
           href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
           rel="stylesheet"
