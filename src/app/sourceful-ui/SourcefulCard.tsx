@@ -25,6 +25,8 @@ type SourcefulCardProps = {
   description: string;
   likes: number;
   href: string;
+  open_for_funding?: boolean;
+  id?: string;
 };
 
 export function SourcefulCard(props: SourcefulCardProps) {
@@ -37,6 +39,8 @@ export function SourcefulCard(props: SourcefulCardProps) {
     description,
     likes,
     href,
+    open_for_funding,
+    id
   } = props;
 
   const handleCardClick = () => {
@@ -44,7 +48,7 @@ export function SourcefulCard(props: SourcefulCardProps) {
   };
 
   return (
-    <Row maxWidth={24} maxHeight={32} minWidth={24} onClick={handleCardClick}>
+    <Row maxWidth={24} maxHeight={32} minWidth={24} onClick={handleCardClick} id={id}>
       <Card
         radius="l-4"
         direction="column"
@@ -89,6 +93,13 @@ export function SourcefulCard(props: SourcefulCardProps) {
             <i className="ri-heart-line"></i>
             <Text className={lexend.className}>{likes}</Text>
           </Flex>
+
+          {open_for_funding && (
+            <Flex gap="4">
+              <i className="ri-bank-card-line"></i>
+              <Text className={lexend.className}>OPEN</Text>
+            </Flex>
+          )}
         </Row>
       </Card>
     </Row>
