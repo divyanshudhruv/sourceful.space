@@ -31,11 +31,11 @@ import { Meta, Schema } from "@/once-ui/modules";
 export const metadata = {
   title: "Sourceful Space: Redefining open-source",
   description:
-    "Sourceful Space is a platform that connects developers and designers together to build amazing open-source projects. Join us to explore, contribute, and innovate in the world of open-source.",
+    "Sourceful Space is a platform that connects developers and designers together to build and share amazing open-source and early startups projects.",
   openGraph: {
     title: "Sourceful Space: Redefining open-source",
     description:
-      "Sourceful Space is a platform that connects developers and designers together to build amazing open-source projects. Join us to explore, contribute, and innovate in the world of open-source.",
+      "Sourceful Space is a platform that connects developers and designers together to build and share amazing open-source and early startups projects.",
     url: "https://sourceful-space.vercel.app",
     siteName: "Sourceful Space",
     images: [
@@ -52,7 +52,7 @@ export const metadata = {
     card: "summary_large_image",
     title: "Sourceful Space: Redefining open-source",
     description:
-      "Sourceful Space is a platform that connects developers and designers together to build amazing open-source projects. Join us to explore, contribute, and innovate in the world of open-source.",
+      "Sourceful Space is a platform that connects developers and designers together to build and share amazing open-source and early startups projects.",
     images: ["/cover.png"],
   },
   keywords: "open-source, projects, developers, designers, collaboration",
