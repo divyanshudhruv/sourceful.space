@@ -15,6 +15,7 @@ const lexend = Lexend({
   subsets: ["latin"],
   display: "swap",
 });
+
 type SourcefulCardProps = {
   avatarSrc: string;
   name: string;
@@ -26,18 +27,24 @@ type SourcefulCardProps = {
   href: string;
 };
 
-export function SourcefulCard({
-  avatarSrc,
-  name,
-  imageSrc,
-  imageAlt,
-  title,
-  description,
-  likes,
-  href
-}: SourcefulCardProps) {
+export function SourcefulCard(props: SourcefulCardProps) {
+  const {
+    avatarSrc,
+    name,
+    imageSrc,
+    imageAlt,
+    title,
+    description,
+    likes,
+    href,
+  } = props;
+
+  const handleCardClick = () => {
+    window.open(href);
+  };
+
   return (
-    <Row maxWidth={24} maxHeight={32} minWidth={24} onClick={() => window.open(href)}>
+    <Row maxWidth={24} maxHeight={32} minWidth={24} onClick={handleCardClick}>
       <Card
         radius="l-4"
         direction="column"
