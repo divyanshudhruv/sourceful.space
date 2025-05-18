@@ -77,8 +77,8 @@ Redefining **`open-source`** collaboration for indie **`creators`**, **`develope
 
 - 🔍 **`Explore Projects:`** Browse open-source and early startup projects on the homepage. 🏠
 - 💡 **`Submit Your Idea:`**
-  - Use the textarea labeled _"Describe your open-source startup idea"_.
-  - Click **Review by AI** to get instant feedback powered by Gemini. 🤖
+  - Use the textarea labeled _"`Describe your open-source startup idea`"_.
+  - Click **Review by AI** to get instant feedback powered by **`AI`**. 🤖
 - 🚀 **`Add Projects:`**
   - Press <kbd>Ctrl</kbd>+<kbd>K</kbd> to open the command palette.
   - Select **Submit Project** (or press <kbd>P</kbd> in the palette).
