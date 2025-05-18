@@ -27,6 +27,8 @@ export async function POST(req: NextRequest) {
         looking_for: [project.lookingFor],
         funding_pitch: project.fundingPitch,
         likes: project.likes,
+        name: project.name,
+        pfp: project.pfp,
       },
     ]);
 

@@ -109,7 +109,8 @@ const meta = {
   home: {
     title: "Sourceful Space: Redefining open-source",
     description:
-      "Sourceful Space is a platform that connects developers and designers to create open-source projects.",
+      "Sourceful Space is a platform that connects developers and designers together to build amazing open-source projects. Join us to explore, contribute, and innovate in the world of open-source.",
+    keywords: "open-source, projects, developers, designers, collaboration",
     baseURL: "https://sourceful-space.vercel.app",
     type: "website",
     image: "/images/cover.jpg",
