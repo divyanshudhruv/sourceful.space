@@ -1109,12 +1109,7 @@ export default function Home() {
         style={{ zIndex: 999999999 }}
         maxHeight={40}
         isOpen={isDialogOpenForNewProject}
-        onClose={() => {
-          setIsDialogOpenForNewProject(false);
-          setTimeout(() => {
-            setIsDialogOpenForNewProject(false);
-          }, 0);
-        }}
+        onClose={() => setIsDialogOpenForNewProject(false)}
         title={<Text variant="heading-default-xl">New Project</Text>}
         description={
           <Text variant="body-default-s" onBackground="neutral-weak">
