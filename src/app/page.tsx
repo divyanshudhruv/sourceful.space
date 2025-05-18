@@ -968,18 +968,18 @@ export default function Home() {
               </Row>
             </Column>
             {/* Project cards */}
-            <Row maxWidth={65} horizontal="center" gap="64" wrap minHeight={32}>
-              <RevealFx delay={0.2} translateY={0.5}>
+            <Row maxWidth={65}>
+              <RevealFx delay={0.2} translateY={0.5} horizontal="center" gap="64" wrap minHeight={32}>
                 {(() => {
-                    const filteredProjects = projectsData.filter((proj) =>
+                  const filteredProjects = projectsData.filter((proj) =>
                     searchValue.trim() === ""
                       ? true
                       : (
-                        (proj.title?.toLowerCase() ?? "") +
-                        " " +
-                        (proj.name?.toLowerCase() ?? "")
-                      ).includes(searchValue.toLowerCase())
-                    );
+                          (proj.title?.toLowerCase() ?? "") +
+                          " " +
+                          (proj.name?.toLowerCase() ?? "")
+                        ).includes(searchValue.toLowerCase())
+                  );
                   if (filteredProjects.length === 0) {
                     return (
                       <Text
