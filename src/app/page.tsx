@@ -166,7 +166,6 @@ export default function Home() {
     const timestamp = dateStr;
     const randomStr = Math.random().toString(36).substring(2, 8);
     const fileName = `covers/project-cover-${timestamp}-${randomStr}.${fileExt}`;
-    alert("Uploading file: " + fileName);
     const { data, error } = await supabase.storage
       .from("project-covers")
       .upload(fileName, file, {
