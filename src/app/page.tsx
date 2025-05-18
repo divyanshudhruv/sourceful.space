@@ -157,22 +157,13 @@ export default function Home() {
 
   // Handle file upload for project cover image
   const handleFileUpload = async (file: File) => {
-    const userSession = await supabase.auth.getSession();
-    const userId = userSession.data.session?.user?.id || "anonymous";
-    const username = (user.name || "user").replace(/[^a-zA-Z0-9-_]/g, "_");
-    const date = new Date().toISOString().split("T")[0];
     const fileExt = file.name.split(".").pop();
-    const randomStr = Math.random()
-      .toString(36)
-      .replace(/[^a-z]+/g, "")
-      .substring(0, 8)
-      .toUpperCase();
-    const fileName =
-      `covers/${userId}-${username}-${date}-${randomStr}.${fileExt}`.replace(
-        /[^a-zA-Z0-9-_.\/]/g,
-        "_"
-      );
-
+    const now = new Date();
+    const dateStr = now.toISOString().slice(0, 10); // YYYY-MM-DD
+    const timestamp = dateStr;
+    const randomStr = Math.random().toString(36).substring(2, 8);
+    const fileName = `covers/project-cover-${timestamp}-${randomStr}.${fileExt}`;
+alert("Uploading file: " + fileName);
     const { data, error } = await supabase.storage
       .from("project-covers")
       .upload(fileName, file, {
@@ -228,8 +219,6 @@ export default function Home() {
       lookingFor: 0,
       fundingPitch: "",
       isOpenForFunding: false,
-     
-
     });
   }
 
@@ -550,8 +539,8 @@ export default function Home() {
                 };
               }}
             >
-              <Text as="span" style={{ scale: "0.85" }}>
-                <Text variant="code-default-xs">ctrl+k</Text>
+              <Text as="span" style={{ scale: "1" }}>
+                <Text variant="code-default-xs">Ctrl+k</Text>
               </Text>
             </Kbd>
           </Row>
@@ -929,25 +918,28 @@ export default function Home() {
             />
             {/* Search input */}
             <Column maxWidth="s" fillHeight marginBottom="40" paddingX="20">
-              <Input
-                id="input-1"
-                label="Search for projects"
-                value={searchValue}
-                labelAsPlaceholder={true}
-                onChange={handleChange}
-                hasPrefix={<Icon name="search" size="xs" />}
-                hasSuffix={
-                  searchValue.length > 0 ? (
-                    <IconButton
-                      variant="ghost"
-                      icon="close"
-                      size="s"
-                      onClick={handleClear}
-                      aria-label="Clear search"
-                    />
-                  ) : null
-                }
-              />
+              <Row gap="16" vertical="center">
+                <Input
+                  id="input-1"
+                  label="Search for projects"
+                  value={searchValue}
+                  labelAsPlaceholder={true}
+                  onChange={handleChange}
+                  hasPrefix={<Icon name="search" size="xs" />}
+                  hasSuffix={
+                    searchValue.length > 0 ? (
+                      <IconButton
+                        variant="ghost"
+                        icon="close"
+                        size="s"
+                        onClick={handleClear}
+                        aria-label="Clear search"
+                      />
+                    ) : null
+                  }
+                />
+                <Kbd label="Ctrl+k"></Kbd>
+              </Row>
             </Column>
             {/* Project cards */}
             <Row maxWidth={65} horizontal="center" gap="64" wrap minHeight={32}>
@@ -1161,7 +1153,7 @@ export default function Home() {
                     tooltipPosition="top"
                     variant="ghost"
                     disabled={true}
-                  /> {" "}
+                  />{" "}
                   <Text>Describe your project in detail. (optional)</Text>
                 </Row>
               }
@@ -1249,7 +1241,6 @@ export default function Home() {
                 <IconButton
                   icon="infoCircle"
                   size="s"
-                  
                   variant="ghost"
                   disabled={true}
                 />
@@ -1326,7 +1317,6 @@ export default function Home() {
                   <IconButton
                     icon="infoCircle"
                     size="s"
-                  
                     variant="ghost"
                     disabled={true}
                   />
