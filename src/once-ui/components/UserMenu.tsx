@@ -35,6 +35,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
       }}
       trigger={
         <Flex
+          hide="s" //user created
           tabIndex={0}
           direction="column"
           padding="4"
@@ -42,7 +43,11 @@ const UserMenu: React.FC<UserMenuProps> = ({
           cursor="interactive"
           border={selected ? "neutral-medium" : "transparent"}
           background={selected ? "neutral-strong" : "transparent"}
-          className={classNames(className || "", selected ? styles.selected : "", styles.wrapper)}
+          className={classNames(
+            className || "",
+            selected ? styles.selected : "",
+            styles.wrapper
+          )}
           style={style}
         >
           <User {...userProps} />
