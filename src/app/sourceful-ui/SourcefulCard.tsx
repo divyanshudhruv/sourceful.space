@@ -23,6 +23,7 @@ type SourcefulCardProps = {
   title: string;
   description: string;
   likes: number;
+  href: string;
 };
 
 export function SourcefulCard({
@@ -33,10 +34,16 @@ export function SourcefulCard({
   title,
   description,
   likes,
+  href
 }: SourcefulCardProps) {
   return (
-    <Row maxWidth={24} maxHeight={32}>
-      <Card radius="l-4" direction="column" border="neutral-alpha-medium">
+    <Row maxWidth={24} maxHeight={32} minWidth={24} onClick={() => window.open(href)}>
+      <Card
+        radius="l-4"
+        direction="column"
+        border="neutral-alpha-medium"
+        minWidth={24}
+      >
         <Row fillWidth paddingX="20" paddingY="12" gap="8" vertical="center">
           <Avatar size="s" src={avatarSrc} />
           <Text variant="label-default-s" className={lexend.className}>
@@ -56,9 +63,11 @@ export function SourcefulCard({
           <Text variant="body-default-xl" className={lexend.className}>
             {title}
           </Text>
-          <Text onBackground="neutral-weak" variant="body-default-s">
-            {description}
-          </Text>
+          <Row minHeight={4}>
+            <Text onBackground="neutral-weak" variant="body-default-s">
+              {description}
+            </Text>
+          </Row>
         </Column>
         <Line background="neutral-alpha-medium" />
         <Row
@@ -71,9 +80,7 @@ export function SourcefulCard({
         >
           <Flex gap="4">
             <i className="ri-heart-line"></i>
-            <Text  className={lexend.className}>
-              {likes}
-            </Text>
+            <Text className={lexend.className}>{likes}</Text>
           </Flex>
         </Row>
       </Card>
