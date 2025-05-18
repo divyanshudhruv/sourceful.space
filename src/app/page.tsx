@@ -436,11 +436,11 @@ export default function Home() {
     },
     {
       id: "support",
-      name: "Request deletion",
+      name: "Request project deletion",
       section: "Community",
       shortcut: ["D"],
       keywords: "support delete remove account project",
-      href: "https://github.com/divyanshudhruv/sourceful.space/issues",
+      href: "https://github.com/divyanshudhruv/sourceful.space/issues/new/choose",
       icon: "heart",
     },
     {
