@@ -426,9 +426,9 @@ export default function Home() {
     },
     {
       id: "submit",
-      name: "Submit Idea",
+      name: "Submit Project",
       section: "Navigation",
-      shortcut: ["I"],
+      shortcut: ["P"],
       keywords: "submit idea startup",
       href: "javascript:window.dispatchEvent(new CustomEvent('open-new-project-dialog'))",
       icon: "document",
