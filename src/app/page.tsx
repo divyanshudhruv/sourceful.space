@@ -51,6 +51,8 @@ import {
   Flex,
   Kbar,
   Kbd,
+  NumberInput,
+  ToggleButton,
 } from "@/once-ui/components";
 import { CodeBlock, MediaUpload } from "@/once-ui/modules";
 import { ScrollToTop } from "@/once-ui/components/ScrollToTop";
@@ -67,6 +69,8 @@ export default function Home() {
   const [response, setResponse] = useState("");
   const [searchValue, setSearchValue] = useState<string>("");
   const [isDialogOpenForSignUp, setIsDialogOpenForSignUp] = useState(false);
+  const [isDialogOpenForNewProject, setIsDialogOpenForNewProject] =
+    useState(false);
   const [isCmdOpenFromButton, setIsCmdOpenFromButton] = useState(false);
   const { addToast } = useToast();
 
@@ -74,6 +78,34 @@ export default function Home() {
     name: "User",
     pfp: "",
     subline: "Space User",
+  });
+
+  const [project, setProject] = useState<{
+    title: string;
+    description: string;
+    content: string;
+    tags: string[];
+    websiteLink: string;
+    media: string;
+    builtWith: string;
+    openForFunding: boolean;
+    fundingGoal: number;
+    lookingFor: number;
+    fundingPitch: string;
+    isOpenForFunding: boolean;
+  }>({
+    title: "",
+    description: "",
+    content: "",
+    tags: ["AI", "Web", "Open Source"],
+    websiteLink: "",
+    media: "",
+    builtWith: "",
+    openForFunding: false,
+    fundingGoal: 0,
+    lookingFor: 0,
+    fundingPitch: "",
+    isOpenForFunding: false,
   });
 
   useEffect(() => {
@@ -139,6 +171,19 @@ export default function Home() {
     };
   }, []); // Open signup dialog when a custom event is dispatched
 
+  useEffect(() => {
+    const handleOpenDialog = () => {
+      setIsDialogOpenForNewProject(true);
+    };
+
+    window.addEventListener("open-new-project-dialog", handleOpenDialog);
+
+    // Cleanup the event listener
+    return () => {
+      window.removeEventListener("open-new-project-dialog", handleOpenDialog);
+    };
+  }, []); // Open signup dialog when a custom event is dispatched
+
   async function supabaseSignIn() {
     // Sign in with Google using Supabase
     const { data, error } = await supabase.auth.signInWithOAuth({
@@ -164,7 +209,7 @@ export default function Home() {
       section: "Navigation",
       shortcut: ["I"],
       keywords: "submit idea startup",
-      href: "/submit",
+      href: "javascript:window.dispatchEvent(new CustomEvent('open-new-project-dialog'))",
       icon: "document",
     },
     {
@@ -844,11 +889,8 @@ export default function Home() {
           <SmartLink href="#">MIT License</SmartLink>
         </Column>
       </Row>
-      {/* <CommandPalette /> */}
-      <Kbar items={kbarItems} isCmdOpen={isCmdOpenFromButton}>
-        {""}
-      </Kbar>
 
+      {/* Signup Dialog */}
       <Dialog
         maxWidth={35}
         style={{ zIndex: 999999999 }}
@@ -858,11 +900,336 @@ export default function Home() {
         description="Sign up effortlessly with your Google account to join our vibrant community of developers and creators."
       >
         <Column fillWidth gap="16" marginTop="12">
-          <Button variant="primary" size="m" onClick={supabaseSignIn}>
-            SignUp
+          <Button
+            variant="primary"
+            size="m"
+            onClick={() => {
+              supabaseSignIn();
+
+              addToast({
+                variant: "success",
+                message: "Redirecting to Google...",
+              });
+            }}
+          >
+            {isLoading ? (
+              <Row horizontal="center" vertical="center" fillHeight fillWidth>
+                <i
+                  className="ri-loader-line"
+                  style={{
+                    animation: "spin 1s linear infinite",
+                  }}
+                />
+                <style jsx>{`
+                  @keyframes spin {
+                    0% {
+                      transform: rotate(0deg);
+                    }
+                    100% {
+                      transform: rotate(360deg);
+                    }
+                  }
+                `}</style>
+              </Row>
+            ) : (
+              <Text variant="label-strong-s">SignUp</Text>
+            )}
           </Button>
         </Column>
       </Dialog>
+
+      {/* New project dialog */}
+
+      <Dialog
+        maxWidth={33}
+        maxHeight={40}
+        isOpen={isDialogOpenForNewProject}
+        onClose={() => setIsDialogOpenForNewProject(false)}
+        title={<Text variant="heading-default-xl">New Project</Text>}
+        description={
+          <Text variant="body-default-s" onBackground="neutral-weak">
+            Create a new project to share with the community.
+          </Text>
+        }
+        shadow="xs"
+        footer={
+          <Row horizontal="start" fillWidth paddingX="8">
+            <Text
+              variant="label-default-s"
+              style={{ color: "#666", fontSize: "12px" }}
+            >
+              <i
+                className="ri-information-line"
+                style={{
+                  fontSize: "14px",
+                  color: "#666",
+                  borderRadius: "100%",
+                  marginRight: "4px",
+                  marginTop: "2px",
+                }}
+              ></i>
+              You can upload your project only once, no editing allowed.
+            </Text>
+          </Row>
+        }
+      >
+        <Column
+          fillWidth
+          fillHeight
+          horizontal="center"
+          gap="12"
+          marginBottom="2"
+        >
+          <Column fillWidth>
+            <Input
+              id="pin-title-input"
+              spellCheck={false}
+              label="Title"
+              labelAsPlaceholder={false}
+              style={{ borderRadius: "0px !important" }}
+              error={false}
+              radius="top"
+              height="s"
+              value={project.title}
+              onChange={(e) =>
+                setProject({ ...project, title: e.target.value })
+              }
+            />
+            <Textarea
+              id="pin-description-textarea"
+              spellCheck={false}
+              label="Description"
+              lines={1}
+              resize="vertical"
+              labelAsPlaceholder={false}
+              style={{ borderRadius: "0px !important" }}
+              radius="none"
+              value={project.description}
+              onChange={(e) =>
+                setProject({ ...project, description: e.target.value })
+              }
+            />
+            <Textarea
+              id="pin-content-textarea"
+              description={
+                <Row vertical="center">
+                  <IconButton
+                    icon="infoCircle"
+                    size="s"
+                    tooltip="😏"
+                    tooltipPosition="top"
+                    variant="ghost"
+                    disabled={true}
+                  />
+                  <Text>Describe your pin in detail. (optional)</Text>
+                </Row>
+              }
+              label="Content"
+              lines={4}
+              spellCheck={false}
+              labelAsPlaceholder={false}
+              style={{ borderRadius: "0px !important" }}
+              radius="bottom"
+              value={project.content}
+              onChange={(e) =>
+                setProject({ ...project, content: e.target.value })
+              }
+            />
+          </Column>
+
+          <Column fillWidth gap="8">
+            <TagInput
+              id="pin-tags-input"
+              value={project.tags}
+              onChange={(tags) => {
+                setProject({ ...project, tags });
+              }}
+              hasSuffix={<Kbd>Enter</Kbd>}
+              label="Tags"
+            />
+            {/* <Row
+              height={3}
+              fillWidth
+              gap="4"
+              paddingX="2"
+              style={{
+                maxWidth: "100%",
+                overflowY: "hidden",
+                overflowX: "scroll",
+              }}
+            >
+              <ToggleButton
+                selected={false}
+                size="m"
+                fillWidth={false}
+                justifyContent="center"
+                style={{
+                  border: "1px solid #EFEEEB",
+                  padding: "8px",
+                }}
+              >
+                <Text variant="body-default-xs" style={{ color: "#555" }}>
+                  <Text variant="label-default-xs" style={{ color: "#777" }}>
+                    #dg
+                  </Text>
+                </Text>
+              </ToggleButton>
+            </Row> */}
+          </Column>
+          <Row fillWidth>
+            <Input
+              id="pin-website-link-input"
+              label="Website Link"
+              labelAsPlaceholder={false}
+              style={{ borderRadius: "0px !important" }}
+              error={false}
+              height="s"
+              spellCheck={false}
+              hasPrefix={<Text variant="label-default-s">https://</Text>}
+              value={project.websiteLink}
+              onChange={(e) =>
+                setProject({ ...project, websiteLink: e.target.value })
+              }
+            />
+          </Row>
+          <Row fillWidth>
+            <MediaUpload
+              id="pin-media-upload-input"
+              height={20}
+              compress={true}
+              aspectRatio="16 / 9"
+              quality={0}
+              loading={false}
+              initialPreviewImage=""
+            />
+          </Row>
+
+          <Row horizontal="start" fillWidth paddingX="8" marginBottom="2">
+            <Column>
+              <Text
+                variant="label-default-s"
+                style={{ color: "#333", fontSize: "12px" }}
+              >
+                Project Media (Aspect ratio: 16/9)
+              </Text>
+              <Text variant="label-default-s" style={{ color: "#666" }}></Text>
+            </Column>
+          </Row>
+
+          <Input
+            id="pin-built-with-input"
+            spellCheck={false}
+            label="Built with"
+            hasSuffix={<Kbd>Techs</Kbd>}
+            labelAsPlaceholder={false}
+            style={{ borderRadius: "0px !important" }}
+            error={false}
+            height="s"
+            description={
+              <Row vertical="center">
+                <IconButton
+                  icon="infoCircle"
+                  size="s"
+                  tooltip="😏"
+                  tooltipPosition="top"
+                  variant="ghost"
+                  disabled={true}
+                />
+                <Text>Mention the tech stack used. (optional)</Text>
+              </Row>
+            }
+            value={project.builtWith}
+            onChange={(e) =>
+              setProject({ ...project, builtWith: e.target.value })
+            }
+          ></Input>
+          <Column horizontal="start" fillWidth marginTop="32">
+            <Flex marginBottom="20">
+              <Switch
+                isChecked={project.openForFunding}
+                onToggle={() =>
+                  setProject({
+                    ...project,
+                    openForFunding: !project.openForFunding,
+                  })
+                }
+                reverse={false}
+                label="Open for funding"
+                description="Is this project open for funding?"
+                iconButtonProps={{
+                  onClick: () => {},
+                  tooltip: "This is an optional feature",
+                  tooltipPosition: "top",
+                }}
+              />
+            </Flex>
+
+            <NumberInput
+              id="pin-funding-amount-input"
+              error={false}
+              label="Funding goal ($)"
+              labelAsPlaceholder={false}
+              style={{ borderRadius: "0px !important" }}
+              spellCheck={false}
+              radius="top"
+              value={project.fundingGoal}
+              onChange={(value) =>
+                setProject({ ...project, fundingGoal: value })
+              }
+            />
+            <NumberInput
+              id="pin-funding-amount-input-looking-for"
+              error={false}
+              label="Looking for ($)"
+              labelAsPlaceholder={false}
+              spellCheck={false}
+              style={{ borderRadius: "0px !important" }}
+              radius="none"
+              value={project.lookingFor}
+              onChange={(value) =>
+                setProject({ ...project, lookingFor: value })
+              }
+            />
+
+            <Textarea
+              id="pin-funding-description-textarea"
+              label="Funding pitch"
+              lines={3}
+              spellCheck={false}
+              radius="bottom"
+              labelAsPlaceholder={false}
+              style={{ borderRadius: "0px !important" }}
+              description={
+                <Row vertical="center">
+                  <IconButton
+                    icon="infoCircle"
+                    size="s"
+                    tooltip="😏"
+                    tooltipPosition="top"
+                    variant="ghost"
+                    disabled={true}
+                  />
+                  <Text>Describe your funding pitch in detail.</Text>
+                </Row>
+              }
+              value={project.fundingPitch}
+              onChange={(e) =>
+                setProject({ ...project, fundingPitch: e.target.value })
+              }
+            />
+          </Column>
+          <Row horizontal="end" fillWidth paddingBottom="20">
+            <Button variant="primary" disabled={isLoading}>
+              <Text>Publish</Text>
+            </Button>
+          </Row>
+        </Column>
+      </Dialog>
+
+      {/* <CommandPalette /> */}
+      <Kbar items={kbarItems} isCmdOpen={isCmdOpenFromButton}>
+        {""}
+      </Kbar>
     </Column>
   );
 }
