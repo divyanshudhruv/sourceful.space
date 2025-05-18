@@ -1,20 +1,8 @@
 import "@/once-ui/styles/index.scss";
 import "@/once-ui/tokens/index.scss";
-import { Work_Sans } from "next/font/google";
 import { DM_Sans } from "next/font/google";
 import { Lexend } from "next/font/google";
-
-const primary = Lexend({
-  variable: "--font-primary",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const secondary = DM_Sans({
-  variable: "--font-secondary",
-  subsets: ["latin"],
-  display: "swap",
-});
+import { Analytics } from "@vercel/analytics/next";
 
 import classNames from "classnames";
 
@@ -29,6 +17,7 @@ import {
 
 import { opacity, SpacingToken } from "@/once-ui/types";
 import { Meta, Schema } from "@/once-ui/modules";
+import Script from "next/script";
 
 export async function generateMetadata() {
   return Meta.generate({
@@ -103,6 +92,7 @@ export default function RootLayout({
           }}
         />
       </head>
+      <Analytics />
       <ThemeProvider>
         <ToastProvider>
           <Column as="body" fillWidth margin="0" padding="0">

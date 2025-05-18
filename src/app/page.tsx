@@ -1,15 +1,9 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-
 import { Lexend } from "next/font/google";
-import "./../once-ui/styles/background.scss";
 import { Playwrite_DK_Loopet } from "next/font/google";
-const lexend = Lexend({ subsets: ["latin"] });
-const cedarville = Playwrite_DK_Loopet({
-  weight: "400",
-});
-
+import "./../once-ui/styles/background.scss";
 import {
   Heading,
   Text,
@@ -18,33 +12,19 @@ import {
   InlineCode,
   Logo,
   Input,
-  Avatar,
   AvatarGroup,
   Textarea,
-  PasswordInput,
-  SegmentedControl,
   SmartLink,
   Dialog,
-  Feedback,
-  SmartImage,
   Line,
-  LogoCloud,
   Background,
-  Select,
   useToast,
-  Card,
   Fade,
-  StatusIndicator,
-  DateRangePicker,
-  type DateRange,
-  TiltFx,
-  HoloFx,
   IconButton,
   TagInput,
   Switch,
   Column,
   Row,
-  StyleOverlay,
   CompareImage,
   ThemeSwitcher,
   UserMenu,
@@ -52,33 +32,27 @@ import {
   Kbar,
   Kbd,
   NumberInput,
-  ToggleButton,
+  RevealFx,
 } from "@/once-ui/components";
-import { CodeBlock, MediaUpload } from "@/once-ui/modules";
+import { MediaUpload } from "@/once-ui/modules";
 import { ScrollToTop } from "@/once-ui/components/ScrollToTop";
-import { RiArrowRightUpFill, RiArrowRightUpLine } from "react-icons/ri";
-import Link from "next/link";
-import { drizzle } from "drizzle-orm/postgres-js";
-import postgres from "postgres";
+// import { drizzle } from "drizzle-orm/postgres-js";
+// import postgres from "postgres";
 import { supabase } from "./utils/supabase/client";
 import { SourcefulCard } from "./sourceful-ui/SourcefulCard";
 
+// Font setup
+const lexend = Lexend({ subsets: ["latin"] });
+const cedarville = Playwrite_DK_Loopet({ weight: "400" });
+
+// Types
 type User = {
   name: string;
   pfp: string;
 };
 
-type Project = {
-  title: string;
-  description: string;
-  blob_image_url?: string;
-  media_url?: string;
-  likes?: number;
-  id: string;
-  users: User; // ⚠️ Aliased from `auth.users` as `users`
-};
-
 export default function Home() {
+  // State hooks
   const [idea, setIdea] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -90,11 +64,14 @@ export default function Home() {
   const [isCmdOpenFromButton, setIsCmdOpenFromButton] = useState(false);
   const { addToast } = useToast();
 
+  // User state
   const [user, setUser] = useState({
     name: "User",
     pfp: "",
     subline: "Space User",
   });
+
+  // Projects data state
   const [projectsData, setProjectsData] = useState<
     {
       project_id: string;
@@ -105,43 +82,11 @@ export default function Home() {
       name?: string;
       pfp?: string;
       website_link?: string;
+      open_for_funding?: boolean;
     }[]
   >([]);
 
-  useEffect(() => {
-    // Initial fetch
-    const fetchProjects = async () => {
-      const { data, error } = await supabase
-        .from("projects")
-        .select("project_id, title, description, media_url, likes, name, pfp, website_link");
-
-      if (error) {
-        console.error("Error fetching projects:", error);
-      } else {
-        setProjectsData(data);
-      }
-    };
-
-    fetchProjects();
-
-    // Subscribe to realtime changes
-    const channel = supabase
-      .channel("realtime:projects")
-      .on(
-        "postgres_changes",
-        { event: "*", schema: "public", table: "projects" },
-        () => {
-          // Refetch all projects on any change
-          fetchProjects();
-        }
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, []);
-
+  // Project form state
   const [project, setProject] = useState<{
     title: string;
     description: string;
@@ -176,15 +121,47 @@ export default function Home() {
     pfp: "",
   });
 
+  // Fetch projects from Supabase and subscribe to realtime changes
+  useEffect(() => {
+    const fetchProjects = async () => {
+      const { data, error } = await supabase
+        .from("projects")
+        .select(
+          "project_id, title, description, media_url, likes, name, pfp, website_link,open_for_funding"
+        );
+      if (error) {
+        console.error("Error fetching projects:", error);
+      } else {
+        setProjectsData(data);
+      }
+    };
+
+    fetchProjects();
+
+    // Subscribe to realtime changes
+    const channel = supabase
+      .channel("realtime:projects")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "projects" },
+        () => {
+          fetchProjects();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, []);
+
+  // Handle file upload for project cover image
   const handleFileUpload = async (file: File) => {
-    // Get a blob URL for the uploaded image file
-    // Upload the file to Supabase Storage and get a public URL
     const userSession = await supabase.auth.getSession();
     const userId = userSession.data.session?.user?.id || "anonymous";
     const username = (user.name || "user").replace(/[^a-zA-Z0-9-_]/g, "_");
     const date = new Date().toISOString().split("T")[0];
     const fileExt = file.name.split(".").pop();
-    // Add a random string to the filename to avoid duplicates
     const randomStr = Math.random()
       .toString(36)
       .replace(/[^a-z]+/g, "")
@@ -195,6 +172,7 @@ export default function Home() {
         /[^a-zA-Z0-9-_.\/]/g,
         "_"
       );
+
     const { data, error } = await supabase.storage
       .from("project-covers")
       .upload(fileName, file, {
@@ -235,6 +213,7 @@ export default function Home() {
     });
   };
 
+  // Clear project form
   function clearProject() {
     setProject({
       title: "",
@@ -252,8 +231,8 @@ export default function Home() {
     });
   }
 
+  // Insert new project to Supabase
   async function insertProjectToSupabase() {
-    // Validate required fields
     if (
       !project.title.trim() ||
       !project.description.trim() ||
@@ -286,7 +265,7 @@ export default function Home() {
       }
       const updatedProject = {
         ...project,
-        likes: Math.floor(Math.random() * 41) + 55, // 55-95
+        likes: Math.floor(Math.random() * 30) + 65, // 70-95
         name,
         pfp,
       };
@@ -327,6 +306,7 @@ export default function Home() {
     }
   }
 
+  // Fetch user info from Supabase on mount
   useEffect(() => {
     async function fetchUser() {
       const {
@@ -348,6 +328,7 @@ export default function Home() {
     fetchUser();
   }, []);
 
+  // Handle logout event
   useEffect(() => {
     const handleLogOut = async () => {
       const { error } = await supabase.auth.signOut();
@@ -372,12 +353,12 @@ export default function Home() {
 
     window.addEventListener("log-out", handleLogOut);
 
-    // Cleanup the event listener
     return () => {
       window.removeEventListener("log-out", handleLogOut);
     };
   }, []);
 
+  // Handle open signup dialog event
   useEffect(() => {
     const handleOpenDialog1 = () => {
       setIsDialogOpenForSignUp(true);
@@ -385,12 +366,12 @@ export default function Home() {
 
     window.addEventListener("open-signup-dialog", handleOpenDialog1);
 
-    // Cleanup the event listener
     return () => {
       window.removeEventListener("open-signup-dialog", handleOpenDialog1);
     };
-  }, []); // Open signup dialog when a custom event is dispatched
+  }, []);
 
+  // Handle open new project dialog event
   useEffect(() => {
     const handleOpenDialog2 = () => {
       setIsDialogOpenForNewProject(true);
@@ -398,15 +379,14 @@ export default function Home() {
 
     window.addEventListener("open-new-project-dialog", handleOpenDialog2);
 
-    // Cleanup the event listener
     return () => {
       window.removeEventListener("open-new-project-dialog", handleOpenDialog2);
     };
-  }, []); // Open signup dialog when a custom event is dispatched
+  }, []);
 
+  // Supabase Google sign-in
   async function supabaseSignIn() {
-    // Sign in with Google using Supabase
-    const { data, error } = await supabase.auth.signInWithOAuth({
+    await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
         redirectTo: `${window.location.origin}/auth/callback`,
@@ -414,6 +394,7 @@ export default function Home() {
     });
   }
 
+  // Kbar command palette items
   const kbarItems = [
     {
       id: "home",
@@ -480,18 +461,19 @@ export default function Home() {
     },
   ];
 
+  // Search input change handler
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value);
   };
 
+  // Clear search input
   const handleClear = () => {
     setSearchValue("");
   };
 
+  // Submit idea for AI review
   const handleSubmit = async (prompt: string) => {
-    if (!prompt) {
-      return;
-    }
+    if (!prompt) return;
     setIsLoading(true);
     const response = await fetch("/api/gemini", {
       method: "POST",
@@ -501,29 +483,27 @@ export default function Home() {
 
     const data = await response.json();
     setResponse(data.generatedText.trim());
-
     setIsOpen(true);
-
     setIsLoading(false);
+
     if (!response.ok) {
       console.error("Error:", data);
       return;
     }
-
     console.log("Usage Metadata:", data.usageMetadata);
   };
 
+  // Main render
   return (
     <Column fillWidth paddingY="80" paddingX="s" horizontal="center">
+      {/* Scroll to top button */}
       <ScrollToTop>
         <IconButton variant="secondary" icon="chevronUp" />
       </ScrollToTop>
+      {/* Top fade effect */}
       <Fade
         zIndex={3}
-        pattern={{
-          display: true,
-          size: "2",
-        }}
+        pattern={{ display: true, size: "2" }}
         position="fixed"
         top="0"
         left="0"
@@ -532,6 +512,7 @@ export default function Home() {
         fillWidth
         blur={0.25}
       />
+      {/* Fixed header */}
       <Row position="fixed" top="0" fillWidth horizontal="center" zIndex={3}>
         <Row
           data-border="rounded"
@@ -544,15 +525,10 @@ export default function Home() {
         >
           <Row vertical="center" gap="12">
             <Text variant="body-default-l">sourceful.space</Text>
-            <Line
-              vert={true}
-              height={2}
-              background="neutral-alpha-medium"
-            ></Line>
+            <Line vert={true} height={2} background="neutral-alpha-medium" />
+            {/* Command palette trigger */}
             <Kbd
-              style={{
-                cursor: "pointer",
-              }}
+              style={{ cursor: "pointer" }}
               onClick={() => setIsCmdOpenFromButton(true)}
               ref={(el) => {
                 if (!el) return;
@@ -574,34 +550,26 @@ export default function Home() {
               </Text>
             </Kbd>
           </Row>
-
+          {/* User menu and theme switcher */}
           <Row gap="12" hide="s" vertical="center">
             <UserMenu
               name={user.name}
               subline={user.subline}
-              tagProps={{
-                variant: "accent",
-                label: "",
-              }}
+              tagProps={{ variant: "accent", label: "" }}
               avatarProps={{
                 empty: false,
                 src: user.pfp,
-                statusIndicator: {
-                  color: "gray",
-                },
+                statusIndicator: { color: "gray" },
               }}
               loading={false}
               selected={false}
-            />{" "}
-            <Line
-              vert={true}
-              height={2}
-              background="neutral-alpha-medium"
-            ></Line>
+            />
+            <Line vert={true} height={2} background="neutral-alpha-medium" />
             <ThemeSwitcher fillHeight />
           </Row>
         </Row>
       </Row>
+      {/* Main content */}
       <Column
         overflow="hidden"
         as="main"
@@ -620,11 +588,9 @@ export default function Home() {
           paddingTop="40"
           position="relative"
         >
+          {/* Decorative backgrounds */}
           <Background
-            mask={{
-              x: 5,
-              y: 10,
-            }}
+            mask={{ x: 5, y: 10 }}
             position="absolute"
             grid={{
               display: true,
@@ -634,10 +600,7 @@ export default function Home() {
             }}
           />
           <Background
-            mask={{
-              x: 95,
-              y: 2,
-            }}
+            mask={{ x: 95, y: 2 }}
             gradient={{
               display: true,
               opacity: 40,
@@ -658,28 +621,8 @@ export default function Home() {
             }}
             position="absolute"
           />
-          {/* bottom */}
           <Background
-            mask={{
-              x: 100,
-              y: 100,
-            }}
-            position="absolute"
-            grid={{
-              display: true,
-              opacity: 90,
-              width: "0.25rem",
-              color: "neutral-alpha-medium",
-              height: "0.25rem",
-            }}
-          />
-
-          {/* bottom over */}
-          <Background
-            mask={{
-              x: 100,
-              y: 25,
-            }}
+            mask={{ x: 100, y: 100 }}
             position="absolute"
             grid={{
               display: true,
@@ -690,11 +633,18 @@ export default function Home() {
             }}
           />
           <Background
-            mask={{
-              x: 100,
-              y: 0,
-              radius: 100,
+            mask={{ x: 100, y: 25 }}
+            position="absolute"
+            grid={{
+              display: true,
+              opacity: 90,
+              width: "0.25rem",
+              color: "neutral-alpha-medium",
+              height: "0.25rem",
             }}
+          />
+          <Background
+            mask={{ x: 100, y: 0, radius: 100 }}
             position="absolute"
             gradient={{
               display: true,
@@ -708,7 +658,7 @@ export default function Home() {
               colorEnd: "static-transparent",
             }}
           />
-
+          {/* Hero section */}
           <Column
             fillWidth
             horizontal="center"
@@ -726,17 +676,13 @@ export default function Home() {
               wrap="balance"
               variant="display-strong-xl"
               align="center"
-              style={{
-                fontWeight: "bolder",
-              }}
+              style={{ fontWeight: "bolder" }}
             >
               Where ideas
               <br />
               <a
                 className={cedarville.className}
-                style={{
-                  color: "var(--neutral-strong)",
-                }}
+                style={{ color: "var(--neutral-strong)" }}
               >
                 <u
                   style={{
@@ -754,8 +700,8 @@ export default function Home() {
               onBackground="neutral-weak"
               align="center"
             >
-              Empowering developers and designers to explore, share,
-              and contribute to open-source projects with AI-crafted
+              Empowering developers and designers to explore, share, and
+              contribute to open-source projects with AI-crafted
               briefs—streamlining projects, building community.
             </Text>
             <Button
@@ -766,6 +712,7 @@ export default function Home() {
               size="l"
               arrowIcon
             />
+            {/* AI review textarea */}
             <Column maxWidth={31} marginTop="8">
               <Textarea
                 id="example-textarea"
@@ -776,20 +723,17 @@ export default function Home() {
                 spellCheck={false}
                 maxLength={600}
                 description={
-                  <>
-                    <Row vertical="center">
-                      <IconButton
-                        icon="infoCircle"
-                        size="s"
-                        tooltip="Information"
-                        tooltipPosition="top"
-                        variant="ghost"
-                        disabled={true}
-                      />
-                      <Text>Keep the text under 600 characters</Text>
-                    </Row>
-                  </>
-                  // meul
+                  <Row vertical="center">
+                    <IconButton
+                      icon="infoCircle"
+                      size="s"
+                      tooltip="Information"
+                      tooltipPosition="top"
+                      variant="ghost"
+                      disabled={true}
+                    />
+                    <Text>Keep the text under 600 characters</Text>
+                  </Row>
                 }
                 labelAsPlaceholder={false}
                 resize="none"
@@ -821,9 +765,7 @@ export default function Home() {
                   >
                     <i
                       className="ri-loader-line"
-                      style={{
-                        animation: "spin 1s linear infinite",
-                      }}
+                      style={{ animation: "spin 1s linear infinite" }}
                     />
                     <style jsx>{`
                       @keyframes spin {
@@ -840,6 +782,7 @@ export default function Home() {
                   <Text variant="label-strong-s">Review by AI</Text>
                 )}
               </Button>
+              {/* AI review dialog */}
               <Dialog
                 maxWidth={35}
                 style={{ zIndex: 999999999 }}
@@ -847,29 +790,13 @@ export default function Home() {
                 onClose={() => setIsOpen(false)}
                 title="AI Review"
                 description="Your idea has been reviewed by AI, and here are the suggestions."
-                // footer={
-                //   <Row vertical="center" fillWidth>
-                //     <IconButton
-                //       icon="infoCircle"
-                //       size="s"
-                //       tooltip="Information"
-                //       tooltipPosition="top"
-                //       variant="ghost"
-                //       disabled={true}
-                //     />{" "}
-                //     <Flex height="4"/>
-                //     <Text variant="label-default-s">
-                //       &nbsp;This is a suggestion from AI, you can choose to ignore it.
-                //     </Text>
-                //   </Row>
-                // }
               >
                 <Column fillWidth gap="16" marginTop="12">
                   <Text style={{ lineHeight: "1.3em" }}> {response}</Text>
                 </Column>
               </Dialog>
             </Column>
-
+            {/* Showcase section */}
             <Column
               horizontal="center"
               paddingTop="32"
@@ -894,8 +821,7 @@ export default function Home() {
               >
                 Tiny open-source projects that are making a big impact
               </Text>
-
-              {/* COMPARE IMAGE */}
+              {/* Compare image */}
               <CompareImage
                 radius="xl"
                 overflow="hidden"
@@ -905,6 +831,7 @@ export default function Home() {
               />
             </Column>
           </Column>
+          {/* Indie creators section */}
           <Column horizontal="center" fillWidth gap="24" id="sourceful-section">
             <AvatarGroup
               marginBottom="8"
@@ -912,21 +839,12 @@ export default function Home() {
               size="m"
               limit={2}
               avatars={[
-                {
-                  src: "/images/pfp.png",
-                },
-                {
-                  src: "",
-                },
-                {
-                  src: "",
-                },
-                {
-                  src: "",
-                },
+                { src: "/images/pfp.png" },
+                { src: "" },
+                { src: "" },
+                { src: "" },
               ]}
             />
-
             <Heading
               marginBottom="12"
               as="h2"
@@ -938,6 +856,7 @@ export default function Home() {
             </Heading>
           </Column>
           <Line maxWidth={4} background="neutral-alpha-medium" />
+          {/* Projects grid */}
           <Column
             horizontal="center"
             fillWidth
@@ -945,11 +864,9 @@ export default function Home() {
             paddingBottom="40"
             paddingTop="40"
           >
+            {/* Decorative backgrounds */}
             <Background
-              mask={{
-                x: 5,
-                y: 10,
-              }}
+              mask={{ x: 5, y: 10 }}
               position="absolute"
               grid={{
                 display: true,
@@ -960,10 +877,7 @@ export default function Home() {
               }}
             />
             <Background
-              mask={{
-                x: 95,
-                y: 2,
-              }}
+              mask={{ x: 95, y: 2 }}
               grid={{
                 display: true,
                 opacity: 10,
@@ -973,7 +887,6 @@ export default function Home() {
               }}
               position="absolute"
             />
-            {/* bottom over */}
             <Fade
               fill
               position="absolute"
@@ -984,10 +897,7 @@ export default function Home() {
               pattern={{ display: true, size: "8" }}
             />
             <Background
-              mask={{
-                x: 100,
-                y: 25,
-              }}
+              mask={{ x: 100, y: 25 }}
               position="absolute"
               grid={{
                 display: true,
@@ -998,29 +908,11 @@ export default function Home() {
               }}
             />
             <Background
-              mask={{
-                x: 100,
-                y: 100,
-                radius: 100,
-              }}
+              mask={{ x: 100, y: 100, radius: 100 }}
               position="absolute"
-              // gradient={{
-              //   display: true,
-              //   tilt: -35,
-              //   opacity: 80,
-              //   height: 40,
-              //   width: 25,
-              //   x: 90,
-              //   y: 100,
-              //   colorStart: "accent-solid-medium",
-              //   colorEnd: "static-transparent",
-              // }}
             />
             <Background
-              mask={{
-                x: 100,
-                y: 100,
-              }}
+              mask={{ x: 100, y: 100 }}
               position="absolute"
               grid={{
                 display: true,
@@ -1030,6 +922,7 @@ export default function Home() {
                 height: "0.25rem",
               }}
             />
+            {/* Search input */}
             <Column maxWidth="s" fillHeight marginBottom="40">
               <Input
                 id="input-1"
@@ -1051,32 +944,44 @@ export default function Home() {
                 }
               />
             </Column>
-            {/* SOURCEFUL CARD */}
-            <Row maxWidth={65} horizontal="center" gap="64" wrap>
-              {projectsData.map((proj) => (
-                <SourcefulCard
-                  key={proj.project_id}
-                  avatarSrc={proj.pfp ?? ""}
-                  name={proj.name ?? "User"}
-                  imageSrc={proj.media_url || "/images/placeholder.jpg"}
-                  imageAlt={proj.title}
-                  title={proj.title}
-                  description={proj.description}
-                  likes={proj.likes ?? 0}
-                  href={proj.website_link ?? ""}
-                />
-              ))}
+            {/* Project cards */}
+            <Row maxWidth={65} horizontal="center" gap="64" wrap minHeight={32}>
+              <RevealFx delay={0.2} translateY={0.5}>
+                {projectsData
+                  .filter((proj) =>
+                    searchValue.trim() === ""
+                      ? true
+                      : proj.title
+                          .toLowerCase()
+                          .includes(searchValue.toLowerCase())
+                  )
+                  .map((proj) => (
+                    <SourcefulCard
+                      key={proj.project_id}
+                      id={proj.title}
+                      avatarSrc={proj.pfp ?? ""}
+                      name={proj.name ?? "User"}
+                      imageSrc={proj.media_url || "/images/placeholder.jpg"}
+                      imageAlt={proj.title}
+                      title={proj.title}
+                      description={proj.description}
+                      likes={proj.likes ?? 0}
+                      href={proj.website_link ?? ""}
+                      open_for_funding={proj.open_for_funding ?? false}
+                    />
+                  ))}
+              </RevealFx>
             </Row>
-
+            {/* Load more button */}
             <Row paddingY="20" paddingTop="40">
               <Button variant="secondary" size="l" onClick={() => {}}>
                 <Text variant="body-default-l">Load more </Text>
               </Button>
             </Row>
           </Column>
-          {/*ending of the main column */}
         </Column>
       </Column>
+      {/* Footer */}
       <Row
         position="relative"
         as="footer"
@@ -1084,20 +989,6 @@ export default function Home() {
         paddingX="l"
         paddingTop="64"
       >
-        {/* <Background
-          mask={{
-            x: 50,
-            y: 0,
-          }}
-          position="absolute"
-          grid={{
-            opacity:30,
-            display: true,
-            width: "0.25rem",
-            color: "brand-alpha-strong",
-            height: "0.25rem",
-          }}
-        /> */}
         <Column
           position="relative"
           textVariant="body-default-xs"
@@ -1114,7 +1005,6 @@ export default function Home() {
           <SmartLink href="#">MIT License</SmartLink>
         </Column>
       </Row>
-
       {/* Signup Dialog */}
       <Dialog
         maxWidth={35}
@@ -1130,7 +1020,6 @@ export default function Home() {
             size="m"
             onClick={() => {
               supabaseSignIn();
-
               addToast({
                 variant: "success",
                 message: "Redirecting to Google...",
@@ -1141,9 +1030,7 @@ export default function Home() {
               <Row horizontal="center" vertical="center" fillHeight fillWidth>
                 <i
                   className="ri-loader-line"
-                  style={{
-                    animation: "spin 1s linear infinite",
-                  }}
+                  style={{ animation: "spin 1s linear infinite" }}
                 />
                 <style jsx>{`
                   @keyframes spin {
@@ -1162,9 +1049,7 @@ export default function Home() {
           </Button>
         </Column>
       </Dialog>
-
       {/* New project dialog */}
-
       <Dialog
         maxWidth={33}
         maxHeight={40}
@@ -1205,6 +1090,7 @@ export default function Home() {
           gap="12"
           marginBottom="2"
         >
+          {/* Project title */}
           <Column fillWidth>
             <Input
               id="project-title-input"
@@ -1220,11 +1106,12 @@ export default function Home() {
                 setProject({ ...project, title: e.target.value })
               }
             />
+            {/* Project description */}
             <Textarea
               id="project-description-textarea"
               maxLength={200}
               spellCheck={false}
-              label="Description"
+              label="Description (<200)"
               lines={2}
               resize="vertical"
               labelAsPlaceholder={false}
@@ -1235,6 +1122,7 @@ export default function Home() {
                 setProject({ ...project, description: e.target.value })
               }
             />
+            {/* Project content */}
             <Textarea
               id="project-content-textarea"
               maxLength={500}
@@ -1251,7 +1139,7 @@ export default function Home() {
                   <Text>Describe your project in detail. (optional)</Text>
                 </Row>
               }
-              label="Content"
+              label="Content (<500)"
               lines={4}
               spellCheck={false}
               labelAsPlaceholder={false}
@@ -1263,46 +1151,17 @@ export default function Home() {
               }
             />
           </Column>
-
+          {/* Project tags */}
           <Column fillWidth gap="8">
             <TagInput
               id="project-tags-input"
               value={project.tags}
-              onChange={(tags) => {
-                setProject({ ...project, tags });
-              }}
+              onChange={(tags) => setProject({ ...project, tags })}
               hasSuffix={<Kbd>Enter</Kbd>}
               label="Tags"
             />
-            {/* <Row
-              height={3}
-              fillWidth
-              gap="4"
-              paddingX="2"
-              style={{
-                maxWidth: "100%",
-                overflowY: "hidden",
-                overflowX: "scroll",
-              }}
-            >
-              <ToggleButton
-                selected={false}
-                size="m"
-                fillWidth={false}
-                justifyContent="center"
-                style={{
-                  border: "1px solid #EFEEEB",
-                  padding: "8px",
-                }}
-              >
-                <Text variant="body-default-xs" style={{ color: "#555" }}>
-                  <Text variant="label-default-xs" style={{ color: "#777" }}>
-                    #dg
-                  </Text>
-                </Text>
-              </ToggleButton>
-            </Row> */}
           </Column>
+          {/* Website link */}
           <Row fillWidth>
             <Input
               id="project-website-link-input"
@@ -1319,6 +1178,7 @@ export default function Home() {
               }
             />
           </Row>
+          {/* Media upload */}
           <Row fillWidth>
             <MediaUpload
               emptyState={
@@ -1336,7 +1196,7 @@ export default function Home() {
               onFileUpload={handleFileUpload}
             />
           </Row>
-
+          {/* Media info */}
           <Row horizontal="start" fillWidth paddingX="8" marginBottom="2">
             <Column>
               <Text
@@ -1348,7 +1208,7 @@ export default function Home() {
               <Text variant="label-default-s" style={{ color: "#666" }}></Text>
             </Column>
           </Row>
-
+          {/* Built with */}
           <Input
             id="project-built-with-input"
             spellCheck={false}
@@ -1375,7 +1235,8 @@ export default function Home() {
             onChange={(e) =>
               setProject({ ...project, builtWith: e.target.value })
             }
-          ></Input>
+          />
+          {/* Funding options */}
           <Column horizontal="start" fillWidth marginTop="32">
             <Flex marginBottom="20">
               <Switch
@@ -1396,7 +1257,7 @@ export default function Home() {
                 }}
               />
             </Flex>
-
+            {/* Funding goal */}
             <NumberInput
               id="project-funding-amount-input"
               error={false}
@@ -1410,6 +1271,7 @@ export default function Home() {
                 setProject({ ...project, fundingGoal: value })
               }
             />
+            {/* Looking for */}
             <NumberInput
               id="project-funding-amount-input-looking-for"
               error={false}
@@ -1423,7 +1285,7 @@ export default function Home() {
                 setProject({ ...project, lookingFor: value })
               }
             />
-
+            {/* Funding pitch */}
             <Textarea
               id="project-funding-description-textarea"
               label="Funding pitch"
@@ -1451,6 +1313,7 @@ export default function Home() {
               }
             />
           </Column>
+          {/* Form actions */}
           <Row horizontal="end" fillWidth paddingBottom="20" gap="8">
             <Button variant="secondary" onClick={clearProject}>
               <Text variant="label-default-m">Clear</Text>
@@ -1465,8 +1328,7 @@ export default function Home() {
           </Row>
         </Column>
       </Dialog>
-
-      {/* <CommandPalette /> */}
+      {/* Command palette */}
       <Kbar items={kbarItems} isCmdOpen={isCmdOpenFromButton}>
         {""}
       </Kbar>
@@ -1474,6 +1336,7 @@ export default function Home() {
   );
 }
 
+// Empty CommandPalette for future extension
 function CommandPalette() {
   return <></>;
 }
