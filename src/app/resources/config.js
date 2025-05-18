@@ -113,7 +113,7 @@ const meta = {
     keywords: "open-source, projects, developers, designers, collaboration",
     baseURL: "https://sourceful-space.vercel.app",
     type: "website",
-    image: "/images/cover.jpg",
+    image: "/cover.jpg",
     path: "/",
     robots: "index,follow",
     alternates: [{ href: "https://sourceful.space", hrefLang: "en" }],
