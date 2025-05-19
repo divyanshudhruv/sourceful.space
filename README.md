@@ -24,7 +24,7 @@ Redefining **`open-source`** collaboration for indie **`creators`**, **`develope
 
 ## ✨ **What is Sourceful Space?** ✨
 
-**[Sourceful Space](https://sourceful-space.vercel.app)** is a modern, **`open-source`** platform that empowers developers and designers to **`explore`**, **`share`**, and **`contribute`** to open-source and **`early-stage`** startup projects ✨. It leverages a robust design system, **`AI-powered`** feedback 🤖, and a beautiful, customizable UI 🎨 to streamline project building and 🏠 community **`engagement`**.
+**[Sourceful Space](https://sourceful-space.vercel.app)** is a modern, **`open-source`** platform that empowers developers and designers to **`explore`**, **`share`**, **`invest`** and **`contribute`** to open-source and **`early-stage`** startup projects ✨. It leverages a robust design system, **`AI-powered`** feedback 🤖, and a beautiful, customizable UI 🎨 to streamline project building and 🏠 community **`engagement`**.
 
 <br>
 
