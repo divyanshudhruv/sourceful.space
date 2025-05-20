@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { Lexend } from "next/font/google";
 import { Playwrite_DK_Loopet } from "next/font/google";
-import "./../once-ui/styles/background.scss";
+import "./../once-ui/styles/color.scss";
 import {
   Heading,
   Text,
@@ -40,7 +40,7 @@ import { ScrollToTop } from "@/once-ui/components/ScrollToTop";
 // import postgres from "postgres";
 import { supabase } from "./utils/supabase/client";
 import { SourcefulCard } from "./sourceful-ui/SourcefulCard";
-
+import "./../once-ui/tokens/theme.scss";
 // Font setup
 const lexend = Lexend({ subsets: ["latin"] });
 const cedarville = Playwrite_DK_Loopet({ weight: "400" });
@@ -124,6 +124,37 @@ export default function Home() {
     pfp: "",
   });
 
+  // useEffect(() => {
+  //   const classNames = [
+  //     "color-hover-dynamic-1",
+  //     "color-hover-dynamic-2",
+  //     "color-hover-dynamic-3",
+  //     "color-hover-dynamic-4"
+  //   ];
+
+  //   const handleMouseOver = (e: Event) => {
+  //     (e.target as HTMLElement).style.color = "var(--neutral-strong)";
+  //   };
+  //   const handleMouseOut = (e: Event) => {
+  //     (e.target as HTMLElement).style.color = "";
+  //   };
+
+  //   const allElements = classNames.flatMap((className) =>
+  //     Array.from(document.getElementsByClassName(className))
+  //   );
+
+  //   allElements.forEach((el) => {
+  //     el.addEventListener("mouseover", handleMouseOver);
+  //     el.addEventListener("mouseout", handleMouseOut);
+  //   });
+
+  //   return () => {
+  //     allElements.forEach((el) => {
+  //       el.removeEventListener("mouseover", handleMouseOver);
+  //       el.removeEventListener("mouseout", handleMouseOut);
+  //     });
+  //   };
+  // }, []);
   // Fetch projects from Supabase and subscribe to realtime changes
   useEffect(() => {
     const fetchProjects = async () => {
@@ -587,6 +618,34 @@ export default function Home() {
               }}
               loading={false}
               selected={false}
+              // dropdown={
+              //   <>
+              //     <Column
+              //       gap="4"
+              //       padding="8"
+              //       minWidth={10}
+              //       vertical="center"
+              //       horizontal="center"
+              //     >
+              //       <Row
+              //         fillWidth
+              //         padding="12"
+              //         vertical="center"
+              //         border="neutral-alpha-medium"
+              //         borderStyle="solid"
+              //         cursor="pointer"
+              //         style={{ borderRadius: "20px" }}
+              //       >
+              //         <i
+              //           className="ri-folder-line"
+              //           style={{ fontWeight: "lighter", marginRight: "5px" }}
+              //         />
+              //         <Text variant="label-default-m">My Projects</Text>
+              //       </Row>
+
+              //     </Column>
+              //   </>
+              // }
             />
             <Line
               vert={true}
@@ -697,12 +756,27 @@ export default function Home() {
           >
             <InlineCode radius="xl" shadow="m" fit paddingX="16" paddingY="8">
               Backed by none 🥲 |
-              <Text onBackground="brand-medium" marginLeft="8">
+              <Text onBackground="accent-medium" marginLeft="8">
                 <SmartLink
                   href={"https://github.com/divyanshudhruv/sourceful.space"}
                   target="_blank"
                 >
-                  Support us
+                  <Text
+                    onBackground="accent-weak"
+                    style={{
+                      transition: "color 0.2s",
+                      cursor: "pointer",
+                    }}
+                    onMouseOver={(e) => {
+                      (e.currentTarget as HTMLElement).style.color =
+                        "var(--border-solid-weak) !important";
+                    }}
+                    onMouseOut={(e) => {
+                      (e.currentTarget as HTMLElement).style.color = "";
+                    }}
+                  >
+                    Support us
+                  </Text>
                 </SmartLink>
               </Text>
             </InlineCode>
@@ -1061,13 +1135,43 @@ export default function Home() {
           <Text size="m">
             <Text onBackground="neutral-weak">2025 /</Text> Sourceful Space
           </Text>
-          <SmartLink href="#">MIT License</SmartLink>
+          <SmartLink href="#">
+            <Text
+                onBackground="accent-medium"
+                    style={{
+                      transition: "color 0.2s",
+                      cursor: "pointer",
+                    }}
+                    onMouseOver={(e) => {
+                      (e.currentTarget as HTMLElement).style.color =
+                        "var(--border-solid-weak) !important";
+                    }}
+                    onMouseOut={(e) => {
+                      (e.currentTarget as HTMLElement).style.color = "";
+                    }}
+            >
+              MIT License
+            </Text>
+          </SmartLink>
           <Column horizontal="center" gap="8">
             {" "}
             <Text onBackground="neutral-weak">
               <Text onBackground="neutral-weak">Built with </Text>
               <SmartLink href="https://once-ui.com" target="_blank">
-                <Text>
+                <Text
+                  onBackground="accent-medium"
+                  style={{
+                  transition: "color 0.2s",
+                  cursor: "pointer",
+                  }}
+                  onMouseOver={(e) => {
+                  (e.currentTarget as HTMLElement).style.color =
+                    "var(--border-solid-weak) !important";
+                  }}
+                  onMouseOut={(e) => {
+                  (e.currentTarget as HTMLElement).style.color = "";
+                  }}
+                >
                   <u>once-ui</u>
                 </Text>
               </SmartLink>
@@ -1075,13 +1179,39 @@ export default function Home() {
             <Text onBackground="neutral-weak">
               <Text onBackground="neutral-weak">Powered by </Text>
               <SmartLink href="https://supabase.com" target="_blank">
-                <Text>
+                <Text
+                  onBackground="accent-medium"
+                  style={{
+                    transition: "color 0.2s",
+                    cursor: "pointer",
+                  }}
+                  onMouseOver={(e) => {
+                    (e.currentTarget as HTMLElement).style.color =
+                      "var(--border-solid-weak) !important";
+                  }}
+                  onMouseOut={(e) => {
+                    (e.currentTarget as HTMLElement).style.color = "";
+                  }}
+                >
                   <u>supabase</u>
                 </Text>
               </SmartLink>{" "}
               and{" "}
               <SmartLink href="https://ai.google.dev" target="_blank">
-                <Text>
+                <Text
+                  onBackground="accent-medium"
+                  style={{
+                    transition: "color 0.2s",
+                    cursor: "pointer",
+                  }}
+                  onMouseOver={(e) => {
+                    (e.currentTarget as HTMLElement).style.color =
+                      "var(--border-solid-weak) !important";
+                  }}
+                  onMouseOut={(e) => {
+                    (e.currentTarget as HTMLElement).style.color = "";
+                  }}
+                >
                   <u>gemini</u>
                 </Text>
               </SmartLink>{" "}
