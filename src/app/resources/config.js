@@ -54,7 +54,7 @@ const font = {
 
 const style = {
   theme: "light",
-  brand: "yellow",
+  brand: "blue",
   accent: "yellow",
   neutral: "gray",
   border: "playful",
