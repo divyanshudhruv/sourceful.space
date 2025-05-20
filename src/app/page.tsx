@@ -278,8 +278,7 @@ export default function Home() {
     if (
       !project.title.trim() ||
       !project.description.trim() ||
-      !project.media.trim() ||
-      !project.builtWith.trim()
+      !project.media.trim()
     ) {
       addToast({
         variant: "danger",
@@ -590,6 +589,37 @@ export default function Home() {
                 <Text variant="code-default-xs">Ctrl+k</Text>
               </Text>
             </Kbd>
+            <Flex marginX="0" />
+            <Flex>
+              {" "}
+              <IconButton
+                onClick={() =>
+                  window.open(
+                    "https://github.com/divyanshudhruv/sourceful.space"
+                  )
+                }
+                size="m"
+                variant="secondary"
+                style={{ alignItems: "center", justifyContent: "center" }}
+              >
+                <i
+                  className="ri-github-fill"
+                  style={{
+                    fontWeight: "100",
+                    fontVariationSettings: "'wght' 100",
+                    fontFamily: "remixicon, inherit",
+                    fontStyle: "normal",
+                    fontStretch: "normal",
+                    fontSize: "inherit",
+                    fontFeatureSettings: "normal",
+                    fontSynthesis: "none",
+                    WebkitFontSmoothing: "antialiased",
+                    MozOsxFontSmoothing: "grayscale",
+                    scale: "1.4",
+                  }}
+                ></i>
+              </IconButton>
+            </Flex>
           </Row>
           {/* User menu and theme switcher */}
           <Row gap="12" vertical="center">
@@ -1137,18 +1167,18 @@ export default function Home() {
           </Text>
           <SmartLink href="#">
             <Text
-                onBackground="accent-medium"
-                    style={{
-                      transition: "color 0.2s",
-                      cursor: "pointer",
-                    }}
-                    onMouseOver={(e) => {
-                      (e.currentTarget as HTMLElement).style.color =
-                        "var(--border-solid-weak) !important";
-                    }}
-                    onMouseOut={(e) => {
-                      (e.currentTarget as HTMLElement).style.color = "";
-                    }}
+              onBackground="accent-medium"
+              style={{
+                transition: "color 0.2s",
+                cursor: "pointer",
+              }}
+              onMouseOver={(e) => {
+                (e.currentTarget as HTMLElement).style.color =
+                  "var(--border-solid-weak) !important";
+              }}
+              onMouseOut={(e) => {
+                (e.currentTarget as HTMLElement).style.color = "";
+              }}
             >
               MIT License
             </Text>
@@ -1161,15 +1191,15 @@ export default function Home() {
                 <Text
                   onBackground="accent-medium"
                   style={{
-                  transition: "color 0.2s",
-                  cursor: "pointer",
+                    transition: "color 0.2s",
+                    cursor: "pointer",
                   }}
                   onMouseOver={(e) => {
-                  (e.currentTarget as HTMLElement).style.color =
-                    "var(--border-solid-weak) !important";
+                    (e.currentTarget as HTMLElement).style.color =
+                      "var(--border-solid-weak) !important";
                   }}
                   onMouseOut={(e) => {
-                  (e.currentTarget as HTMLElement).style.color = "";
+                    (e.currentTarget as HTMLElement).style.color = "";
                   }}
                 >
                   <u>once-ui</u>
