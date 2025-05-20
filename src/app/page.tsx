@@ -45,12 +45,6 @@ import "./../once-ui/tokens/theme.scss";
 const lexend = Lexend({ subsets: ["latin"] });
 const cedarville = Playwrite_DK_Loopet({ weight: "400" });
 
-// Types
-type User = {
-  name: string;
-  pfp: string;
-};
-
 export default function Home() {
   // State hooks
   const [idea, setIdea] = useState("");
@@ -72,6 +66,7 @@ export default function Home() {
     name: "User",
     pfp: "",
     subline: "Space User",
+    user_id: "",
   });
 
   // Projects data state
@@ -86,6 +81,7 @@ export default function Home() {
       pfp?: string;
       website_link?: string;
       open_for_funding?: boolean;
+      id?: string;
     }[]
   >([]);
 
@@ -124,44 +120,13 @@ export default function Home() {
     pfp: "",
   });
 
-  // useEffect(() => {
-  //   const classNames = [
-  //     "color-hover-dynamic-1",
-  //     "color-hover-dynamic-2",
-  //     "color-hover-dynamic-3",
-  //     "color-hover-dynamic-4"
-  //   ];
-
-  //   const handleMouseOver = (e: Event) => {
-  //     (e.target as HTMLElement).style.color = "var(--neutral-strong)";
-  //   };
-  //   const handleMouseOut = (e: Event) => {
-  //     (e.target as HTMLElement).style.color = "";
-  //   };
-
-  //   const allElements = classNames.flatMap((className) =>
-  //     Array.from(document.getElementsByClassName(className))
-  //   );
-
-  //   allElements.forEach((el) => {
-  //     el.addEventListener("mouseover", handleMouseOver);
-  //     el.addEventListener("mouseout", handleMouseOut);
-  //   });
-
-  //   return () => {
-  //     allElements.forEach((el) => {
-  //       el.removeEventListener("mouseover", handleMouseOver);
-  //       el.removeEventListener("mouseout", handleMouseOut);
-  //     });
-  //   };
-  // }, []);
   // Fetch projects from Supabase and subscribe to realtime changes
   useEffect(() => {
     const fetchProjects = async () => {
       const { data, error } = await supabase
         .from("projects")
         .select(
-          "project_id, title, description, media_url, likes, name, pfp, website_link,open_for_funding"
+          "project_id, title, description, media_url, likes, name, pfp, website_link,open_for_funding,id"
         );
       if (error) {
         console.error("Error fetching projects:", error);
@@ -354,6 +319,7 @@ export default function Home() {
           name: user.user_metadata?.name || user.email || "User",
           pfp: user.user_metadata?.avatar_url || "",
           subline: "Space User",
+          user_id: user.id,
         });
       }
     }
@@ -623,60 +589,39 @@ export default function Home() {
           </Row>
           {/* User menu and theme switcher */}
           <Row gap="12" vertical="center">
-            <UserMenu
-              name={user.name}
-              subline={user.subline}
-              tagProps={{ variant: "accent", label: "" }}
-              avatarProps={{
-                empty: false,
-                src: user.pfp,
-                statusIndicator: { color: statusIndicatorColor },
-                onClick: () => {
-                  setStatusIndicatorColor((prev) => {
-                    const colors: Array<"green" | "yellow" | "red" | "gray"> = [
-                      "green",
-                      "yellow",
-                      "red",
-                      "gray",
-                    ];
-                    const next =
-                      colors[(colors.indexOf(prev) + 1) % colors.length];
-                    return next;
-                  });
-                },
-                style: { cursor: "pointer" },
-              }}
-              loading={false}
-              selected={false}
-              // dropdown={
-              //   <>
-              //     <Column
-              //       gap="4"
-              //       padding="8"
-              //       minWidth={10}
-              //       vertical="center"
-              //       horizontal="center"
-              //     >
-              //       <Row
-              //         fillWidth
-              //         padding="12"
-              //         vertical="center"
-              //         border="neutral-alpha-medium"
-              //         borderStyle="solid"
-              //         cursor="pointer"
-              //         style={{ borderRadius: "20px" }}
-              //       >
-              //         <i
-              //           className="ri-folder-line"
-              //           style={{ fontWeight: "lighter", marginRight: "5px" }}
-              //         />
-              //         <Text variant="label-default-m">My Projects</Text>
-              //       </Row>
-
-              //     </Column>
-              //   </>
-              // }
-            />
+            <Flex
+              fitWidth
+              fitHeight
+              // onClick={() => {
+              //   window.location.reload();
+              //   setTimeout(() => {
+              //     window.open("/projects", "_self");
+              //   }, 300);
+              // }}
+            >
+              <UserMenu
+                name={user.name}
+                subline={user.subline}
+                tagProps={{ variant: "accent", label: "" }}
+                avatarProps={{
+                  empty: false,
+                  src: user.pfp,
+                  statusIndicator: { color: statusIndicatorColor },
+                  onClick: () => {
+                    setStatusIndicatorColor((prev) => {
+                      const colors: Array<"green" | "yellow" | "red" | "gray"> =
+                        ["green", "yellow", "red", "gray"];
+                      const next =
+                        colors[(colors.indexOf(prev) + 1) % colors.length];
+                      return next;
+                    });
+                  },
+                  style: { cursor: "pointer" },
+                }}
+                loading={false}
+                selected={false}
+              />
+            </Flex>
             <Line
               vert={true}
               height={2}
@@ -783,6 +728,7 @@ export default function Home() {
             gap="32"
             padding="32"
             position="relative"
+            className=""
           >
             <InlineCode radius="xl" shadow="m" fit paddingX="16" paddingY="8">
               Backed by none 🥲 |
@@ -1001,6 +947,7 @@ export default function Home() {
             gap="4"
             paddingBottom="40"
             paddingTop="40"
+            id="main"
           >
             {/* Decorative backgrounds */}
             <Background
@@ -1130,6 +1077,9 @@ export default function Home() {
                       likes={proj.likes ?? 0}
                       href={proj.website_link ?? ""}
                       open_for_funding={proj.open_for_funding ?? false}
+                      user_id={proj.id}
+                      editable={proj.id === user.user_id}
+                      project_id={proj.project_id}
                     />
                   ));
                 })()}
