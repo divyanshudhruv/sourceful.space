@@ -9,7 +9,9 @@ Redefining **`open-source`** collaboration for indie **`creators`**, **`develope
 ![GitHub issues](https://img.shields.io/github/issues/divyanshudhruv/sourceful.space.svg?style=for-the-badge)
 ![GitHub contributors](https://img.shields.io/github/contributors/divyanshudhruv/sourceful.space.svg?style=for-the-badge)
 ![Top language](https://img.shields.io/github/languages/top/divyanshudhruv/sourceful.space.svg?style=for-the-badge)
-
+<br><br>
+<a href="https://www.producthunt.com/posts/sourceful-space?embed=true&utm_source=badge-featured&utm_medium=badge&utm_source=badge-sourceful&#0045;space" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=968814&theme=light&t=1747909992893" alt="Sourceful&#0032;Space - The&#0032;launchpad&#0032;for&#0032;small&#0032;projects&#0032;that&#0032;deserve&#0032;big&#0032;visibility | Product Hunt" style="width: 200px; height: 54px;" width="200" height="54" /></a>
+<br>
 <br>
 
 > [!IMPORTANT]\
