@@ -33,6 +33,7 @@ import {
   Kbd,
   NumberInput,
   RevealFx,
+  NavBar,
 } from "@/once-ui/components";
 import { MediaUpload } from "@/once-ui/modules";
 import { ScrollToTop } from "@/once-ui/components/ScrollToTop";
@@ -494,6 +495,7 @@ export default function Home() {
   // Main render
   return (
     <Column fillWidth paddingY="80" paddingX="s" horizontal="center">
+      <NavBar />
       {/* Scroll to top button */}
       <ScrollToTop>
         <IconButton variant="secondary" icon="chevronUp" />
